@@ -1,0 +1,148 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: my-pipeline-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2021-12-15T08:30:05.599459',
+    pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "url"}], "name": "My
+      pipeline"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10}
+spec:
+  entrypoint: my-pipeline
+  templates:
+  - name: download-data
+    container:
+      args: []
+      command:
+      - sh
+      - -exc
+      - |
+        url="$0"
+        output_path="$1"
+        curl_options="$2"
+
+        mkdir -p "$(dirname "$output_path")"
+        curl --get "$url" --output "$output_path" $curl_options
+      - '{{inputs.parameters.url}}'
+      - /tmp/outputs/Data/data
+      - --location
+      image: byrnedo/alpine-curl@sha256:548379d0a4a0c08b9e55d9d87a592b7d35d9ab3037f4936f5ccd09d0b625a342
+    inputs:
+      parameters:
+      - {name: url}
+    outputs:
+      artifacts:
+      - {name: download-data-Data, path: /tmp/outputs/Data/data}
+    metadata:
+      annotations: {author: Alexey Volkov <alexey.volkov@ark-kun.com>, canonical_location: 'https://raw.githubusercontent.com/Ark-kun/pipeline_components/master/components/web/Download/component.yaml',
+        pipelines.kubeflow.org/component_spec: '{"implementation": {"container": {"command":
+          ["sh", "-exc", "url=\"$0\"\noutput_path=\"$1\"\ncurl_options=\"$2\"\n\nmkdir
+          -p \"$(dirname \"$output_path\")\"\ncurl --get \"$url\" --output \"$output_path\"
+          $curl_options\n", {"inputValue": "Url"}, {"outputPath": "Data"}, {"inputValue":
+          "curl options"}], "image": "byrnedo/alpine-curl@sha256:548379d0a4a0c08b9e55d9d87a592b7d35d9ab3037f4936f5ccd09d0b625a342"}},
+          "inputs": [{"name": "Url", "type": "URI"}, {"default": "--location", "description":
+          "Additional options given to the curl bprogram. See https://curl.haxx.se/docs/manpage.html",
+          "name": "curl options", "type": "string"}], "metadata": {"annotations":
+          {"author": "Alexey Volkov <alexey.volkov@ark-kun.com>", "canonical_location":
+          "https://raw.githubusercontent.com/Ark-kun/pipeline_components/master/components/web/Download/component.yaml"}},
+          "name": "Download data", "outputs": [{"name": "Data"}]}', pipelines.kubeflow.org/component_ref: '{"digest":
+          "2f61f2edf713f214934bd286791877a1a3a37f31a4de4368b90e3b76743f1523", "url":
+          "https://raw.githubusercontent.com/kubeflow/pipelines/master/components/web/Download/component.yaml"}',
+        pipelines.kubeflow.org/arguments.parameters: '{"Url": "{{inputs.parameters.url}}",
+          "curl options": "--location"}'}
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.10
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+  - name: merge-csv
+    container:
+      args: [--file, /tmp/inputs/file/data, --output-csv, /tmp/outputs/output_csv/data]
+      command:
+      - sh
+      - -c
+      - (PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location
+        'pandas==1.1.4' || PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install
+        --quiet --no-warn-script-location 'pandas==1.1.4' --user) && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp)
+        printf "%s" "$0" > "$program_path"
+        python3 -u "$program_path" "$@"
+      - |
+        def _make_parent_dirs_and_return_path(file_path: str):
+            import os
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            return file_path
+
+        def merge_csv(file_path,
+                      output_csv):
+            import glob
+            import pandas as pd
+            import tarfile
+
+            tarfile.open(name=file_path, mode="r|gz").extractall('data')
+            df = pd.concat(
+                [pd.read_csv(csv_file, header=None)
+                for csv_file in glob.glob('data/*.csv')])
+            df.to_csv(output_csv, index=False, header=False)
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Merge csv', description='')
+        _parser.add_argument("--file", dest="file_path", type=str, required=True, default=argparse.SUPPRESS)
+        _parser.add_argument("--output-csv", dest="output_csv", type=_make_parent_dirs_and_return_path, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+
+        _outputs = merge_csv(**_parsed_args)
+      image: python:3.9
+    inputs:
+      artifacts:
+      - {name: download-data-Data, path: /tmp/inputs/file/data}
+    outputs:
+      artifacts:
+      - {name: merge-csv-output_csv, path: /tmp/outputs/output_csv/data}
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.10
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+      annotations: {pipelines.kubeflow.org/component_spec: '{"implementation": {"container":
+          {"args": ["--file", {"inputPath": "file"}, "--output-csv", {"outputPath":
+          "output_csv"}], "command": ["sh", "-c", "(PIP_DISABLE_PIP_VERSION_CHECK=1
+          python3 -m pip install --quiet --no-warn-script-location ''pandas==1.1.4''
+          || PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location
+          ''pandas==1.1.4'' --user) && \"$0\" \"$@\"", "sh", "-ec", "program_path=$(mktemp)\nprintf
+          \"%s\" \"$0\" > \"$program_path\"\npython3 -u \"$program_path\" \"$@\"\n",
+          "def _make_parent_dirs_and_return_path(file_path: str):\n    import os\n    os.makedirs(os.path.dirname(file_path),
+          exist_ok=True)\n    return file_path\n\ndef merge_csv(file_path,\n              output_csv):\n    import
+          glob\n    import pandas as pd\n    import tarfile\n\n    tarfile.open(name=file_path,
+          mode=\"r|gz\").extractall(''data'')\n    df = pd.concat(\n        [pd.read_csv(csv_file,
+          header=None)\n        for csv_file in glob.glob(''data/*.csv'')])\n    df.to_csv(output_csv,
+          index=False, header=False)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Merge
+          csv'', description='''')\n_parser.add_argument(\"--file\", dest=\"file_path\",
+          type=str, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--output-csv\",
+          dest=\"output_csv\", type=_make_parent_dirs_and_return_path, required=True,
+          default=argparse.SUPPRESS)\n_parsed_args = vars(_parser.parse_args())\n\n_outputs
+          = merge_csv(**_parsed_args)\n"], "image": "python:3.9"}}, "inputs": [{"name":
+          "file", "type": "Tarball"}], "name": "Merge csv", "outputs": [{"name": "output_csv",
+          "type": "CSV"}]}', pipelines.kubeflow.org/component_ref: '{}'}
+  - name: my-pipeline
+    inputs:
+      parameters:
+      - {name: url}
+    dag:
+      tasks:
+      - name: download-data
+        template: download-data
+        arguments:
+          parameters:
+          - {name: url, value: '{{inputs.parameters.url}}'}
+      - name: merge-csv
+        template: merge-csv
+        dependencies: [download-data]
+        arguments:
+          artifacts:
+          - {name: download-data-Data, from: '{{tasks.download-data.outputs.artifacts.download-data-Data}}'}
+  arguments:
+    parameters:
+    - {name: url}
+  serviceAccountName: pipeline-runner
