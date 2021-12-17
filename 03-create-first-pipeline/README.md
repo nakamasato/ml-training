@@ -4,6 +4,23 @@
 
 - kubeflow pipelines (if not please check [01-setup-kubeflow-pipelines-in-local](../01-setup-kubeflow-pipelines-in-local))
 
+## Pipeline
+
+Make a simple pipeline of the following function.
+
+```python
+def download_and_merge_csv(url: str, output_csv: str):
+    with urllib.request.urlopen(url) as res:
+        tarfile.open(fileobj=res, mode="r|gz").extractall('data')
+    df = pd.concat(
+        [pd.read_csv(csv_file, header=None)
+        for csv_file in glob.glob('data/*.csv')])
+    df.to_csv(output_csv, index=False, header=False)
+download_and_merge_csv(
+    url='https://storage.googleapis.com/ml-pipeline-playground/iris-csv-files.tar.gz',
+    output_csv='merged_data.csv')
+```
+
 ## 1. Install `kfp`
 
 ```
@@ -15,6 +32,11 @@ For more details: [Kubeflow Pipelines SDK API](https://kubeflow-pipelines.readth
 ## 2. Prepare script `kf-pipeline.py`
 
 1. Two components created with sdk `kfp.components`
+    1. `web_downloader_op` with `load_component_from_url`
+        ```python
+        web_downloader_op = kfp.components.load_component_from_url(
+        'https://raw.githubusercontent.com/kubeflow/pipelines/master/components/web/Download/component.yaml')
+        ```
     1. `create_step_merge_csv` with `create_component_from_func` with pipeline_func `merge_csv`
         ```python
         create_step_merge_csv = kfp.components.create_component_from_func(
@@ -23,22 +45,13 @@ For more details: [Kubeflow Pipelines SDK API](https://kubeflow-pipelines.readth
             base_image='python:3.9',
             packages_to_install=['pandas==1.1.4'])
         ```
-    1. `web_downloader_op` with `load_component_from_url`
-        ```python
-        web_downloader_op = kfp.components.load_component_from_url(
-        'https://raw.githubusercontent.com/kubeflow/pipelines/master/components/web/Download/component.yaml')
-        ```
 
-1. Compile the pipeline with `kfp.compiler.Compiler().compile`
+1. Create a function for the pipeline.
 
     ```python
     def my_pipeline(url):
         web_downloader_task = web_downloader_op(url=url) # first component
         merge_csv_task = create_step_merge_csv(file=web_downloader_task.outputs['data']) # second component
-
-    kfp.compiler.Compiler().compile(
-        pipeline_func=my_pipeline,
-        package_path='pipeline.yaml')
     ```
 1. Create kubeflow pipelines client.
     ```python

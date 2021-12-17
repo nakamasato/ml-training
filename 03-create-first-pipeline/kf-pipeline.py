@@ -2,24 +2,6 @@ import kfp
 import kfp.components as comp
 
 
-import glob
-import pandas as pd
-import tarfile
-import urllib.request
-
-
-def download_and_merge_csv(url: str, output_csv: str):
-    with urllib.request.urlopen(url) as res:
-        tarfile.open(fileobj=res, mode="r|gz").extractall('data')
-    df = pd.concat(
-        [pd.read_csv(csv_file, header=None)
-        for csv_file in glob.glob('data/*.csv')])
-    df.to_csv(output_csv, index=False, header=False)
-
-download_and_merge_csv(
-    url='https://storage.googleapis.com/ml-pipeline-playground/iris-csv-files.tar.gz',
-    output_csv='merged_data.csv')
-
 def merge_csv(file_path: comp.InputPath('Tarball'),
               output_csv: comp.OutputPath('CSV')):
     import glob
@@ -48,15 +30,19 @@ def my_pipeline(url):
     # The outputs of the merge_csv_task can be referenced using the
     # merge_csv_task.outputs dictionary: merge_csv_task.outputs['output_csv']
 
-kfp.compiler.Compiler().compile(
-    pipeline_func=my_pipeline,
-    package_path='pipeline.yaml')
-
 
 client = kfp.Client(host="http://localhost:8080") # change arguments accordingly
+
+# kfp.compiler.Compiler().compile(
+#     pipeline_func=my_pipeline,
+#     package_path='pipeline.yaml')
+# client.upload_pipeline(
+#     pipeline_package_path='pipeline.yaml',
+#     pipeline_name='sample pipeline'
+# )
 
 client.create_run_from_pipeline_func(
     my_pipeline,
     arguments={
         'url': 'https://storage.googleapis.com/ml-pipeline-playground/iris-csv-files.tar.gz'
-    })
+})

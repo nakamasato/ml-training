@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: my-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2021-12-15T08:30:05.599459',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2021-12-18T10:54:27.033049',
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "url"}], "name": "My
       pipeline"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10}

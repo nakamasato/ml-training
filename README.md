@@ -2,7 +2,9 @@
 
 ## Overview
 
-![]()
+![](https://raw.githubusercontent.com/kubeflow/website/master/content/en/docs/images/pipelines-architecture.png)
+
+*[from official document architecture overview](https://www.kubeflow.org/docs/components/pipelines/introduction/#architectural-overview)*
 
 Goals:
 - *End-to-end orchestration*
@@ -46,6 +48,13 @@ Components:
 1. Run a tutorial pipeline by clicking `Create run`.
     ![](02-run-tutorial-pipelines/tutorial-pipeline-run.png)
 
+1. Clean up.
+
+    ```
+    kubectl delete -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION"
+    kubectl delete -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION"
+    ```
+
 ## Table of Contents
 
 1. [Setup kubeflow pipelines in local](01-setup-kubeflow-pipelines-in-local)
@@ -54,4 +63,5 @@ Components:
 
 # Reference
 - [AI Platform Pipelines (Kubeflow Pipelines)による機械学習パイプラインの構築と本番導入](https://techblog.zozo.com/entry/aip-pipelines-impl)
+- [KubeflowによるMLOps基盤構築から得られた知見と課題](https://techblog.zozo.com/entry/mlops-platform-kubeflow)
 - [Vertex Pipelines で動く Kubeflow Pipelines のサンプルを公開しました](https://tech.repro.io/entry/2021/06/22/125113)
