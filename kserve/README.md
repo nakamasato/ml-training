@@ -104,3 +104,9 @@ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -
     Status Codes  [code:count]                      200:30000
     Error Set:
     ```
+
+Reference:
+- [KFServing](https://www.kubeflow.org/docs/components/kfserving/)
+- [https://github.com/kserve/kserve](https://github.com/kserve/kserve)
+- [](https://speakerdeck.com/zuiurs/ml-platform-hands-on-with-kubernetes)
+- [KServe: The next generation of KFServing](https://blog.kubeflow.org/release/official/2021/09/27/kfserving-transition.html)
