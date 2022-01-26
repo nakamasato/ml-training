@@ -15,6 +15,20 @@ Model Inference Platform on Kubernetes
     curl -s "https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh" | bash
     ```
 
+    The script installs:
+
+    1. Istio: 1.10.3
+        ```
+        curl -L https://git.io/getLatestIstio | sh -
+        cd istio-${ISTIO_VERSION}
+        ```
+
+        Install IstioOperator in `istio-system` namespace with `istioctl`
+    1. KNatve: v0.23.2
+        Install CRDs, core, and, release.
+    1. Cert Manager: v1.3.0
+    1. KServe: v0.7.0
+
     <details><summary>pods</summary>
 
     ```
