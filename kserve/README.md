@@ -1,15 +1,51 @@
 # [KServe](https://kserve.github.io/website/master/)
 
-Model Inference Platform on Kubernetes
+Highly scalable and standards based Model Inference Platform on Kubernetes for Trusted AI
 
+## Architecture
+
+![](https://github.com/kserve/website/blob/main/docs/images/controlplane.png?raw=true)
+## Components
+
+- [Istio](https://istio.io/): Simplify observability, traffic management, security, and policy with the leading service mesh.
+- [Knative](https://knative.dev/docs/): *Kubernetes-based platform to deploy and manage modern serverless workloads.*
+- [KServe](https://kserve.github.io/): *Highly scalable and standards based Model Inference Platform on Kubernetes for Trusted AI*
+- [Cert Manager](https://cert-manager.io/docs/): *cert-manager adds certificates and certificate issuers as resource types in Kubernetes clusters, and simplifies the process of obtaining, renewing and using those certificates.*
+
+## Deployment mode
+
+1. `Serverless`:
+1. `RawDeployment`:
+1. `ModelMeshDeployment`: designed for high-scale, high-density and frequently-changing model use cases
+
+### 1. Serverless
+
+### 2. RawDeployment
+
+### 3. ModelMeshDeployment (alpha)
+
+1. [modelmesh-serving](https://github.com/kserve/modelmesh-serving)
+1. [modelmesh](https://github.com/kserve/modelmesh)
+
+![](https://github.com/kserve/website/blob/main/docs/images/ModelMesh-Serving.png?raw=true)
+
+Solves the scalability problem:
+1. Overhead resource due to the sidecars injected into each pod
+1. Maximum number of pods per node
+1. Each pod in `InferenceService` requires an independent IP
+
+## References
 - [environment setup](https://kserve.github.io/website/0.7/get_started/#install-the-kserve-quickstart-environment)
 - [First InferenceService](https://kserve.github.io/website/0.7/get_started/first_isvc/#4-curl-the-inferenceservice)
+
+
+## [Getting Started](https://kserve.github.io/website/master/get_started/)
 
 1. Create Kubernetes cluster with kind.
     ```
     kind create cluster
     ```
-1. Install `cert-manager`, `istio`, `knative-serving`, `kserve`.
+1. Install `cert-manager`, `istio`, `knative`, `kserve`.
 
     ```
     curl -s "https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh" | bash
@@ -119,7 +155,24 @@ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -
     Error Set:
     ```
 
-Reference:
+## Implementation
+
+[InferenceServiceReconciler](https://github.com/kserve/kserve/blob/master/pkg/controller/v1beta1/inferenceservice/controller.go)
+
+1. Fetch `InferenceService`
+1. Filter by annotation
+1. Skip reconcilation for `ModelMeshDeployment` mode.
+1. Finalizer logic (add finalizer if not exists & deleteExternalResources if being deleted)
+1. Add predictors (required), transformers (optional), and explainers (optional) to `reconciler`.
+1. Call `Reconcile` for all the reconcilers set above.
+1. Reconcile ingress.
+    1. `RawDeployment` -> `NewRawIngressReconciler`
+    1. `Serveless` -> `NewIngressReconciler`
+1. Reconcile modelConfig.
+
+Interesting point is InferenceServiceReconciler's reconcile function calls the [reconcile function](https://github.com/kserve/kserve/blob/master/pkg/controller/v1alpha1/trainedmodel/reconcilers/modelconfig/modelconfig_reconciler.go) of another controller.
+
+## References
 - [KFServing](https://www.kubeflow.org/docs/components/kfserving/)
 - [https://github.com/kserve/kserve](https://github.com/kserve/kserve)
 - [](https://speakerdeck.com/zuiurs/ml-platform-hands-on-with-kubernetes)
