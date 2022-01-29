@@ -14,9 +14,18 @@ Highly scalable and standards based Model Inference Platform on Kubernetes for T
 
 ## Deployment mode
 
-1. `Serverless`:
+1. `Serverless`: <- QuickStart
 1. `RawDeployment`:
 1. `ModelMeshDeployment`: designed for high-scale, high-density and frequently-changing model use cases
+
+Default DeploymentMode is set in configmap
+
+```
+kubectl get configmap -n kserve inferenceservice-config -o jsonpath='{.data.deploy}'
+{
+  "defaultDeploymentMode": "Serverless"
+}
+```
 
 ### 1. Serverless
 
@@ -34,17 +43,11 @@ Solves the scalability problem:
 1. Maximum number of pods per node
 1. Each pod in `InferenceService` requires an independent IP
 
-## References
-- [environment setup](https://kserve.github.io/website/0.7/get_started/#install-the-kserve-quickstart-environment)
-- [First InferenceService](https://kserve.github.io/website/0.7/get_started/first_isvc/#4-curl-the-inferenceservice)
-
 
 ## [Getting Started](https://kserve.github.io/website/master/get_started/)
 
-1. Create Kubernetes cluster with kind.
-    ```
-    kind create cluster
-    ```
+1. Prepare a Kubernetes cluster.
+    If you run in local, please use Kubernetes in Docker Desktop (or minikube. I just confirmed with Docker Desktop). (Couldn't find a way to connect to `LoadBalancer` type `Service` from the host machine for `kind` cluster unless we use `NodePort` instead.)
 1. Install `cert-manager`, `istio`, `knative`, `kserve`.
 
     ```
@@ -64,6 +67,8 @@ Solves the scalability problem:
         Install CRDs, core, and, release.
     1. Cert Manager: v1.3.0
     1. KServe: v0.7.0
+
+    ※ Might fail installation. Ususally rerunning the script would succeed. Might be caused by [x509 certificate related errors](https://istio.io/latest/docs/ops/common-problems/injection/#x509-certificate-related-errors), in that case, we need to restart `istiod` Pod.
 
     <details><summary>pods</summary>
 
@@ -96,6 +101,25 @@ Solves the scalability problem:
 
     </details>
 
+
+    <details><summary>If cluster doesn't support LoadBalancer</summary>
+
+    Change istio-ingressgateway service type if you're running in the Kubernetes cluster that doesn't support LoadBalancer.
+
+    https://qiita.com/chataro0/items/b01d1aa697666406e9ba#istio
+
+    </details>
+
+1. Check ingress gateway. (`EXTERNAL-IP` is `localhost`)
+
+    ```
+    kubectl get svc istio-ingressgateway -n istio-system
+    NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                      AGE
+    istio-ingressgateway   LoadBalancer   10.101.34.67   localhost     15021:30144/TCP,80:30440/TCP,443:30663/TCP,31400:31501/TCP,15443:32341/TCP   73s
+    ```
+
+    ※ Might encounter [Kubernetes Load balanced services are sometimes marked as "Pending"](https://github.com/docker/for-mac/issues/4903) issue. The only way seems to be reset Kubernetes and restart Docker process.
+
 1. Create test `InferenceService`.
 
     `sklearn-inference-service.yaml`:
@@ -124,18 +148,33 @@ Solves the scalability problem:
     sklearn-iris   http://sklearn-iris.kserve-test.example.com   True           100                              sklearn-iris-predictor-default-00001   2m26s
     ```
 
-    ```
-    kubectl get svc istio-ingressgateway -n istio-system
-    NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                      AGE
-    istio-ingressgateway   LoadBalancer   10.96.170.71   <pending>     15021:30529/TCP,80:32100/TCP,443:32120/TCP,31400:31644/TCP,15443:31203/TCP   10m
+
+1. Check with `iris-input.json`
+
+    ```json
+    {
+      "instances": [
+        [6.8,  2.8,  4.8,  1.4],
+        [6.0,  3.4,  4.5,  1.6]
+      ]
+    }
     ```
 
-1. Check with `iris-input.json` (not yet)
+    ```
+    # export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    export INGRESS_HOST=localhost # if you're using docker-desktop
+    export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+    ```
 
-```
-export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-```
+    ```
+    SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-iris -n kserve-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+    ```
+
+    ```
+    curl  -H "Host: ${SERVICE_HOSTNAME}" http://$INGRESS_HOST:$INGRESS_PORT/v1/models/sklearn-iris:predict -d @./data/iris-input.json
+
+    {"predictions": [1, 1]}%
+    ```
 
 1. Performance test
 
@@ -155,15 +194,71 @@ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -
     Error Set:
     ```
 
+1. Visualize by `kiali`
+
+    [Prometheus](https://istio.io/latest/docs/ops/integrations/prometheus/)
+
+    ```
+    kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.12/samples/addons/prometheus.yaml
+    ```
+
+    [kiali](https://istio.io/latest/docs/ops/integrations/kiali/#installation)
+
+    ```
+    kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.12/samples/addons/kiali.yaml
+    ```
+
+    ```
+    bin/istioctl dashboard kiali
+    ```
+
+    ![](docs/kiali.png)
+
+1. Cleanup
+
+    ```
+    export ISTIO_VERSION=1.10.3
+    export KNATIVE_VERSION=v0.23.2
+    export KSERVE_VERSION=v0.7.0
+    export CERT_MANAGER_VERSION=v1.3.0
+    ```
+
+    Delete KServce
+
+    ```
+    kubectl delete -f https://github.com/kserve/kserve/releases/download/$KSERVE_VERSION/kserve.yaml
+    ```
+
+    Delete cert-manager
+
+    ```
+    kubectl delete -f https://github.com/jetstack/cert-manager/releases/download/$CERT_MANAGER_VERSION/cert-manager.yaml
+    ```
+
+    Delete Knative
+
+    ```
+    kubectl delete --filename https://github.com/knative/serving/releases/download/$KNATIVE_VERSION/serving-crds.yaml
+    kubectl delete --filename https://github.com/knative/serving/releases/download/$KNATIVE_VERSION/serving-core.yaml
+    kubectl delete --filename https://github.com/knative/net-istio/releases/download/$KNATIVE_VERSION/release.yaml
+    ```
+
+    Delete istio if `istioctl` exists
+
+    ```
+    bin/istioctl manifest generate --set profile=demo | kubectl delete --ignore-not-found=true -f -
+    kubectl delete namespace istio-system
+    ```
+
 ## Implementation
 
-[InferenceServiceReconciler](https://github.com/kserve/kserve/blob/master/pkg/controller/v1beta1/inferenceservice/controller.go)
+### [InferenceServiceReconciler](https://github.com/kserve/kserve/blob/master/pkg/controller/v1beta1/inferenceservice/controller.go)
 
 1. Fetch `InferenceService`
 1. Filter by annotation
 1. Skip reconcilation for `ModelMeshDeployment` mode.
 1. Finalizer logic (add finalizer if not exists & deleteExternalResources if being deleted)
-1. Add predictors (required), transformers (optional), and explainers (optional) to `reconciler`.
+1. Add **predictors** (required), **transformers** (optional), and **explainers** (optional) to `reconciler`.
 1. Call `Reconcile` for all the reconcilers set above.
 1. Reconcile ingress.
     1. `RawDeployment` -> `NewRawIngressReconciler`
@@ -172,8 +267,70 @@ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -
 
 Interesting point is InferenceServiceReconciler's reconcile function calls the [reconcile function](https://github.com/kserve/kserve/blob/master/pkg/controller/v1alpha1/trainedmodel/reconcilers/modelconfig/modelconfig_reconciler.go) of another controller.
 
+
+### [Create your own model and SKLearn Server Locally](https://github.com/kserve/kserve/tree/master/docs/samples/v1beta1/sklearn/v1)
+
+1. Create model.
+
+    ```python
+    from sklearn import svm
+    from sklearn import datasets
+    from joblib import dump
+    clf = svm.SVC(gamma='scale')
+    iris = datasets.load_iris()
+    X, y = iris.data, iris.target
+    clf.fit(X, y)
+    dump(clf, 'model.joblib')
+    ```
+
+    ```
+    python create_model.py
+    ```
+
+    -> `model.joblib`
+
+1. Install sklearn-server following [Scikit-Learn Server](https://github.com/kserve/kserve/blob/master/python/sklearnserver/README.md)
+
+    ```
+    git clone https://github.com/kserve/kserve.git
+    cd kserve/python/kserve
+    ```
+
+    https://github.com/kserve/kserve/tree/master/python/kserve
+
+    ```
+    pip install -e .
+    ```
+
+    ```
+    cd - && cd kserve/python/sklearnserver
+    ```
+
+    ```
+    pip install -e .
+    ```
+1. Run SKLearn Server
+
+    ```
+    python -m sklearnserver --model_dir ./  --model_name svm
+    [I 220129 09:23:24 model_server:150] Registering model: svm
+    [I 220129 09:23:24 model_server:123] Listening on port 8080
+    [I 220129 09:23:24 model_server:125] Will fork 1 workers
+    ```
+
+1. Send a request from a client.
+
+    ```
+    python check_sklearn_server.py
+    <Response [200]>
+    {"predictions": [0]}
+    ```
+
 ## References
 - [KFServing](https://www.kubeflow.org/docs/components/kfserving/)
 - [https://github.com/kserve/kserve](https://github.com/kserve/kserve)
-- [](https://speakerdeck.com/zuiurs/ml-platform-hands-on-with-kubernetes)
+- [Kubernetes で始める ML 基盤ハンズオン / ML Platform Hands-on with Kubernetes](https://speakerdeck.com/zuiurs/ml-platform-hands-on-with-kubernetes)
 - [KServe: The next generation of KFServing](https://blog.kubeflow.org/release/official/2021/09/27/kfserving-transition.html)
+- [environment setup](https://kserve.github.io/website/0.7/get_started/#install-the-kserve-quickstart-environment)
+- [First InferenceService](https://kserve.github.io/website/0.7/get_started/first_isvc/#4-curl-the-inferenceservice)
+- [kiali installation](https://istio.io/latest/docs/ops/integrations/kiali/#installation)
