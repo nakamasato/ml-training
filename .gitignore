@@ -1,2 +1,4 @@
 .vscode
 istio-*
+venv
+.DS_Store
