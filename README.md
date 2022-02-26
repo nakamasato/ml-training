@@ -26,3 +26,4 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 
 1. [Kubeflow Pipelines](pipelines)
 1. [KServe](kserve)
+1. [Training Operator](training-operator)
