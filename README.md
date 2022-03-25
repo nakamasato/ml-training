@@ -1,3 +1,4 @@
 # ML Training
 
-- [Kubeflow Training](kubeflow)
+1. [Kubeflow Training](kubeflow)
+1. [Tensorflow Training](tensorflow)
