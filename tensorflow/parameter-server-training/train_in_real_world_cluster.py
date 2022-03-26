@@ -8,7 +8,6 @@ from coordinator import (
 )
 
 
-
 flags = tf.compat.v1.flags
 flags.DEFINE_string("task_type", "worker", "Either worker or ps")
 flags.DEFINE_integer("task_index", 0, "task index e.g. 0")
@@ -31,6 +30,7 @@ os.environ["TF_CONFIG"] = json.dumps(
 
 
 cluster_resolver = tf.distribute.cluster_resolver.TFConfigClusterResolver()
+
 
 # Set the environment variable to allow reporting worker and ps failure to the
 # coordinator. This is a workaround and won't be necessary in the future.
@@ -88,7 +88,6 @@ def start_training_with_keras(strategy):
         dataset = dataset.prefetch(2)
 
         return dataset
-
 
     dc = tf.keras.utils.experimental.DatasetCreator(dataset_fn)
 

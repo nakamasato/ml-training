@@ -23,9 +23,10 @@ def distributed():
 
     # create variable in strategy.scope()
     with strategy.scope():
-        v = tf.Variable(initial_value=0) # variable will be created on PS.
+        v = tf.Variable(initial_value=0)  # variable will be created on PS.
 
     print(v.read_value())
+
     @tf.function
     def worker_fn(iterator):
         v.assign_add(next(iterator))

@@ -10,6 +10,7 @@ def non_distributed():
     v = tf.Variable(initial_value=0)
 
     print(v.read_value())
+
     @tf.function
     def worker_fn(iterator):
         v.assign_add(next(iterator))

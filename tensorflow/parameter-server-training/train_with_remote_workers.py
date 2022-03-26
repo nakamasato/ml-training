@@ -1,5 +1,3 @@
-from cProfile import run
-import multiprocessing
 import os
 import random
 import json
@@ -52,7 +50,7 @@ def run_coordinator(cluster_resolver):
         cluster_resolver, variable_partitioner=variable_partitioner
     )
 
-    ## Set up data https://www.tensorflow.org/tutorials/distribute/parameter_server_training#set_up_the_data
+    # Set up data https://www.tensorflow.org/tutorials/distribute/parameter_server_training#set_up_the_data
 
     feature_vocab = [
         "avenger",
@@ -86,7 +84,6 @@ def run_coordinator(cluster_resolver):
 
         label_preprocess_stage = tf.keras.Model({"label": raw_label_input}, label_id_input)
 
-
     def feature_and_label_gen(num_examples=2000):
         examples = {"features": [], "label": []}
         for _ in range(num_examples):
@@ -95,7 +92,6 @@ def run_coordinator(cluster_resolver):
             examples["features"].append(features)
             examples["label"].append(label)
         return examples
-
 
     examples = feature_and_label_gen()
 
@@ -114,7 +110,6 @@ def run_coordinator(cluster_resolver):
             .repeat()
         )
         return train_dataset
-
 
     # Build the model https://www.tensorflow.org/tutorials/distribute/parameter_server_training#build_the_model
     # These variables created under the `strategy.scope` will be placed on parameter
@@ -162,16 +157,14 @@ def run_coordinator(cluster_resolver):
         losses = strategy.run(replica_fn, args=(batch_data, labels))
         return strategy.reduce(tf.distribute.ReduceOp.SUM, losses, axis=None)
 
-
-    # Dispatch training steps to remote workers https://www.tensorflow.org/tutorials/distribute/parameter_server_training#dispatch_training_steps_to_remote_workers
+    # Dispatch training steps to remote workers
+    # https://www.tensorflow.org/tutorials/distribute/parameter_server_training#dispatch_training_steps_to_remote_workers
 
     coordinator = tf.distribute.experimental.coordinator.ClusterCoordinator(strategy)
-
 
     @tf.function
     def per_worker_dataset_fn():
         return strategy.distribute_datasets_from_function(dataset_fn)
-
 
     per_worker_dataset = coordinator.create_per_worker_dataset(per_worker_dataset_fn)
     per_worker_iterator = iter(per_worker_dataset)
@@ -186,13 +179,12 @@ def run_coordinator(cluster_resolver):
         coordinator.join()
         print("Finished epoch %d, accuracy is %f." % (i, accuracy.result().numpy()))
 
-
     loss = coordinator.schedule(step_fn, args=(per_worker_iterator,))
     print("Final loss is %f" % loss.fetch())
 
     # Evaluation
-    ## Inline Evaluation
-    ### Direct evaluation
+    # Inline Evaluation
+    # Direct evaluation
     eval_dataset = (
         tf.data.Dataset.from_tensor_slices(feature_and_label_gen(num_examples=16))
         .map(
@@ -213,12 +205,11 @@ def run_coordinator(cluster_resolver):
 
     print("Evaluation accuracy: %f" % eval_accuracy.result())
 
-    ### Distributed evaluation
+    # Distributed evaluation
 
     with strategy.scope():
         # Define the eval metric on parameter servers.
         eval_accuracy = tf.keras.metrics.Accuracy()
-
 
     @tf.function
     def eval_step(iterator):
@@ -229,7 +220,6 @@ def run_coordinator(cluster_resolver):
 
         batch_data, labels = next(iterator)
         strategy.run(replica_fn, args=(batch_data, labels))
-
 
     def eval_dataset_fn():
         return (
@@ -245,7 +235,6 @@ def run_coordinator(cluster_resolver):
             .batch(8)
         )
 
-
     per_worker_eval_dataset = coordinator.create_per_worker_dataset(eval_dataset_fn)
     per_worker_eval_iterator = iter(per_worker_eval_dataset)
 
@@ -255,7 +244,7 @@ def run_coordinator(cluster_resolver):
     coordinator.join()
     print("Evaluation accuracy: %f" % eval_accuracy.result())
 
-    ## Side-car evaluation todo https://www.tensorflow.org/tutorials/distribute/parameter_server_training#side-car_evaluation
+    # Side-car evaluation todo https://www.tensorflow.org/tutorials/distribute/parameter_server_training#side-car_evaluation
 
 
 def main():

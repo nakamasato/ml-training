@@ -22,7 +22,7 @@ strategy = tf.distribute.experimental.ParameterServerStrategy(
     cluster_resolver, variable_partitioner=variable_partitioner
 )
 
-## Set up data https://www.tensorflow.org/tutorials/distribute/parameter_server_training#set_up_the_data
+# Set up data https://www.tensorflow.org/tutorials/distribute/parameter_server_training#set_up_the_data
 
 feature_vocab = [
     "avenger",
@@ -69,6 +69,7 @@ def feature_and_label_gen(num_examples=200):
 
 examples = feature_and_label_gen()
 
+
 def dataset_fn(_):
     raw_dataset = tf.data.Dataset.from_tensor_slices(examples)
 
@@ -108,6 +109,7 @@ assert emb_layer.weights[0].shape == (4, 16384)
 assert emb_layer.weights[1].shape == (4, 16384)
 assert emb_layer.weights[0].device == "/job:ps/replica:0/task:0/device:CPU:0"
 assert emb_layer.weights[1].device == "/job:ps/replica:0/task:1/device:CPU:0"
+
 
 # Define the training step https://www.tensorflow.org/tutorials/distribute/parameter_server_training#define_the_training_step
 @tf.function
@@ -160,8 +162,8 @@ loss = coordinator.schedule(step_fn, args=(per_worker_iterator,))
 print("Final loss is %f" % loss.fetch())
 
 # Evaluation
-## Inline Evaluation
-### Direct evaluation
+# Inline Evaluation
+# Direct evaluation
 eval_dataset = (
     tf.data.Dataset.from_tensor_slices(feature_and_label_gen(num_examples=16))
     .map(
@@ -182,7 +184,7 @@ for batch_data, labels in eval_dataset:
 
 print("Evaluation accuracy: %f" % eval_accuracy.result())
 
-### Distributed evaluation
+# Distributed evaluation
 
 with strategy.scope():
     # Define the eval metric on parameter servers.
@@ -224,4 +226,4 @@ for _ in range(eval_steps_per_epoch):
 coordinator.join()
 print("Evaluation accuracy: %f" % eval_accuracy.result())
 
-## Side-car evaluation todo https://www.tensorflow.org/tutorials/distribute/parameter_server_training#side-car_evaluation
+# Side-car evaluation todo https://www.tensorflow.org/tutorials/distribute/parameter_server_training#side-car_evaluation

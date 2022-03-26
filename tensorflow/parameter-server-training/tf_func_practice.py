@@ -22,6 +22,7 @@ def normal_variable():
     v = tf.Variable(initial_value=0)
 
     print(v.read_value())
+
     @tf.function
     def worker_fn(iterator):
         v.assign_add(next(iterator))
@@ -34,5 +35,6 @@ def normal_variable():
     print(f"{v=}")
     print(f"{v.read_value()}")
     assert v.read_value() == sum(data)
+
 
 normal_variable()

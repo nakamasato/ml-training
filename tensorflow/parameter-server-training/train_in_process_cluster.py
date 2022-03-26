@@ -1,6 +1,4 @@
 import multiprocessing
-import os
-
 import portpicker
 import tensorflow as tf
 
@@ -44,6 +42,7 @@ def create_in_process_cluster(num_workers, num_ps):
         cluster_spec, rpc_layer="grpc"
     )
     return cluster_resolver
+
 
 if __name__ == '__main__':
     create_in_process_cluster(3, 2)

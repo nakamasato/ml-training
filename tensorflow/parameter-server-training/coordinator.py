@@ -1,6 +1,5 @@
 import tensorflow as tf
 from random import randint
-from time import sleep
 from train_in_process_cluster import create_in_process_cluster
 
 NUM_WORKERS = 3
@@ -131,6 +130,7 @@ def start_coordinator_update_variable(strategy, coordinator):
     print(coordinator.fetch(result))
     assert coordinator.fetch(result) == sum(data)
 
+
 def distributed_variables(strategy):
     '''
     https://www.tensorflow.org/api_docs/python/tf/distribute/experimental/ParameterServerStrategy
@@ -144,7 +144,7 @@ def distributed_variables(strategy):
     # Variables should be created inside scope to be placed on parameter servers.
     # If created outside scope such as `v1` here, it would be placed on the
     # coordinator.
-    v1 = tf.Variable(initial_value=0.0)
+    tf.Variable(initial_value=0.0)
     with strategy.scope():
         v2 = tf.Variable(initial_value=1.0)
         v3 = tf.Variable(initial_value=2.0)
@@ -162,7 +162,6 @@ def distributed_variables(strategy):
     assert v3.device != v4.device
     assert v3.device == v5.device
     assert v4.device != v5.device
-
 
 
 if __name__ == '__main__':
