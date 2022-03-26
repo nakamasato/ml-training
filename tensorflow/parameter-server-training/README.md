@@ -387,3 +387,4 @@ with tf.device('GPU:0'):
 - [Inside TensorFlow: tf.distribute.Strategy](https://www.youtube.com/watch?v=jKV53r9-H14)
 - http://amid.fish/assets/Distributed%20TensorFlow%20-%20A%20Gentle%20Introduction.html
 - https://d2l.ai/chapter_computational-performance/parameterserver.html
+- [2022-03-26 TensorFlow Parameter Server Training紹介](https://speakerdeck.com/nakamasato/2022-03-26-tensorflow-parameter-server-trainingshao-jie-at-ji-jie-xue-xi-falseshe-hui-shi-zhuang-mian-qiang-hui)
