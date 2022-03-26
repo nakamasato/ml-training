@@ -47,7 +47,7 @@ install dependencies
 pip install tensorflow portpicker
 ```
 
-## Practice1 - [In-process cluster](https://www.tensorflow.org/tutorials/distribute/parameter_server_training#in-process_cluster)
+## Practice 1 - [Create In-process cluster](https://www.tensorflow.org/tutorials/distribute/parameter_server_training#in-process_cluster)
 
 How to run:
 ```
@@ -163,13 +163,44 @@ Steps:
     1. Build a model
     1. Traing the model
 
+## practice 2 - distributed vs. non-distributed
+
+```
+python non_distributed_sample.py
+```
+
+1. Create `tf.Variable`.
+1. Define `worker_fn` with `tf.function`.
+1. Create an iterator with 1~5.
+1. Call `worker_fn` with the iterator.
+1. Expect `tf.Variable` to be 15.
+
+```
+python distributed_sample.py
+```
+
+1. Create in-process cluster.
+1. Initialize distributed strategy.
+1. Initialize the coodinator.
+1. Create `tf.Variable` in `strategy.scope()`.
+1. Define `worker_fn` with `tf.function`.
+1. Create an iterator with 1~5.
+1. Call `worker_fn` with `coordinator.schedul()` five times.
+1. Expect `tf.Variable` to be 15.
+
 ## practice 2 - Training with Keras.models
 
-
+```
+python train_with_keras.py
+```
+1. Create in-process cluster.
 1. Initialize `DatasetCreator` with `dataset_fn`.
     ```python
     dc = tf.keras.utils.experimental.DatasetCreator(dataset_fn)
     ```
+
+    When using keras.Model with ParameterServerStrategy, you need to use DatasetCreator for input data.
+
 1. Initialize a model within the `strategy.scope()`.
     ```python
     with strategy.scope():
@@ -218,7 +249,7 @@ Steps:
                         tmp_logs = self.train_function(iterator)
         ```
 
-## Practice 2 - [Training with a custom training loop](https://www.tensorflow.org/tutorials/distribute/parameter_server_training#training_with_a_custom_training_loop)
+## Practice 3 - [Training with a custom training loop](https://www.tensorflow.org/tutorials/distribute/parameter_server_training#training_with_a_custom_training_loop)
 
 ```
 python train_with_custom_training_loop.py
