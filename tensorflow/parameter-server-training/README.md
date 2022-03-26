@@ -158,6 +158,14 @@ Steps:
         cluster_resolver, variable_partitioner=variable_partitioner
     )
     ```
+1. Train a model: (there are several ways)
+    1. Prepara data
+    1. Build a model
+    1. Traing the model
+
+## practice 2 - Training with Keras.models
+
+
 1. Initialize `DatasetCreator` with `dataset_fn`.
     ```python
     dc = tf.keras.utils.experimental.DatasetCreator(dataset_fn)
@@ -172,6 +180,43 @@ Steps:
     ```
     model.fit(dc, epochs=5, steps_per_epoch=20, callbacks=callbacks)
     ```
+
+    `keras.Model`:
+    1. Internally stores the distributed strategy: [keras.Model.\_\_init\_\_](https://github.com/keras-team/keras/blob/d8fcb9d4d4dad45080ecfdd575483653028f8eda/keras/engine/training.py#L260-L264)
+        ```python
+        self._distribution_strategy = tf.distribute.get_strategy()
+        ```
+    1. Creates `ClusterCoordinator` in [fit](https://github.com/keras-team/keras/blob/d8fcb9d4d4dad45080ecfdd575483653028f8eda/keras/engine/training.py#L1327-L1329) and [evaluate](https://github.com/keras-team/keras/blob/d8fcb9d4d4dad45080ecfdd575483653028f8eda/keras/engine/training.py#L1670-L1672) if `strategy._should_use_with_coordinator` (true for [ParameterServerStrategy](https://github.com/tensorflow/tensorflow/blob/3f878cff5b698b82eea85db2b60d65a2e320850e/tensorflow/python/distribute/parameter_server_strategy_v2.py#L481))
+        ```python
+        if self.distribute_strategy._should_use_with_coordinator:  # pylint: disable=protected-access
+            self._cluster_coordinator = tf.distribute.experimental.coordinator.ClusterCoordinator(
+                self.distribute_strategy)
+        ```
+    1. Convert `train_function` into `tf.Graph` with `tf.function()` in [make_train_function](https://github.com/keras-team/keras/blob/d8fcb9d4d4dad45080ecfdd575483653028f8eda/keras/engine/training.py#L1024-L1025)
+        ```python
+        if not self.run_eagerly: # you cannot set true for ParameterServerStrategy
+            train_function = tf.function(
+                train_function, experimental_relax_shapes=True)
+        ```
+    1. Wrap `train_function` with `ClusterCoordinator.schedule(train_function, args)` in [make_train_function](https://github.com/keras-team/keras/blob/d8fcb9d4d4dad45080ecfdd575483653028f8eda/keras/engine/training.py#L1050-L1052)
+
+        ```python
+        if self._cluster_coordinator:
+            self.train_function = lambda it: self._cluster_coordinator.schedule(  # pylint: disable=g-long-lambda
+                train_function, args=(it,))
+        ```
+
+    1. Call `self.train_function` with loop in `fit`.
+
+        ```python
+        for epoch, iterator in data_handler.enumerate_epochs():
+            ...
+            with data_handler.catch_stop_iteration():
+                for step in data_handler.steps():
+                    with tf.profiler.experimental.Trace(...):
+                        ...
+                        tmp_logs = self.train_function(iterator)
+        ```
 
 ## Practice 2 - [Training with a custom training loop](https://www.tensorflow.org/tutorials/distribute/parameter_server_training#training_with_a_custom_training_loop)
 

@@ -64,11 +64,11 @@ def start_coordinator(coordinator_type):
     elif coordinator_type == 1:
         start_coordinator_fetch(strategy, coordinator)
     elif coordinator_type == 2:
-        start_coordinator2(strategy, coordinator)
+        start_training_with_keras(strategy)
 
 
-def start_coordinator2(strategy, coordinator):
-    '''
+def start_training_with_keras(strategy):
+    '''keras.models internally create ClusterCoordinator
     1. Create keras DatasetCreator with dataset_fn.
     2. Build a model in strategy.scope()
     3. Fit the model with callbacks.

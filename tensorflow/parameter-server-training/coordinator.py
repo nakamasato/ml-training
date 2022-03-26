@@ -92,7 +92,7 @@ def start_coordinator_update_variable(strategy, coordinator):
     3. worker_fn updates the variable
     '''
 
-    data = [1, 2, 3, 4, 5, 6]  # generate random data
+    data = [randint(1, 100) for _ in range(10)]  # generate random data
 
     def dataset_fn():
         return tf.data.Dataset.from_tensor_slices(data)
@@ -129,31 +129,7 @@ def start_coordinator_update_variable(strategy, coordinator):
     for i in data:
         result = coordinator.schedule(my_worker_fn, args=(i,))
     print(coordinator.fetch(result))
-    assert coordinator.fetch(result) == sum(data) # 21
-
-    # result = coordinator.schedule(worker_fn, args=(distributed_iterator,))
-    # print(coordinator.fetch(result))
-    # assert coordinator.fetch(result) == 1
-
-    # result = coordinator.schedule(worker_fn, args=(distributed_iterator,))
-    # print(coordinator.fetch(result))
-    # assert coordinator.fetch(result) == 2
-
-    # result = coordinator.schedule(worker_fn, args=(distributed_iterator,))
-    # print(coordinator.fetch(result))
-    # assert coordinator.fetch(result) == 3
-
-    # result = coordinator.schedule(worker_fn, args=(distributed_iterator,))
-    # print(coordinator.fetch(result))
-    # assert coordinator.fetch(result) == 5
-
-    # result = coordinator.schedule(worker_fn, args=(distributed_iterator,))
-    # print(coordinator.fetch(result))
-    # assert coordinator.fetch(result) == 7
-
-    # result = coordinator.schedule(worker_fn, args=(distributed_iterator,))
-    # print(coordinator.fetch(result))
-    # assert coordinator.fetch(result) == 9
+    assert coordinator.fetch(result) == sum(data)
 
 def distributed_variables(strategy):
     '''

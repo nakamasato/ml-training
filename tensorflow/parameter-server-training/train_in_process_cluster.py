@@ -33,7 +33,12 @@ def create_in_process_cluster(num_workers, num_ps):
         )
 
     for i in range(num_ps):
-        tf.distribute.Server(cluster_spec, job_name="ps", task_index=i, protocol="grpc")
+        tf.distribute.Server(
+            cluster_spec,
+            job_name="ps",
+            task_index=i,
+            protocol="grpc"
+        )
 
     cluster_resolver = tf.distribute.cluster_resolver.SimpleClusterResolver(
         cluster_spec, rpc_layer="grpc"
