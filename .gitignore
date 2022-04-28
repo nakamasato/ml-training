@@ -3,3 +3,5 @@ istio-*
 venv
 .DS_Store
 __pycache__
+.terraform
+terraform.tfstate*
