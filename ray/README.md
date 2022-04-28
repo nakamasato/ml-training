@@ -45,7 +45,7 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 1. prerequisite
     - [ ] `aws configure` (aws profile cannot be specified?)
     - [ ] IAM policy to create IAM/EC2...
-    - [ ] VPC and subnets ([AWS VPC](03-cluster/aws-vpc))
+    - [ ] VPC and subnets (You can create with Terraform: [AWS VPC](03-cluster/aws-vpc))
 
 1. Setup a Ray Cluster
 
@@ -54,13 +54,13 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     ```
 
     ```
-    ray up -y 03-cluster/aws-config.yaml
+    ray up -y 03-cluster/aws-config.docker.yaml
     ```
 
     <details>
 
     ```
-    ray up -y 03-cluster/aws-config.yaml
+    ray up -y 03-cluster/aws-config.docker.yaml
     Usage stats collection will be enabled by default in the next release. See https://github.com/ray-project/ray/issues/20857 for more details.
     Cluster: minimal
 
@@ -271,33 +271,35 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
     Useful commands
       Monitor autoscaling with
-        ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
+        ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
       Connect to a terminal on the cluster head:
-        ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.yaml
+        ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml
       Get a remote shell to the cluster manually:
         ssh -tt -o IdentitiesOnly=yes -i /Users/nakamasato/.ssh/ray-autoscaler_1_ap-northeast-1.pem ubuntu@35.78.246.199 docker exec -it ray_container /bin/bash
     ```
 
     </details>
-
+1. Connect to a terminal on the cluster head
+    ```
+    ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml
+    ```
+1. Monitor autoscaling
+    ```
+    ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
+    ```
 1. Submit a job (WIP)
 
     ```
-    ray submit 03-cluster/aws-config.yaml 03-cluster/task_pattern_tree.py
+    ray submit 03-cluster/aws-config.docker.yaml 03-cluster/task_pattern_tree.py
     ```
 
     Instances are being created and terminated continuously..
 
 
-    Check logs
-    ```
-    ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
-    ```
-
     <details>
 
     ```
-    ray submit 03-cluster/aws-config.yaml 03-cluster/task_pattern_tree.py
+    ray submit 03-cluster/aws-config.docker.yaml 03-cluster/task_pattern_tree.py
     2022-04-28 18:59:47,752 INFO util.py:335 -- setting max workers for head node type to 0
     Loaded cached provider configuration
     If you experience issues with the cloud provider, try re-running the command with --no-config-cache.
@@ -361,13 +363,13 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 1. Drop ray cluster
 
     ```
-    ray down 03-cluster/aws-config.yaml
+    ray down 03-cluster/aws-config.docker.yaml
     ```
 
     <details>
 
     ```
-    ray down 03-cluster/aws-config.yaml
+    ray down 03-cluster/aws-config.docker.yaml
     2022-04-28 19:08:51,463 INFO util.py:335 -- setting max workers for head node type to 0
     Loaded cached provider configuration
     If you experience issues with the cloud provider, try re-running the command with --no-config-cache.
@@ -392,12 +394,9 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     1. ec2:
 
         ```
-        aws ec2 delete-key-pair --key-name ray-autoscaler_1_ap-northeast-1
+        aws ec2 delete-key-pair --key-name ray-autoscaler_ap-northeast-1
+        aws ec2 delete-security-group --group-id sg-xxx
         ```
-
-        manually remove ec2 resources:
-        - ec2 instance
-        - security group
 
     1. local:
         ```
@@ -411,6 +410,23 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
         aws iam detach-role-policy --role-name ray-autoscaler-v1 --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
         aws iam delete-role --role-name ray-autoscaler-v1
         ```
+    1. If you created VPC and subnet with Terraform, you can clean them up.
+        ```
+        cd 03-cluster/aws-vpc
+        terraform destroy
+        ```
+
+        <details>
+
+        If you get this error, you might forget to delete security group.
+
+        ```
+        │ Error: error deleting EC2 VPC (vpc-0e8f61401b5cc4c96): DependencyViolation: The vpc 'vpc-0e8f61401b5cc4c96' has dependencies and cannot be deleted.
+        │       status code: 400, request id: f09016c6-7c65-4e55-b467-41fdc830eb3e
+        │
+        ```
+
+        </details>
 
 #### Errors
 1. Error1: No usable subnets found
@@ -418,7 +434,7 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     <details>
 
     ```
-    ➜  ray git:(ray-getting-started) ✗ ray down -y 03-cluster/aws-config.yaml
+    ➜  ray git:(ray-getting-started) ✗ ray down -y 03-cluster/aws-config.docker.yaml
     2022-04-28 13:33:15,797 INFO util.py:335 -- setting max workers for head node type to 0
     2022-04-28 13:33:15,798 INFO util.py:339 -- setting max workers for ray.worker.default to 2
     Checking AWS environment settings

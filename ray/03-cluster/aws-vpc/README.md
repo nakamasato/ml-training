@@ -14,6 +14,10 @@
 ## Steps
 
 ※ Just for simplicity, here's using local tfstate `terraform.tfstate`.
+### Create Resources
+
+- VPC
+- 2 Subnets
 
 ```
 terraform init
@@ -1304,3 +1308,9 @@ vpc_secondary_cidr_blocks = []
 ```
 
 </details>
+
+### Clean up
+
+```
+terraform destroy
+```
