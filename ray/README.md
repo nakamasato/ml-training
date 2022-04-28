@@ -57,6 +57,8 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     ray up -y 03-cluster/aws-config.docker.yaml
     ```
 
+    ⚠ `03-cluster/aws-minimal.yaml` dosn't work as no default AMI is available for the region `ap-northeast-1`.
+
     <details>
 
     ```
@@ -279,6 +281,14 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     ```
 
     </details>
+
+1. Get ip address of head.
+    ```
+    ray get-head-ip 03-cluster/aws-config.docker.yaml
+    2022-04-29 07:47:46,075 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
+    2022-04-29 07:47:46,407 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
+    13.230.29.35
+    ```
 1. Connect to a terminal on the cluster head
     ```
     ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml

@@ -17,7 +17,7 @@
 ### Create Resources
 
 - VPC
-- 2 Subnets
+- 6 Subnets ()
 
 ```
 terraform init

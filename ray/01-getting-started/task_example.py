@@ -1,5 +1,5 @@
 import ray
-ray.init()
+ray.init('ray://head_node_ip_address>:10001')
 
 @ray.remote
 def f(x):

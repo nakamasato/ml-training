@@ -19,7 +19,6 @@ docker:
 
 auth:
     ssh_user: ubuntu
-    ssh_private_key: ~/.ssh/ray-autoscaler_ap-northeast-1.pem
 
 available_node_types:
     ray.head.default:
