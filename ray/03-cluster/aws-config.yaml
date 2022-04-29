@@ -1,0 +1,51 @@
+# This yaml has never been successful yet (WIP)
+# An unique identifier for the head node and workers of this cluster.
+cluster_name: minimal
+
+# Cloud-provider specific configuration.
+provider:
+    type: aws
+    region: ap-northeast-1
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+
+available_node_types:
+    ray.head.default:
+        resources: {}
+        node_config:
+            InstanceType: m5.large
+            ImageId: ami-088da9557aae42f39 # Ubuntu 20.04
+            BlockDeviceMappings:
+                - DeviceName: /dev/sda1
+                  Ebs:
+                      VolumeSize: 100
+    ray.worker.default:
+        min_workers: 0
+        max_workers: 2
+        resources: {}
+        node_config:
+            InstanceType: m5.large
+            ImageId: ami-088da9557aae42f39 # Ubuntu 20.04
+            InstanceMarketOptions:
+                MarketType: spot
+
+initialization_commands:
+    - sudo apt install python3-pip
+
+# Reading package lists... Done
+# Building dependency tree
+# Reading state information... Done
+# Package python3-pip is not available, but is referred to by another package.
+# This may mean that the package is missing, has been obsoleted, or
+# is only available from another source
+
+# E: Package 'python3-pip' has no installation candidate
+# Connection to 35.72.11.7 closed.
+#   New status: update-failed
+#   !!!
+#   SSH command failed.
+#   !!!
+
+#   Failed to setup head node.
