@@ -405,7 +405,9 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
         ```
         aws ec2 delete-key-pair --key-name ray-autoscaler_ap-northeast-1
-        aws ec2 delete-security-group --group-id sg-xxx
+        security_group_id=$(aws ec2 describe-security-groups --filters Name=group-name,Values=ray-autoscaler-minimal | jq -r '.SecurityGroups[].GroupId')
+        echo $security_group_id
+        aws ec2 delete-security-group --group-id $security_group_id
         ```
 
     1. local:
