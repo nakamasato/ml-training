@@ -599,4 +599,3 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 1. [_bootstrap_config] gets `importer = _NODE_PROVIDERS.get(config["provider"]["type"])` -> `provider_cls = importer(config["provider"])` -> calls `provider_cls.bootstrap_config(config)`
 1. [AWSNodeProvider(NodeProvider).bootstrap_config](https://github.com/ray-project/ray/blob/7f1bacc7dc9caf6d0ec042e39499bbf1d9a7d065/python/ray/autoscaler/_private/aws/node_provider.py#L592-L594) calls `bootstrap_aws`.
 1. [bootstrap_aws(config)](https://github.com/ray-project/ray/blob/629424f48957af55cf06d86d23b850be73fb3017/python/ray/autoscaler/_private/aws/config.py#L217-L256)
-
