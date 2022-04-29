@@ -2,6 +2,7 @@ import ray
 import time
 import numpy as np
 
+
 @ray.remote
 class Actor:
     def heavy_compute(self, large_array):

@@ -1,15 +1,19 @@
 import ray
 import numpy as np
 
+
 @ray.remote
 def map(obj, f):
     return f(obj)
+
+
 @ray.remote
 def sum_results(*elements):
     return np.sum(elements)
 
+
 items = list(range(100))
-map_func = lambda i : i*2
+map_func = lambda i: i*2  # noqa: E731
 remote_elements = [map.remote(i, map_func) for i in items]
 
 # simple reduce

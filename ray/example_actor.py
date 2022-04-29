@@ -1,6 +1,7 @@
 import ray
 ray.init()
 
+
 @ray.remote
 class Counter(object):
     def __init__(self):
@@ -11,6 +12,7 @@ class Counter(object):
 
     def read(self):
         return self.n
+
 
 counters = [Counter.remote() for i in range(4)]
 [c.increment.remote() for c in counters]
