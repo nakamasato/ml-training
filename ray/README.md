@@ -57,7 +57,7 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     ray up -y 03-cluster/aws-config.docker.yaml
     ```
 
-    ⚠ `03-cluster/aws-minimal.yaml` dosn't work as no default AMI is available for the region `ap-northeast-1`.
+    ⚠ `03-cluster/aws-minimal.yaml` doesn't work as no default AMI is available for the region `ap-northeast-1`.
 
     <details>
 
@@ -283,21 +283,27 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
     </details>
 
 1. Get ip address of head.
+
     ```
     ray get-head-ip 03-cluster/aws-config.docker.yaml
     2022-04-29 07:47:46,075 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
     2022-04-29 07:47:46,407 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
     13.230.29.35
     ```
+
 1. Connect to a terminal on the cluster head
+
     ```
     ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml
     ```
+
 1. Monitor autoscaling
+
     ```
     ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
     ```
-1. Submit a job (WIP)
+
+1. Submit a job.
 
     ```
     ray submit 03-cluster/aws-config.docker.yaml 03-cluster/task_pattern_tree.py
@@ -310,67 +316,269 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
     ```
     ray submit 03-cluster/aws-config.docker.yaml 03-cluster/task_pattern_tree.py
-    2022-04-28 18:59:47,752 INFO util.py:335 -- setting max workers for head node type to 0
+    2022-05-25 05:51:39,806 INFO util.py:335 -- setting max workers for head node type to 0
     Loaded cached provider configuration
     If you experience issues with the cloud provider, try re-running the command with --no-config-cache.
-    Fetched IP: 35.78.246.199
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
-    2022-04-28 18:59:50,422 INFO util.py:335 -- setting max workers for head node type to 0
-    Fetched IP: 35.78.246.199
-    Shared connection to 35.78.246.199 closed.
+    Fetched IP: 35.77.53.85
+    Shared connection to 35.77.53.85 closed.
+    Shared connection to 35.77.53.85 closed.
+    2022-05-25 05:51:42,919 INFO util.py:335 -- setting max workers for head node type to 0
+    Fetched IP: 35.77.53.85
+    Shared connection to 35.77.53.85 closed.
     Array size: 200000
     Sequential execution: 0.039
-    Distributed execution: 1.291
+    Distributed execution: 1.131
     --------------------
     Array size: 4000000
-    Sequential execution: 6.828
-    (scheduler +10s) Tip: use `ray status` to view detailed cluster status. To disable these messages, set RAY_SCHEDULER_EVENTS=0.
-    (scheduler +10s) Adding 2 nodes of type ray.worker.default.
-    (scheduler +16s) Warning: The following resource request cannot be scheduled right now: {'CPU': 1.0}. This is likely due to all cluster resources being claimed by actors. Consider creating fewer actors or adding more nodes to this Ray cluster.
-    2022-04-28 03:00:11,444 WARNING worker.py:1382 -- WARNING: 8 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:00:12,784 WARNING worker.py:1382 -- WARNING: 11 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:00:15,295 WARNING worker.py:1382 -- WARNING: 12 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:00:16,751 WARNING worker.py:1382 -- WARNING: 14 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    Distributed execution: 25.821
+    Sequential execution: 5.835
+    (scheduler +9s) Tip: use `ray status` to view detailed cluster status. To disable these messages, set RAY_SCHEDULER_EVENTS=0.
+    (scheduler +9s) Adding 1 nodes of type ray.worker.default.
+    (scheduler +14s) Adding 1 nodes of type ray.worker.default.
+    2022-05-24 13:52:02,353 WARNING worker.py:1382 -- WARNING: 8 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    Distributed execution: 18.052
     --------------------
     Array size: 8000000
-    (scheduler +47s) Removing 1 nodes of type ray.worker.default (launch failed).
-    Sequential execution: 19.988
-    (scheduler +1m2s) Adding 1 nodes of type ray.worker.default.
-    2022-04-28 03:01:08,701 WARNING worker.py:1382 -- WARNING: 16 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:01:10,121 WARNING worker.py:1382 -- WARNING: 18 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    (scheduler +1m18s) Warning: The following resource request cannot be scheduled right now: {'CPU': 1.0}. This is likely due to all cluster resources being claimed by actors. Consider creating fewer actors or adding more nodes to this Ray cluster.
-    2022-04-28 03:01:19,171 WARNING worker.py:1382 -- WARNING: 21 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:01:20,551 WARNING worker.py:1382 -- WARNING: 22 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:01:22,282 WARNING worker.py:1382 -- WARNING: 24 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:01:23,875 WARNING worker.py:1382 -- WARNING: 27 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:01:26,830 WARNING worker.py:1382 -- WARNING: 28 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    2022-04-28 03:01:28,117 WARNING worker.py:1382 -- WARNING: 30 PYTHON worker processes have been started on node: 238a4b0b1c8da13a9c711e72ca8af58073dad5585601ef42c7577a8e with address: 10.0.103.172. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
-    (scheduler +1m39s) Removing 1 nodes of type ray.worker.default (launch failed).
-    (scheduler +1m39s) Adding 1 nodes of type ray.worker.default.
-    Distributed execution: 65.852
+    Sequential execution: 15.108
+    2022-05-24 13:52:40,207 WARNING worker.py:1382 -- WARNING: 10 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:44,694 WARNING worker.py:1382 -- WARNING: 12 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:46,193 WARNING worker.py:1382 -- WARNING: 14 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:47,724 WARNING worker.py:1382 -- WARNING: 16 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:49,588 WARNING worker.py:1382 -- WARNING: 19 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:51,313 WARNING worker.py:1382 -- WARNING: 20 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:58,805 WARNING worker.py:1382 -- WARNING: 22 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:52:59,761 WARNING worker.py:1382 -- WARNING: 24 PYTHON worker processes have been started on node: d1b27708d013cf095512c80ddafaf0d9ad9cc8f8c31f9d0b24850579 with address: 10.0.103.208. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    Distributed execution: 45.697
     --------------------
     Array size: 10000000
-    Sequential execution: 22.378
-    (scheduler +2m36s) Warning: The following resource request cannot be scheduled right now: {'CPU': 1.0}. This is likely due to all cluster resources being claimed by actors. Consider creating fewer actors or adding more nodes to this Ray cluster.
-    Distributed execution: 66.690
+    Sequential execution: 22.814
+    (scheduler +2m2s) Warning: The following resource request cannot be scheduled right now: {'CPU': 1.0}. This is likely due to all cluster resources being claimed by actors. Consider creating fewer actors or adding more nodes to this Ray cluster.
+    (scheduler +2m28s) Resized to 4 CPUs.
+    Distributed execution: 50.749
     --------------------
     Array size: 20000000
-    (scheduler +3m43s) Removing 1 nodes of type ray.worker.default (launch failed).
-    Sequential execution: 55.243
-    (scheduler +4m39s) Adding 1 nodes of type ray.worker.default.
-    (scheduler +4m55s) Warning: The following resource request cannot be scheduled right now: {'CPU': 1.0}. This is likely due to all cluster resources being claimed by actors. Consider creating fewer actors or adding more nodes to this Ray cluster.
-    Killed
-    Shared connection to 35.78.246.199 closed.
-    Error: Command failed:
-
-      ssh -tt -i /Users/nakamasato/.ssh/ray-autoscaler_1_ap-northeast-1.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ControlMaster=auto -o ControlPath=/tmp/ray_ssh_a09e268f38/dc43e863c1/%C -o ControlPersist=10s -o ConnectTimeout=120s ubuntu@35.78.246.199 bash --login -c -i 'true && source ~/.bashrc && export OMP_NUM_THREADS=1 PYTHONWARNINGS=ignore && (docker exec -it  ray_container /bin/bash -c '"'"'bash --login -c -i '"'"'"'"'"'"'"'"'true && source ~/.bashrc && export OMP_NUM_THREADS=1 PYTHONWARNINGS=ignore && (python /home/ray/task_pattern_tree.py)'"'"'"'"'"'"'"'"''"'"' )'
+    (scheduler +3m14s) Resized to 6 CPUs.
+    Sequential execution: 55.681
+    2022-05-24 13:55:41,083 WARNING worker.py:1382 -- WARNING: 8 PYTHON worker processes have been started on node: fbd302fdeae6c78aaa9a68efcf4966a40eb8ac252203af42b9b27b60 with address: 10.0.103.232. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:55:42,331 WARNING worker.py:1382 -- WARNING: 10 PYTHON worker processes have been started on node: fbd302fdeae6c78aaa9a68efcf4966a40eb8ac252203af42b9b27b60 with address: 10.0.103.232. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:55:42,870 WARNING worker.py:1382 -- WARNING: 8 PYTHON worker processes have been started on node: 096b57a8b91d0919ed8224be96e20497710c6fc188162079e5a3551f with address: 10.0.103.17. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:55:43,523 WARNING worker.py:1382 -- WARNING: 12 PYTHON worker processes have been started on node: fbd302fdeae6c78aaa9a68efcf4966a40eb8ac252203af42b9b27b60 with address: 10.0.103.232. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:55:53,981 WARNING worker.py:1382 -- WARNING: 10 PYTHON worker processes have been started on node: 096b57a8b91d0919ed8224be96e20497710c6fc188162079e5a3551f with address: 10.0.103.17. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    (scheduler +4m10s) Warning: The following resource request cannot be scheduled right now: {'CPU': 1.0}. This is likely due to all cluster resources being claimed by actors. Consider creating fewer actors or adding more nodes to this Ray cluster.
+    2022-05-24 13:55:55,562 WARNING worker.py:1382 -- WARNING: 12 PYTHON worker processes have been started on node: 096b57a8b91d0919ed8224be96e20497710c6fc188162079e5a3551f with address: 10.0.103.17. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:55:56,807 WARNING worker.py:1382 -- WARNING: 14 PYTHON worker processes have been started on node: 096b57a8b91d0919ed8224be96e20497710c6fc188162079e5a3551f with address: 10.0.103.17. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    2022-05-24 13:55:58,590 WARNING worker.py:1382 -- WARNING: 16 PYTHON worker processes have been started on node: 096b57a8b91d0919ed8224be96e20497710c6fc188162079e5a3551f with address: 10.0.103.17. This could be a result of using a large number of actors, or due to tasks blocked in ray.get() calls (see https://github.com/ray-project/ray/issues/3644 for some discussion of workarounds).
+    Distributed execution: 54.941
+    --------------------
+    Shared connection to 35.77.53.85 closed.
     ```
 
     </details>
 
-1. Drop ray cluster
+
+    While running the job, also checked the cluster:
+
+    <details>
+
+    ```
+    esources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:58:39,155 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:58:39.155496 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:58:44,235 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:58:44.235089 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:58:49,312 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:58:49.312784 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:58:54,384 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:58:54.384371 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:58:59,465 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:58:59.465703 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:59:04,540 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:59:04.540569 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:59:09,610 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:59:09.610690 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:59:14,682 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:59:14.682181 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    2022-05-24 13:59:19,772 INFO autoscaler.py:330 --
+    ======== Autoscaler status: 2022-05-24 13:59:19.772812 ========
+    Node status
+    ---------------------------------------------------------------
+    Healthy:
+     1 ray.head.default
+    Pending:
+     (no pending nodes)
+    Recent failures:
+     (no failures)
+
+    Resources
+    ---------------------------------------------------------------
+    Usage:
+     0.0/2.0 CPU
+     0.00/4.358 GiB memory
+     0.00/2.179 GiB object_store_memory
+
+    Demands:
+     (no resource demands)
+    Shared connection to 35.77.53.85 closed.
+    Error: Command failed:
+
+      ssh -tt -i /Users/nakamasato/.ssh/ray-autoscaler_ap-northeast-1.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ControlMaster=auto -o ControlPath=/tmp/ray_ssh_a09e268f38/dc43e863c1/%C -o ControlPersist=10s -o ConnectTimeout=120s ubuntu@35.77.53.85 bash --login -c -i 'true && source ~/.bashrc && export OMP_NUM_THREADS=1 PYTHONWARNINGS=ignore && (docker exec -it  ray_container /bin/bash -c '"'"'bash --login -c -i '"'"'"'"'"'"'"'"'true && source ~/.bashrc && export OMP_NUM_THREADS=1 PYTHONWARNINGS=ignore && (tail -n 100 -f /tmp/ray/session_latest/logs/monitor*)'"'"'"'"'"'"'"'"''"'"' )'
+    ```
+
+
+    </details>
+
+1. Drop ray cluster (EC2 instances are also terminated.)
 
     ```
     ray down 03-cluster/aws-config.docker.yaml
@@ -422,7 +630,8 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
         aws iam detach-role-policy --role-name ray-autoscaler-v1 --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
         aws iam delete-role --role-name ray-autoscaler-v1
         ```
-    1. If you created VPC and subnet with Terraform, you can clean them up.
+    1. If you created VPC and subnet with Terraform, you can clean them up. (complete within a few seconds)
+
         ```
         cd 03-cluster/aws-vpc
         terraform destroy
