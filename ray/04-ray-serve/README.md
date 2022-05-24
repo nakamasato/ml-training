@@ -131,3 +131,4 @@
 ## References
 
 1. https://medium.com/distributed-computing-with-ray/the-simplest-way-to-serve-your-nlp-model-in-production-with-pure-python-d42b6a97ad55
+1. https://vishnudeva.medium.com/scaling-applications-on-kubernetes-with-ray-23692eb2e6f0
