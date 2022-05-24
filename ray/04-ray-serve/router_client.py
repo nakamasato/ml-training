@@ -23,4 +23,3 @@ article_text = (
 response = requests.get("http://127.0.0.1:8000/router?txt=" + article_text).text
 
 print(response)
-
