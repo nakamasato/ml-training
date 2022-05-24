@@ -114,7 +114,7 @@
         python model_on_ray_serve.py
         ```
 
-    1. Send request.
+    1. Send request via HTTP.
 
         ```
         python router_client.py
@@ -126,3 +126,8 @@
     ```
     ray stop
     ```
+
+
+## References
+
+1. https://medium.com/distributed-computing-with-ray/the-simplest-way-to-serve-your-nlp-model-in-production-with-pure-python-d42b6a97ad55
