@@ -133,7 +133,7 @@ Summarize a long English text with `transformers` library.
 
 Notes:
 
-1. You can create deployment either with a function or a class using `@serve.deployment` annotation.
+1. You can create deployment either with a function or a class using `@serve.deployment` decorator.
 1. If you want to support both HTTP request and ServeHandle request, it's recommended to use a class for the deployment to separate a internal function that can be called via ServeHandle. ([ServeHandle for deployment created with a function with query_params?](https://discuss.ray.io/t/servehandle-for-deployment-created-with-a-function-with-query-params/6291))
     Example: `summarize` function in `Router` class.
     ```python
@@ -142,12 +142,13 @@ Notes:
 
 ## 3. [Model Composition](https://docs.ray.io/en/latest/serve/ml-models.html#serve-model-composition)
 
+![](model_composition.drawio.svg)
+
 Run
 
 ```
 python model_composition.py
 ```
-
 
 <details>
 
@@ -183,6 +184,50 @@ python model_composition.py
 {'model_used: 1 & 2;  score': 0.8273714159873894}
 {'model_used: 1 ; score': 0.4718116502142262}
 {'model_used: 1 & 2;  score': 0.8397308071154511}
+```
+
+</details>
+
+## 4. [Batch Requesting](https://docs.ray.io/en/latest/serve/tutorials/batch.html#serve-batch-tutorial)
+
+Use `@serve.batch` decorator with `async`.
+
+```python
+@serve.batch
+async def my_batch_handler(self, requests: List):
+    pass
+```
+
+Run
+
+```
+python batch_request.py
+```
+
+<details>
+
+```
+2022-05-28 08:55:45,668 INFO services.py:1456 -- View the Ray dashboard at http://127.0.0.1:8265
+(ServeController pid=14405) 2022-05-28 08:55:51,849     INFO checkpoint_path.py:15 -- Using RayInternalKVStore for controller checkpoint and recovery.
+(ServeController pid=14405) 2022-05-28 08:55:51,965     INFO http_state.py:106 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:dfCeLG:SERVE_PROXY_ACTOR-node:127.0.0.1-0' on node 'node:127.0.0.1-0' listening on '127.0.0.1:8000'
+2022-05-28 08:55:53,217 INFO api.py:794 -- Started Serve instance in namespace 'bbc1baad-f997-4685-954f-46c3a45ccc30'.
+2022-05-28 08:55:53,232 INFO api.py:615 -- Updating deployment 'BatchAdder'. component=serve deployment=BatchAdder
+(HTTPProxyActor pid=14420) INFO:     Started server process [14420]
+(ServeController pid=14405) 2022-05-28 08:55:53,312     INFO deployment_state.py:1210 -- Adding 1 replicas to deployment 'BatchAdder'. component=serve deployment=BatchAdder
+2022-05-28 08:55:55,257 INFO api.py:630 -- Deployment 'BatchAdder' is ready at `http://127.0.0.1:8000/adder`. component=serve deployment=BatchAdder
+(BatchAdder pid=14423) Our input array has shape: (1,)
+(BatchAdder pid=14423) Our input array has shape: (3,)
+(BatchAdder pid=14423) Our input array has shape: (1,)
+(BatchAdder pid=14423) Our input array has shape: (3,)
+(BatchAdder pid=14423) Our input array has shape: (1,)
+Result returned: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+Input batch is [0, 1, 2, 3, 4, 5, 6, 7, 8]
+(BatchAdder pid=14423) Our input array has shape: (2,)
+(BatchAdder pid=14423) Our input array has shape: (1,)
+(BatchAdder pid=14423) Our input array has shape: (4,)
+(BatchAdder pid=14423) Our input array has shape: (2,)
+Result batch is [1, 2, 3, 4, 5, 6, 7, 8, 9]
+(ServeController pid=14405) 2022-05-28 08:55:57,689     INFO deployment_state.py:1236 -- Removing 1 replicas from deployment 'BatchAdder'. component=serve deployment=BatchAdder
 ```
 
 </details>
