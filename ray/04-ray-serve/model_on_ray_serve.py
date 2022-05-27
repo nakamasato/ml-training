@@ -10,11 +10,14 @@ def summarize(text):
     return summary
 
 
-ray.init(address="auto", namespace="serve") # init or connect to cluster
+# init or connect to cluster
+ray.init(address="auto", namespace="serve")
 
-serve.start(detached=True) # start serving
+# start serving
+serve.start(detached=True)
 
 
+# function with serve.deployment
 @serve.deployment
 def router(request):
     txt = request.query_params["txt"]
@@ -22,3 +25,20 @@ def router(request):
 
 
 router.deploy()
+
+
+# class with serve.deployment
+@serve.deployment
+class Router:
+
+    # best practice to separate a function
+    # when supporting access via both HTTP and ServeHandle
+    def summarize(self, txt):
+        return summarize(txt)
+
+    def __call__(self, request):
+        txt = request.query_params["txt"]
+        return self.summarize(txt)
+
+
+Router.deploy()

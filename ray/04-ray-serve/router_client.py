@@ -1,4 +1,6 @@
 # File name: router_client.py
+from ray import serve
+import ray
 import requests
 
 article_text = (
@@ -20,6 +22,15 @@ article_text = (
     "of millions of people on earth."
 )
 
-response = requests.get("http://127.0.0.1:8000/router?txt=" + article_text).text
-
+# send request via http
+print("----- HTTP START -----")
+response = requests.get("http://127.0.0.1:8000/Router", params={"txt":  article_text}).text
 print(response)
+print("----- HTTP END -----")
+
+# send request via servehandle
+print("----- ServeHandle START -----")
+ray.init(address="auto", namespace="serve")
+handle = serve.get_deployment("Router").get_handle()
+print(ray.get(handle.summarize.remote(article_text)))
+print("----- ServeHandle END -----")

@@ -1,6 +1,7 @@
 # File name: local_model.py
 from transformers import pipeline
 
+
 def summarize(text):
     # Load model
     summarizer = pipeline("summarization", model="t5-small")

@@ -1,13 +1,13 @@
-from time import sleep
-from fastapi import FastAPI
 import ray
+import requests
+from fastapi import FastAPI
 from ray import serve
 
 # start a Ray cluster
 ray.init()
 
 # start Ray Serve runtime
-serve.start()
+serve.start()  # you can set 'detached=True' to keep Ray Serve running in the background
 
 # serve this class behind an HTTP endpoint using Ray Serve.
 app = FastAPI()
@@ -37,4 +37,8 @@ class Counter:
 # deploy
 Counter.deploy()
 
-sleep(100)
+# http request
+print(requests.get("http://127.0.0.1:8000/Counter").text)
+print(requests.get("http://127.0.0.1:8000/Counter/incr").text)
+print(requests.get("http://127.0.0.1:8000/Counter/incr").text)
+print(requests.get("http://127.0.0.1:8000/Counter/decr").text)
