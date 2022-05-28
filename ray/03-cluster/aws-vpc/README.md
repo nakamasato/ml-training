@@ -17,7 +17,8 @@
 ### Create Resources
 
 - VPC
-- 6 Subnets ()
+- 6 Subnets (3 public & 3 private)
+- Expected: `22 added, 0 changed, 0 destroyed.`
 
 ```
 terraform init
