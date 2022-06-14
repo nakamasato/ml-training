@@ -1,0 +1,19 @@
+name: ray
+on:
+  pull_request:
+    paths:
+      - ray/requirements.txt
+jobs:
+  ray:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: run ray example
+        working-directory: ray
+        run: |
+          pip install -r requirements.txt
+          python 02-task-pattern/task_pattern_tree.py
+          python 02-task-pattern/task_pattern_map_and_reduce.py

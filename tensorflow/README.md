@@ -1,6 +1,7 @@
 # Tensorflow Training
 ## Contents
 1. [Parameter Server Training](parameter-server-training)
+1. [Multi Worker Mirrored Strategy](multi-worker-mirrored-strategy)
 1. [Keras](keras)
 
 ## Tensorboard
