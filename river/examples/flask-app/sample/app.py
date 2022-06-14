@@ -1,10 +1,8 @@
-from flask import Flask, request
-from os.path import exists
-from river import compose
-from river import linear_model
-from river import preprocessing
-
 import pickle
+from os.path import exists
+
+from flask import Flask, request
+from river import compose, linear_model, preprocessing
 
 app = Flask(__name__)
 
@@ -23,6 +21,7 @@ def learn():
     river_model.learn_one(payload['features'], payload['target'])
     save_model(river_model)
     return {}, 201
+
 
 def new_model():
     model = compose.Pipeline(

@@ -5,8 +5,6 @@ from river.evaluate import progressive_val_score
 from river import optim
 from river import compose
 from river import facto
-from river import optim
-from river import stats
 
 
 def evaluate(model):
@@ -102,7 +100,7 @@ def debug_fwfm():
         ({'user': 'Alice', 'item': 'Harry Potter '}, 5),
         ({'user': 'Bob', 'item': 'Superman'}, 8),
         ({'user': 'Bob', 'item': 'Terminator'}, 9),
-        ({'user': 'Bob', 'item': 'Star Wars',}, 8),
+        ({'user': 'Bob', 'item': 'Star Wars'}, 8),
         ({'user': 'Bob', 'item': 'Notting Hill'}, 2)
     )
     model = facto.FwFMRegressor(
@@ -142,6 +140,7 @@ def debug_hofm():
 
     print(model.predict_one({'user': 'Bob', 'item': 'Harry Potter', 'time': .14}))
     print(model.debug_one({'user': 'Bob', 'item': 'Harry Potter', 'time': .14}))
+
 
 if __name__ == '__main__':
     debug_hofm()

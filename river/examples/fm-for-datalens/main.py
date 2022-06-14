@@ -8,8 +8,6 @@ from river import optim
 from river import reco
 from river import compose
 from river import facto
-from river import optim
-from river import stats
 from river import preprocessing
 
 for x, y in datasets.MovieLens100K():
@@ -28,6 +26,7 @@ def debug(model):
         report = model.debug_one(x)
         print(report)
         break
+
 
 def naive_prediction(run=False):
     # Naive prediction (Mean)
@@ -152,12 +151,13 @@ def mimic_biased_mf(run=False):
 
 
 # feature engineering
-## 1. categorical values
+# 1. categorical values
 def split_genres(x):
     genres = x['genres'].split(', ')
     return {f'genre_{genre}': 1 / len(genres) for genre in genres}
 
-## 2. Numerical variables
+
+# 2. Numerical variables
 def bin_age(x):
     if x['age'] <= 18:
         return {'age_0-18': 1}
@@ -200,6 +200,7 @@ def mf_with_improved_feature(run=False):
     )
 
     evaluate(model)
+
 
 # Higher-Order Factorization Machines (HOFM)
 def high_order_fm(run=False):
@@ -396,6 +397,7 @@ def debug_ffm():
     evaluate(regressor)
     debug(regressor)
 
+
 def main():
     naive_prediction()
     linear_regression()
@@ -409,5 +411,6 @@ def main():
     for n in range(2, 20, 3):
         ffm_with_n(n, False)
     debug_ffm()
+
 
 main()
