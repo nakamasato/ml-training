@@ -7,6 +7,8 @@
 ## 1. [Getting Started](https://docs.ray.io/en/latest/ray-overview/index.html)
 
 ```
+python -m venv rayvenv
+. rayvenv/bin/activate
 pip install ray
 ```
 
@@ -37,4 +39,5 @@ python 01-getting-started/task_example.py
 ## Other Contents
 
 - [3. Cluster](03-cluster)
-- [4. Ray Serve](04-ray-serve)
+- [4. Serve](04-serve)
+- [5. Train](05-train)
