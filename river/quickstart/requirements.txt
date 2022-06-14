@@ -1,6 +1,6 @@
 black==21.11b1
 click==8.0.3
-Cython==0.29.24
+Cython==0.29.30
 mypy-extensions==0.4.3
 numpy==1.21.4
 pandas==1.3.4
