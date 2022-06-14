@@ -1,7 +1,8 @@
 name: ray
 on:
   pull_request:
-
+    paths:
+      - ray/requirements.txt
 jobs:
   ray:
     runs-on: ubuntu-latest

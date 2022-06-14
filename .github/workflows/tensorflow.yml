@@ -1,7 +1,8 @@
 name: tensorflow
 on:
   pull_request:
-
+    paths:
+      - tensorflow/requirements.txt
 jobs:
   tensorflow:
     runs-on: ubuntu-latest
