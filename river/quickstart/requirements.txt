@@ -9,7 +9,7 @@ platformdirs==2.4.0
 python-dateutil==2.8.2
 pytz==2021.3
 regex==2021.11.10
-river==0.8.0
+river==0.11.1
 scipy==1.7.2
 six==1.16.0
 tomli==1.2.3
