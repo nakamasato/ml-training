@@ -2,7 +2,7 @@ black==21.11b1
 click==8.0.3
 Cython==0.29.24
 mypy-extensions==0.4.3
-numpy==1.21.4
+numpy==1.22.4
 pandas==1.3.4
 pathspec==0.9.0
 platformdirs==2.4.0
