@@ -26,89 +26,101 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
     ```
     ray up -y aws-config.docker.yaml
-    Usage stats collection will be enabled by default in the next release. See https://github.com/ray-project/ray/issues/20857 for more details.
     Cluster: minimal
 
-    2022-04-28 18:47:23,229 INFO util.py:335 -- setting max workers for head node type to 0
+    2022-06-15 09:39:52,887 INFO util.py:335 -- setting max workers for head node type to 0
     Checking AWS environment settings
     AWS config
       IAM Profile: ray-autoscaler-v1 [default]
-      EC2 Key pair (all available node types): ray-autoscaler_1_ap-northeast-1 [default]
-      VPC Subnets (all available node types): subnet-0d56536828c7b98d5, subnet-04cbf4481ef89650b, subnet-042a84abdec0ad522 [default]
-      EC2 Security groups (all available node types): sg-016a1f14dce3f5504 [default]
+      EC2 Key pair (all available node types): ray-autoscaler_ap-northeast-1 [default]
+      VPC Subnets (all available node types): subnet-0c99b9f8cc6d2d982, subnet-001594b9fef9558b8, subnet-0b0fe6e3b97b2d2e6 [default]
+      EC2 Security groups (all available node types): sg-00de431beac12f62f [default]
       EC2 AMI (all available node types): ami-088da9557aae42f39
 
-    Updating cluster configuration and running full setup.
-    Cluster Ray runtime will be restarted. Confirm [y/N]: y [automatic, due to --yes]
+    No head node found. Launching a new cluster. Confirm [y/N]: y [automatic, due to --yes]
+
+    Enable usage stats collection? This prompt will auto-proceed in 10 seconds to avoid blocking cluster startup. Confirm [Y/n]:
+    Usage stats collection is enabled. To disable this, add `--disable-usage-stats` to the command that starts the cluster, or run the following command: `ray disable-usage-stats` before starting the cluster. See https://docs.ray.io/en/master/cluster/usage-stats.html for more details.
+
+    Acquiring an up-to-date head node
+      Launched 1 nodes [subnet_id=subnet-0c99b9f8cc6d2d982]
+        Launched instance i-0d2f905979d8127f7 [state=pending, info=pending]
+      Launched a new head node
+      Fetching the new head node
 
     <1/1> Setting up head node
       Prepared bootstrap config
       New status: waiting-for-ssh
       [1/7] Waiting for SSH to become available
         Running `uptime` as a test.
-        Fetched IP: 35.78.246.199
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
+        Waiting for IP
+          Not yet available, retrying in 5 seconds
+          Received: 3.115.12.55
+    ssh: connect to host 3.115.12.55 port 22: Operation timed out
+        SSH still not available (SSH command failed.), retrying in 5 seconds.
+    Warning: Permanently added '3.115.12.55' (ED25519) to the list of known hosts.
     To run a command as administrator (user "root"), use "sudo <command>".
     See "man sudo_root" for details.
 
-     09:47:29 up 10 min,  1 user,  load average: 0.00, 0.01, 0.00
-    Shared connection to 35.78.246.199 closed.
+     00:41:01 up 0 min,  1 user,  load average: 0.45, 0.10, 0.03
+    Shared connection to 3.115.12.55 closed.
         Success.
-      Updating cluster configuration. [hash=f504a86c1b58ad8b0f3bec665ef9d670ce4622ff]
+      Updating cluster configuration. [hash=4885ab5452cbfb61bc0ed1c45d02531c1893ad6d]
       New status: syncing-files
       [2/7] Processing file mounts
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
       [3/7] No worker file mounts to sync
       New status: setting-up
       [4/7] Running initialization commands
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
+    Warning: Permanently added '3.115.12.55' (ED25519) to the list of known hosts.
     To run a command as administrator (user "root"), use "sudo <command>".
     See "man sudo_root" for details.
 
-    Connection to 35.78.246.199 closed.
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
+    Connection to 3.115.12.55 closed.
+    Warning: Permanently added '3.115.12.55' (ED25519) to the list of known hosts.
     To run a command as administrator (user "root"), use "sudo <command>".
     See "man sudo_root" for details.
 
-    # Executing docker install script, commit: 0221adedb4bcde0f3d18bddda023544fc56c29d1
+    # Executing docker install script, commit: b2e29ef7a9a89840d2333637f7d1900a83e7153f
     + sh -c apt-get update -qq >/dev/null
     + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null
-    + sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg
-    + sh -c chmod a+r /usr/share/keyrings/docker-archive-keyring.gpg
-    + sh -c echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable" > /etc/apt/sources.list.d/docker.list
+    + sh -c mkdir -p /etc/apt/keyrings && chmod -R 0755 /etc/apt/keyrings
+    + sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+    + sh -c chmod a+r /etc/apt/keyrings/docker.gpg
+    + sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu focal stable" > /etc/apt/sources.list.d/docker.list
     + sh -c apt-get update -qq >/dev/null
-    + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends docker-ce docker-ce-cli docker-compose-plugin docker-scan-plugin >/dev/null
+    + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-scan-plugin >/dev/null
     + version_gte 20.10
     + [ -z  ]
     + return 0
     + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq docker-ce-rootless-extras >/dev/null
     + sh -c docker version
     Client: Docker Engine - Community
-     Version:           20.10.14
+     Version:           20.10.17
      API version:       1.41
-     Go version:        go1.16.15
-     Git commit:        a224086
-     Built:             Thu Mar 24 01:48:02 2022
+     Go version:        go1.17.11
+     Git commit:        100c701
+     Built:             Mon Jun  6 23:02:57 2022
      OS/Arch:           linux/amd64
      Context:           default
      Experimental:      true
 
     Server: Docker Engine - Community
      Engine:
-      Version:          20.10.14
+      Version:          20.10.17
       API version:      1.41 (minimum version 1.12)
-      Go version:       go1.16.15
-      Git commit:       87a90dc
-      Built:            Thu Mar 24 01:45:53 2022
+      Go version:       go1.17.11
+      Git commit:       a89b842
+      Built:            Mon Jun  6 23:01:03 2022
       OS/Arch:          linux/amd64
       Experimental:     false
      containerd:
-      Version:          1.5.11
-      GitCommit:        3df54a852345ae127d1fa3092b95168e4a88e2f8
+      Version:          1.6.6
+      GitCommit:        10c12954828e7c7c9b6e0ea9b0c02b01407d3ae1
      runc:
-      Version:          1.0.3
-      GitCommit:        v1.0.3-0-gf46b6ba
+      Version:          1.1.2
+      GitCommit:        v1.1.2-0-ga916309
      docker-init:
       Version:          0.19.0
       GitCommit:        de40ad0
@@ -132,82 +144,66 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
     ================================================================================
 
-    Connection to 35.78.246.199 closed.
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
-    Connection to 35.78.246.199 closed.
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
-    Connection to 35.78.246.199 closed.
+    Connection to 3.115.12.55 closed.
+    Warning: Permanently added '3.115.12.55' (ED25519) to the list of known hosts.
+    Connection to 3.115.12.55 closed.
+    Warning: Permanently added '3.115.12.55' (ED25519) to the list of known hosts.
+    Connection to 3.115.12.55 closed.
       [5/7] Initalizing command runner
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
-    Shared connection to 35.78.246.199 closed.
-    latest: Pulling from rayproject/ray-ml
-    11323ed2c653: Pull complete
-    6415333b3579: Pull complete
-    83b1ad109d4b: Pull complete
-    9c164dee2fdc: Pull complete
-    9a197f6b670e: Pull complete
-    ccdc0f0386c7: Pull complete
-    8bcf409a9d54: Pull complete
-    1375348d0d3c: Pull complete
-    89139513a7e1: Pull complete
-    3d8fc976a322: Pull complete
-    301f556b9160: Pull complete
-    17a957b8cbd1: Pull complete
-    a3d3a36bfe54: Pull complete
-    f8fb126c609f: Pull complete
-    c01ba6b74da6: Pull complete
-    94c3ce393f43: Pull complete
-    168883de0472: Pull complete
-    2d9e996de199: Pull complete
-    41efc5339a3d: Pull complete
-    a96f63015556: Pull complete
-    54940c7af0ab: Pull complete
-    3cb7c88cfd73: Pull complete
-    b2d5296b3231: Pull complete
-    7ce478a224ea: Pull complete
-    a0874eff69ae: Pull complete
-    d7b8a6048f2d: Pull complete
-    Digest: sha256:a0c3a4db7e725e43203e39d053c7c2359109cf2f116ef7bf4cde8ab1a0fb27cb
-    Status: Downloaded newer image for rayproject/ray-ml:latest
-    docker.io/rayproject/ray-ml:latest
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
-    b651d1dab66c677a84c47b0d3d58dc349e19490643e2797a4dd2ec61620f5d70
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
+    Warning: Permanently added '3.115.12.55' (ED25519) to the list of known hosts.
+    Shared connection to 3.115.12.55 closed.
+    latest: Pulling from rayproject/ray
+    d5fd17ec1767: Pull complete
+    341eeba1871f: Pull complete
+    913d7f86391e: Pull complete
+    2107148d3c4b: Pull complete
+    d0a777325523: Pull complete
+    1dc2e272e6b0: Pull complete
+    df3e0297f017: Pull complete
+    da37cde4b300: Pull complete
+    9d617ad85b1c: Pull complete
+    Digest: sha256:7831c923acc3b761f52ac9cfa8d449d3b8ad02d611cf4615795c08982bc41c9d
+    Status: Downloaded newer image for rayproject/ray:latest
+    docker.io/rayproject/ray:latest
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
+    4efe0306408fccb7f2df1515ca361997d494decb32715132b6101fda8243930c
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
     sending incremental file list
     ray_bootstrap_config.yaml
 
-    sent 1,018 bytes  received 35 bytes  2,106.00 bytes/sec
-    total size is 2,100  speedup is 1.99
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
+    sent 1,026 bytes  received 35 bytes  2,122.00 bytes/sec
+    total size is 2,123  speedup is 2.00
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
     sending incremental file list
     ray_bootstrap_key.pem
 
-    sent 1,402 bytes  received 35 bytes  2,874.00 bytes/sec
-    total size is 1,678  speedup is 1.17
-    Shared connection to 35.78.246.199 closed.
-    Shared connection to 35.78.246.199 closed.
+    sent 1,401 bytes  received 35 bytes  957.33 bytes/sec
+    total size is 1,674  speedup is 1.17
+    Shared connection to 3.115.12.55 closed.
+    Shared connection to 3.115.12.55 closed.
       [6/7] Running setup commands
         (0/1) pip install 'boto3>=1.4.8'
-    Requirement already satisfied: boto3>=1.4.8 in ./anaconda3/lib/python3.7/site-packages (1.21.37)
-    Requirement already satisfied: s3transfer<0.6.0,>=0.5.0 in ./anaconda3/lib/python3.7/site-packages (from boto3>=1.4.8) (0.5.2)
-    Requirement already satisfied: botocore<1.25.0,>=1.24.37 in ./anaconda3/lib/python3.7/site-packages (from boto3>=1.4.8) (1.24.37)
-    Requirement already satisfied: jmespath<2.0.0,>=0.7.1 in ./anaconda3/lib/python3.7/site-packages (from boto3>=1.4.8) (0.10.0)
-    Requirement already satisfied: urllib3<1.27,>=1.25.4 in ./anaconda3/lib/python3.7/site-packages (from botocore<1.25.0,>=1.24.37->boto3>=1.4.8) (1.26.7)
-    Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in ./anaconda3/lib/python3.7/site-packages (from botocore<1.25.0,>=1.24.37->boto3>=1.4.8) (2.8.2)
-    Requirement already satisfied: six>=1.5 in ./anaconda3/lib/python3.7/site-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.25.0,>=1.24.37->boto3>=1.4.8) (1.15.0)
-    Shared connection to 35.78.246.199 closed.
+    Requirement already satisfied: boto3>=1.4.8 in ./anaconda3/lib/python3.7/site-packages (1.4.8)
+    Requirement already satisfied: s3transfer<0.2.0,>=0.1.10 in ./anaconda3/lib/python3.7/site-packages (from boto3>=1.4.8) (0.1.13)
+    Requirement already satisfied: botocore<1.9.0,>=1.8.0 in ./anaconda3/lib/python3.7/site-packages (from boto3>=1.4.8) (1.8.50)
+    Requirement already satisfied: jmespath<1.0.0,>=0.7.1 in ./anaconda3/lib/python3.7/site-packages (from boto3>=1.4.8) (0.10.0)
+    Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in ./anaconda3/lib/python3.7/site-packages (from botocore<1.9.0,>=1.8.0->boto3>=1.4.8) (2.8.2)
+    Requirement already satisfied: docutils>=0.10 in ./anaconda3/lib/python3.7/site-packages (from botocore<1.9.0,>=1.8.0->boto3>=1.4.8) (0.18.1)
+    Requirement already satisfied: six>=1.5 in ./anaconda3/lib/python3.7/site-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.9.0,>=1.8.0->boto3>=1.4.8) (1.13.0)
+    Shared connection to 3.115.12.55 closed.
       [7/7] Starting the Ray runtime
     Did not find any active Ray processes.
-    Shared connection to 35.78.246.199 closed.
-    Usage stats collection will be enabled by default in the next release. See https://github.com/ray-project/ray/issues/20857 for more details.
-    Local node IP: 10.0.103.172
-    2022-04-28 02:55:44,008 INFO services.py:1462 -- View the Ray dashboard at http://127.0.0.1:8265
+    Shared connection to 3.115.12.55 closed.
+    Usage stats collection is enabled. To disable this, add `--disable-usage-stats` to the command that starts the cluster, or run the following command: `ray disable-usage-stats` before starting the cluster. See https://docs.ray.io/en/master/cluster/usage-stats.html for more details.
+
+    Local node IP: 10.0.103.184
+    2022-06-14 17:43:17,159 INFO services.py:1476 -- View the Ray dashboard at http://127.0.0.1:8265
 
     --------------------
     Ray runtime started.
@@ -215,7 +211,7 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
     Next steps
       To connect to this Ray runtime from another node, run
-        ray start --address='10.0.103.172:6379'
+        ray start --address='10.0.103.184:6379'
 
       Alternatively, use the following Python code:
         import ray
@@ -231,16 +227,16 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
       To terminate the Ray runtime, run
         ray stop
-    Shared connection to 35.78.246.199 closed.
+    Shared connection to 3.115.12.55 closed.
       New status: up-to-date
 
     Useful commands
       Monitor autoscaling with
-        ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
+        ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
       Connect to a terminal on the cluster head:
-        ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/aws-config.docker.yaml
+        ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/03-cluster/aws-config.docker.yaml
       Get a remote shell to the cluster manually:
-        ssh -tt -o IdentitiesOnly=yes -i /Users/nakamasato/.ssh/ray-autoscaler_1_ap-northeast-1.pem ubuntu@35.78.246.199 docker exec -it ray_container /bin/bash
+        ssh -tt -o IdentitiesOnly=yes -i /Users/nakamasato/.ssh/ray-autoscaler_ap-northeast-1.pem ubuntu@3.115.12.55 docker exec -it ray_container /bin/bash
     ```
 
     </details>
@@ -248,22 +244,21 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 1. Get ip address of head.
 
     ```
-    ray get-head-ip aws-config.docker.yaml
-    2022-04-29 07:47:46,075 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
-    2022-04-29 07:47:46,407 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
-    13.230.29.35
+    2022-06-15 09:45:03,967 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
+    2022-06-15 09:45:04,495 VINFO utils.py:145 -- Creating AWS resource `ec2` in `ap-northeast-1`
+    3.115.12.55
     ```
 
 1. Connect to a terminal on the cluster head
 
     ```
-    ray attach /Users/nakamasato/repos/nakamasato/ml-training/ray/aws-config.docker.yaml
+    ray attach aws-config.docker.yaml
     ```
 
 1. Monitor autoscaling
 
     ```
-    ray exec /Users/nakamasato/repos/nakamasato/ml-training/ray/aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
+    ray exec aws-config.docker.yaml 'tail -n 100 -f /tmp/ray/session_latest/logs/monitor*'
     ```
 
 1. Submit a job.
@@ -551,18 +546,15 @@ https://docs.ray.io/en/master/cluster/quickstart.html#ref-cluster-quick-start
 
     ```
     ray down aws-config.docker.yaml
-    2022-04-28 19:08:51,463 INFO util.py:335 -- setting max workers for head node type to 0
+    2022-06-15 10:05:37,879 INFO util.py:335 -- setting max workers for head node type to 0
     Loaded cached provider configuration
     If you experience issues with the cloud provider, try re-running the command with --no-config-cache.
     Destroying cluster. Confirm [y/N]: y
-    2022-04-28 19:09:04,456 INFO util.py:335 -- setting max workers for head node type to 0
-    Fetched IP: 35.78.246.199
-    Warning: Permanently added '35.78.246.199' (ED25519) to the list of known hosts.
-    Stopped only 6 out of 7 Ray processes within the grace period 10 seconds. Set `-v` to see more details. Remaining processes [psutil.Process(pid=328, name='python', status='running', started='02:55:41')] will be forcefully terminated.
-    You can also use `--force` to forcefully terminate processes or set higher `--grace-period` to wait longer time for proper termination.
-    Shared connection to 35.78.246.199 closed.
-    Fetched IP: 35.78.246.199
-    Stopping instances i-0e5c28f2b9a5a2cbf (to terminate instead, set `cache_stopped_nodes: False` under `provider` in the cluster configuration)
+    2022-06-15 10:05:44,582 INFO util.py:335 -- setting max workers for head node type to 0
+    Fetched IP: 3.115.12.55
+    Stopped all 7 Ray processes.
+    Shared connection to 3.115.12.55 closed.
+    Fetched IP: 3.115.12.55
     Requested 1 nodes to shut down. [interval=1s]
     0 nodes remaining after 5 second(s).
     No nodes remaining.

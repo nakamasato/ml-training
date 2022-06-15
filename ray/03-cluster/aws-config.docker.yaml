@@ -43,6 +43,7 @@ available_node_types:
             KeyName: ray-autoscaler_ap-northeast-1
 
 setup_commands: []
+#   - pip install tensorflow # if your job use tensorflow
 initialization_commands:
     - curl -fsSL https://get.docker.com -o get-docker.sh
     - sudo sh get-docker.sh

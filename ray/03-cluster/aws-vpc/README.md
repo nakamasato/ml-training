@@ -1,14 +1,14 @@
-# Prepare VPC
+# Prepare AWS VPC
 
+If you want to try setting up a Ray cluster on AWS, you need VPC and subnets in advance. Here shows how to set them up quickly with Trraform.
 ## Terraform
 
 - Install: https://learn.hashicorp.com/tutorials/terraform/install-cli
 - Version
     ```
     terraform version
-    Terraform v1.1.8
+    Terraform v1.2.2
     on darwin_amd64
-    + provider registry.terraform.io/hashicorp/aws v4.11.0
     ```
 - Module for VPC: https://github.com/terraform-aws-modules/terraform-aws-vpc/tree/v3.14.0
 ## Steps
@@ -565,8 +565,11 @@ terraform apply
 
 ```
 terraform apply
+data.aws_availability_zones.available: Reading...
+data.aws_availability_zones.available: Read complete after 0s [id=ap-northeast-1]
 
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+Terraform used the selected providers to generate the following execution plan. Resource
+actions are indicated with the following symbols:
   + create
 
 Terraform will perform the following actions:
@@ -1094,52 +1097,52 @@ Do you want to perform these actions?
 
 module.vpc.aws_vpc.this[0]: Creating...
 module.vpc.aws_vpc.this[0]: Still creating... [10s elapsed]
-module.vpc.aws_vpc.this[0]: Creation complete after 12s [id=vpc-007d17621f2f872dd]
-module.vpc.aws_subnet.public[0]: Creating...
-module.vpc.aws_route_table.private[0]: Creating...
-module.vpc.aws_subnet.private[2]: Creating...
-module.vpc.aws_subnet.private[0]: Creating...
-module.vpc.aws_route_table.public[0]: Creating...
+module.vpc.aws_vpc.this[0]: Creation complete after 12s [id=vpc-062546205e31ab457]
+module.vpc.aws_subnet.public[1]: Creating...
 module.vpc.aws_egress_only_internet_gateway.this[0]: Creating...
 module.vpc.aws_subnet.private[1]: Creating...
-module.vpc.aws_subnet.public[2]: Creating...
 module.vpc.aws_internet_gateway.this[0]: Creating...
-module.vpc.aws_subnet.public[1]: Creating...
-module.vpc.aws_route_table.public[0]: Creation complete after 1s [id=rtb-002629688788bd6b9]
-module.vpc.aws_route_table.private[0]: Creation complete after 1s [id=rtb-0f4da9b08893b5839]
-module.vpc.aws_egress_only_internet_gateway.this[0]: Creation complete after 1s [id=eigw-0e244c368dd401fdd]
+module.vpc.aws_subnet.public[2]: Creating...
+module.vpc.aws_subnet.public[0]: Creating...
+module.vpc.aws_subnet.private[2]: Creating...
+module.vpc.aws_route_table.private[0]: Creating...
+module.vpc.aws_subnet.private[0]: Creating...
+module.vpc.aws_route_table.public[0]: Creating...
+module.vpc.aws_egress_only_internet_gateway.this[0]: Creation complete after 1s [id=eigw-0d5d9d7039e05670d]
+module.vpc.aws_route_table.private[0]: Creation complete after 1s [id=rtb-03269156f5a2e01cd]
+module.vpc.aws_route_table.public[0]: Creation complete after 1s [id=rtb-0296c34a508dd4a8b]
 module.vpc.aws_route.private_ipv6_egress[0]: Creating...
-module.vpc.aws_route.private_ipv6_egress[2]: Creating...
 module.vpc.aws_route.private_ipv6_egress[1]: Creating...
-module.vpc.aws_internet_gateway.this[0]: Creation complete after 1s [id=igw-059f24150cf4ee86b]
+module.vpc.aws_route.private_ipv6_egress[2]: Creating...
+module.vpc.aws_internet_gateway.this[0]: Creation complete after 1s [id=igw-0d95bf65f8d64de7c]
 module.vpc.aws_route.public_internet_gateway[0]: Creating...
-module.vpc.aws_subnet.private[1]: Creation complete after 1s [id=subnet-0ac2407f1f50e4827]
-module.vpc.aws_subnet.private[0]: Creation complete after 1s [id=subnet-073e29e0ca3c92bef]
-module.vpc.aws_subnet.private[2]: Creation complete after 1s [id=subnet-0f12cfca3b7d183cf]
+module.vpc.aws_subnet.private[2]: Creation complete after 1s [id=subnet-02a86ce98e909415e]
+module.vpc.aws_subnet.private[0]: Creation complete after 1s [id=subnet-0a698114ffeed5eff]
 module.vpc.aws_route.public_internet_gateway_ipv6[0]: Creating...
-module.vpc.aws_route_table_association.private[0]: Creating...
+module.vpc.aws_subnet.private[1]: Creation complete after 1s [id=subnet-0be38fb04fe71504d]
 module.vpc.aws_route_table_association.private[1]: Creating...
-module.vpc.aws_route.private_ipv6_egress[2]: Creation complete after 1s [id=r-rtb-0f4da9b08893b58392750132062]
-module.vpc.aws_route.private_ipv6_egress[1]: Creation complete after 1s [id=r-rtb-0f4da9b08893b58392750132062]
-module.vpc.aws_route.private_ipv6_egress[0]: Creation complete after 1s [id=r-rtb-0f4da9b08893b58392750132062]
 module.vpc.aws_route_table_association.private[2]: Creating...
-module.vpc.aws_route.public_internet_gateway[0]: Creation complete after 1s [id=r-rtb-002629688788bd6b91080289494]
-module.vpc.aws_route_table_association.private[1]: Creation complete after 1s [id=rtbassoc-0897e0b395b4ca9e2]
-module.vpc.aws_route.public_internet_gateway_ipv6[0]: Creation complete after 1s [id=r-rtb-002629688788bd6b92750132062]
-module.vpc.aws_route_table_association.private[0]: Creation complete after 1s [id=rtbassoc-075f176562a6eeb7d]
-module.vpc.aws_route_table_association.private[2]: Creation complete after 0s [id=rtbassoc-01ddda9059c9c87a7]
-module.vpc.aws_subnet.public[0]: Still creating... [10s elapsed]
-module.vpc.aws_subnet.public[2]: Still creating... [10s elapsed]
+module.vpc.aws_route.private_ipv6_egress[0]: Creation complete after 1s [id=r-rtb-03269156f5a2e01cd2750132062]
+module.vpc.aws_route.private_ipv6_egress[2]: Creation complete after 1s [id=r-rtb-03269156f5a2e01cd2750132062]
+module.vpc.aws_route.private_ipv6_egress[1]: Creation complete after 1s [id=r-rtb-03269156f5a2e01cd2750132062]
+module.vpc.aws_route.public_internet_gateway[0]: Creation complete after 1s [id=r-rtb-0296c34a508dd4a8b1080289494]
+module.vpc.aws_route_table_association.private[0]: Creating...
+module.vpc.aws_route.public_internet_gateway_ipv6[0]: Creation complete after 1s [id=r-rtb-0296c34a508dd4a8b2750132062]
+module.vpc.aws_route_table_association.private[2]: Creation complete after 1s [id=rtbassoc-01f125bb605cb507d]
+module.vpc.aws_route_table_association.private[1]: Creation complete after 1s [id=rtbassoc-05f7aae30cc27984a]
+module.vpc.aws_route_table_association.private[0]: Creation complete after 0s [id=rtbassoc-01ed5a09e1ce32899]
 module.vpc.aws_subnet.public[1]: Still creating... [10s elapsed]
-module.vpc.aws_subnet.public[0]: Creation complete after 11s [id=subnet-042a84abdec0ad522]
-module.vpc.aws_subnet.public[1]: Creation complete after 12s [id=subnet-04cbf4481ef89650b]
-module.vpc.aws_subnet.public[2]: Creation complete after 12s [id=subnet-0d56536828c7b98d5]
-module.vpc.aws_route_table_association.public[2]: Creating...
+module.vpc.aws_subnet.public[2]: Still creating... [10s elapsed]
+module.vpc.aws_subnet.public[0]: Still creating... [10s elapsed]
+module.vpc.aws_subnet.public[1]: Creation complete after 11s [id=subnet-001594b9fef9558b8]
+module.vpc.aws_subnet.public[0]: Creation complete after 12s [id=subnet-0b0fe6e3b97b2d2e6]
+module.vpc.aws_subnet.public[2]: Creation complete after 12s [id=subnet-0c99b9f8cc6d2d982]
 module.vpc.aws_route_table_association.public[0]: Creating...
+module.vpc.aws_route_table_association.public[2]: Creating...
 module.vpc.aws_route_table_association.public[1]: Creating...
-module.vpc.aws_route_table_association.public[0]: Creation complete after 0s [id=rtbassoc-0fda0a2b273ba4b04]
-module.vpc.aws_route_table_association.public[1]: Creation complete after 0s [id=rtbassoc-010890efd8c9322fb]
-module.vpc.aws_route_table_association.public[2]: Creation complete after 0s [id=rtbassoc-07dc71155accfc808]
+module.vpc.aws_route_table_association.public[2]: Creation complete after 0s [id=rtbassoc-0cbbeeed08ea84fa6]
+module.vpc.aws_route_table_association.public[1]: Creation complete after 0s [id=rtbassoc-08fe11226ae033d25]
+module.vpc.aws_route_table_association.public[0]: Creation complete after 0s [id=rtbassoc-0ef8365ee5fda16ff]
 
 Apply complete! Resources: 22 added, 0 changed, 0 destroyed.
 
@@ -1154,7 +1157,7 @@ database_network_acl_arn = ""
 database_network_acl_id = ""
 database_route_table_association_ids = []
 database_route_table_ids = [
-  "rtb-0f4da9b08893b5839",
+  "rtb-03269156f5a2e01cd",
 ]
 database_subnet_arns = []
 database_subnet_group = ""
@@ -1162,9 +1165,9 @@ database_subnet_group_name = ""
 database_subnets = []
 database_subnets_cidr_blocks = []
 database_subnets_ipv6_cidr_blocks = []
-default_network_acl_id = "acl-0935b3d2e016562e0"
-default_route_table_id = "rtb-0110e7f6c8e8021ec"
-default_security_group_id = "sg-0e7e497cdfb09591a"
+default_network_acl_id = "acl-04e6fea52469deeac"
+default_route_table_id = "rtb-0f396bff818f1dabf"
+default_security_group_id = "sg-0c9d0607526c709e5"
 default_vpc_arn = ""
 default_vpc_cidr_block = ""
 default_vpc_default_network_acl_id = ""
@@ -1176,12 +1179,12 @@ default_vpc_id = ""
 default_vpc_instance_tenancy = ""
 default_vpc_main_route_table_id = ""
 dhcp_options_id = ""
-egress_only_internet_gateway_id = "eigw-0e244c368dd401fdd"
+egress_only_internet_gateway_id = "eigw-0d5d9d7039e05670d"
 elasticache_network_acl_arn = ""
 elasticache_network_acl_id = ""
 elasticache_route_table_association_ids = []
 elasticache_route_table_ids = [
-  "rtb-0f4da9b08893b5839",
+  "rtb-03269156f5a2e01cd",
 ]
 elasticache_subnet_arns = []
 elasticache_subnet_group = ""
@@ -1189,8 +1192,8 @@ elasticache_subnet_group_name = ""
 elasticache_subnets = []
 elasticache_subnets_cidr_blocks = []
 elasticache_subnets_ipv6_cidr_blocks = []
-igw_arn = "arn:aws:ec2:ap-northeast-1:135493629466:internet-gateway/igw-059f24150cf4ee86b"
-igw_id = "igw-059f24150cf4ee86b"
+igw_arn = "arn:aws:ec2:ap-northeast-1:135493629466:internet-gateway/igw-0d95bf65f8d64de7c"
+igw_id = "igw-0d95bf65f8d64de7c"
 intra_network_acl_arn = ""
 intra_network_acl_id = ""
 intra_route_table_association_ids = []
@@ -1209,30 +1212,30 @@ outpost_subnets = []
 outpost_subnets_cidr_blocks = []
 outpost_subnets_ipv6_cidr_blocks = []
 private_ipv6_egress_route_ids = [
-  "r-rtb-0f4da9b08893b58392750132062",
-  "r-rtb-0f4da9b08893b58392750132062",
-  "r-rtb-0f4da9b08893b58392750132062",
+  "r-rtb-03269156f5a2e01cd2750132062",
+  "r-rtb-03269156f5a2e01cd2750132062",
+  "r-rtb-03269156f5a2e01cd2750132062",
 ]
 private_nat_gateway_route_ids = []
 private_network_acl_arn = ""
 private_network_acl_id = ""
 private_route_table_association_ids = [
-  "rtbassoc-075f176562a6eeb7d",
-  "rtbassoc-0897e0b395b4ca9e2",
-  "rtbassoc-01ddda9059c9c87a7",
+  "rtbassoc-01ed5a09e1ce32899",
+  "rtbassoc-05f7aae30cc27984a",
+  "rtbassoc-01f125bb605cb507d",
 ]
 private_route_table_ids = [
-  "rtb-0f4da9b08893b5839",
+  "rtb-03269156f5a2e01cd",
 ]
 private_subnet_arns = [
-  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-073e29e0ca3c92bef",
-  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0ac2407f1f50e4827",
-  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0f12cfca3b7d183cf",
+  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0a698114ffeed5eff",
+  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0be38fb04fe71504d",
+  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-02a86ce98e909415e",
 ]
 private_subnets = [
-  "subnet-073e29e0ca3c92bef",
-  "subnet-0ac2407f1f50e4827",
-  "subnet-0f12cfca3b7d183cf",
+  "subnet-0a698114ffeed5eff",
+  "subnet-0be38fb04fe71504d",
+  "subnet-02a86ce98e909415e",
 ]
 private_subnets_cidr_blocks = [
   "10.0.1.0/24",
@@ -1244,27 +1247,27 @@ private_subnets_ipv6_cidr_blocks = [
   tostring(null),
   tostring(null),
 ]
-public_internet_gateway_ipv6_route_id = "r-rtb-002629688788bd6b92750132062"
-public_internet_gateway_route_id = "r-rtb-002629688788bd6b91080289494"
+public_internet_gateway_ipv6_route_id = "r-rtb-0296c34a508dd4a8b2750132062"
+public_internet_gateway_route_id = "r-rtb-0296c34a508dd4a8b1080289494"
 public_network_acl_arn = ""
 public_network_acl_id = ""
 public_route_table_association_ids = [
-  "rtbassoc-0fda0a2b273ba4b04",
-  "rtbassoc-010890efd8c9322fb",
-  "rtbassoc-07dc71155accfc808",
+  "rtbassoc-0ef8365ee5fda16ff",
+  "rtbassoc-08fe11226ae033d25",
+  "rtbassoc-0cbbeeed08ea84fa6",
 ]
 public_route_table_ids = [
-  "rtb-002629688788bd6b9",
+  "rtb-0296c34a508dd4a8b",
 ]
 public_subnet_arns = [
-  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-042a84abdec0ad522",
-  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-04cbf4481ef89650b",
-  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0d56536828c7b98d5",
+  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0b0fe6e3b97b2d2e6",
+  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-001594b9fef9558b8",
+  "arn:aws:ec2:ap-northeast-1:135493629466:subnet/subnet-0c99b9f8cc6d2d982",
 ]
 public_subnets = [
-  "subnet-042a84abdec0ad522",
-  "subnet-04cbf4481ef89650b",
-  "subnet-0d56536828c7b98d5",
+  "subnet-0b0fe6e3b97b2d2e6",
+  "subnet-001594b9fef9558b8",
+  "subnet-0c99b9f8cc6d2d982",
 ]
 public_subnets_cidr_blocks = [
   "10.0.101.0/24",
@@ -1281,7 +1284,7 @@ redshift_network_acl_id = ""
 redshift_public_route_table_association_ids = []
 redshift_route_table_association_ids = []
 redshift_route_table_ids = tolist([
-  "rtb-0f4da9b08893b5839",
+  "rtb-03269156f5a2e01cd",
 ])
 redshift_subnet_arns = []
 redshift_subnet_group = ""
@@ -1291,7 +1294,7 @@ redshift_subnets_ipv6_cidr_blocks = []
 this_customer_gateway = {}
 vgw_arn = ""
 vgw_id = ""
-vpc_arn = "arn:aws:ec2:ap-northeast-1:135493629466:vpc/vpc-007d17621f2f872dd"
+vpc_arn = "arn:aws:ec2:ap-northeast-1:135493629466:vpc/vpc-062546205e31ab457"
 vpc_cidr_block = "10.0.0.0/16"
 vpc_enable_dns_hostnames = false
 vpc_enable_dns_support = true
@@ -1299,11 +1302,11 @@ vpc_flow_log_cloudwatch_iam_role_arn = ""
 vpc_flow_log_destination_arn = ""
 vpc_flow_log_destination_type = "cloud-watch-logs"
 vpc_flow_log_id = ""
-vpc_id = "vpc-007d17621f2f872dd"
+vpc_id = "vpc-062546205e31ab457"
 vpc_instance_tenancy = "default"
-vpc_ipv6_association_id = "vpc-cidr-assoc-06f27051511f23a31"
-vpc_ipv6_cidr_block = "2406:da14:c3c:b500::/56"
-vpc_main_route_table_id = "rtb-0110e7f6c8e8021ec"
+vpc_ipv6_association_id = "vpc-cidr-assoc-02055147306935a5c"
+vpc_ipv6_cidr_block = "2406:da14:35d:5100::/56"
+vpc_main_route_table_id = "rtb-0f396bff818f1dabf"
 vpc_owner_id = "135493629466"
 vpc_secondary_cidr_blocks = []
 ```
