@@ -1,0 +1,18 @@
+name: pytorch
+on:
+  pull_request:
+    paths:
+      - pytorch/requirements.txt
+jobs:
+  pytorch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: run pytorch example
+        working-directory: pytorch
+        run: |
+          pip install -r requirements.txt
+          python distributed_example.py
