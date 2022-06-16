@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - ray/requirements.txt
+      - .github/workflows/ray.yml
 jobs:
   ray:
     runs-on: ubuntu-latest

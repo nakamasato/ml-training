@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - tensorflow/requirements.txt
+      - .github/workflows/tensorflow.yml
 jobs:
   tensorflow:
     runs-on: ubuntu-latest
