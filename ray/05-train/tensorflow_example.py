@@ -1,5 +1,4 @@
 import argparse
-import atexit
 import json
 import os
 
