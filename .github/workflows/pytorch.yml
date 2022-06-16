@@ -4,6 +4,9 @@ on:
     paths:
       - pytorch/requirements.txt
       - .github/workflows/pytorch.yml
+defaults:
+  run:
+    working-directory: pytorch
 jobs:
   pytorch:
     runs-on: ubuntu-latest
@@ -12,8 +15,8 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - name: run pytorch example
-        working-directory: pytorch
+      - name: install
+        run: pip install -r requirements.txt
+      - name: run
         run: |
-          pip install -r requirements.txt
           python distributed_example.py

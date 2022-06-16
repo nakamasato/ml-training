@@ -4,6 +4,9 @@ on:
     paths:
       - tensorflow/requirements.txt
       - .github/workflows/tensorflow.yml
+defaults:
+  run:
+    working-directory: tensorflow
 jobs:
   tensorflow:
     runs-on: ubuntu-latest
@@ -12,8 +15,8 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - name: run tensorflow example
-        working-directory: tensorflow
+      - name: install
+        run: pip install -r requirements.txt
+      - name: run
         run: |
-          pip install -r requirements.txt
           python parameter-server-training/train_in_process_cluster.py
