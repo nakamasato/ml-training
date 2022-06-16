@@ -3,6 +3,10 @@ on:
   pull_request:
     paths:
       - ray/requirements.txt
+      - .github/workflows/ray.yml
+defaults:
+  run:
+    working-directory: ray
 jobs:
   ray:
     runs-on: ubuntu-latest
@@ -11,9 +15,11 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - name: run ray example
-        working-directory: ray
+      - name: install
+        run: pip install -r requirements.txt
+      - name: run
         run: |
           pip install -r requirements.txt
-          python 02-task-pattern/task_pattern_tree.py
           python 02-task-pattern/task_pattern_map_and_reduce.py
+          python 05-train/simple_example.py -b torch
+          python 05-train/simple_example.py -b tensorflow

@@ -6,3 +6,4 @@ __pycache__
 .terraform
 terraform.tfstate*
 *env
+data

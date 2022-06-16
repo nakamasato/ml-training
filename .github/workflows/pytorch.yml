@@ -1,14 +1,14 @@
-name: tensorflow
+name: pytorch
 on:
   pull_request:
     paths:
-      - tensorflow/requirements.txt
-      - .github/workflows/tensorflow.yml
+      - pytorch/requirements.txt
+      - .github/workflows/pytorch.yml
 defaults:
   run:
-    working-directory: tensorflow
+    working-directory: pytorch
 jobs:
-  tensorflow:
+  pytorch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,4 +19,4 @@ jobs:
         run: pip install -r requirements.txt
       - name: run
         run: |
-          python parameter-server-training/train_in_process_cluster.py
+          python distributed_example.py
