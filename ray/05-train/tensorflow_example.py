@@ -1,3 +1,5 @@
+import argparse
+import atexit
 import json
 import os
 
@@ -81,5 +83,38 @@ def train_tensorflow_mnist(num_workers=2, use_gpu=False, epochs=4):
     print(f"Results: {results[0]}")
 
 
-# ray.init(address='auto') # on cluster
-train_tensorflow_mnist()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--address", required=False, default="auto", type=str, help="the address to use for Ray"
+    )
+    parser.add_argument(
+        "--num-workers",
+        "-n",
+        type=int,
+        default=2,
+        help="Sets number of workers for training.",
+    )
+    parser.add_argument(
+        "--use-gpu", action="store_true", default=False, help="Enables GPU training"
+    )
+    parser.add_argument(
+        "--epochs", type=int, default=3, help="Number of epochs to train for."
+    )
+    parser.add_argument(
+        "--smoke-test",
+        action="store_true",
+        default=False,
+        help="Finish quickly for testing.",
+    )
+
+    args, _ = parser.parse_known_args()
+
+    if args.smoke_test:
+        ray.init(num_cpus=2)
+        train_tensorflow_mnist()
+    else:
+        ray.init(address=args.address)
+        train_tensorflow_mnist(
+            num_workers=args.num_workers, use_gpu=args.use_gpu, epochs=args.epochs
+        )
