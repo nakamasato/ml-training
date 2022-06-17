@@ -1,5 +1,12 @@
 # Ray Train
 
+## Simple
+
+```
+python simple_example.py -b tensorflow
+python simple_example.py -b pytorch
+```
+
 ## Tensorflow
 
 `MultiWorkerMirroredStrategy`: *All workers train over different slices of input data in sync, and aggregating gradients at each step*
