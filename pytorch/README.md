@@ -17,6 +17,19 @@ Run:
 python distributed_example.py
 ```
 
+## CNN
+
+Input x Filter (kernel) -> Feature Map (Overlapping application)
+
+- Filter: The filter is smaller than the input data and the type of multiplication applied between a filter-sized patch of the input and the filter is a dot product. (will be learned by SGD to minimize the classification accuracy) Filter can capture feature. -> Multiple filters
+- Feature Map: low-level features
+- Multiple channels: color (red, green and blue). filter needs to have the same number of channels. 3x3 filter for 3 channles -> 3x3x3 (3-d)
+- Multiple layers: extract features that are combination of lower-level features.
+
+- https://machinelearningmastery.com/how-to-develop-a-convolutional-neural-network-from-scratch-for-mnist-handwritten-digit-classification/
+- [convolutional layer](https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/)
+
+
 ## References
 
 - [Neural Networks](https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html#define-the-network)
