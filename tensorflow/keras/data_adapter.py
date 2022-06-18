@@ -1,3 +1,5 @@
+# https://github.com/keras-team/keras/blob/v2.9.0/keras/engine/training.py#L861
+# https://github.com/keras-team/keras/blob/07e13740fd181fc3ddec7d9a594d8a08666645f6/keras/engine/data_adapter.py#L1398
 import numpy as np
 import tensorflow as tf
 
