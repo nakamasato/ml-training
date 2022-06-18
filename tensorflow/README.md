@@ -4,6 +4,24 @@
 1. [Multi Worker Mirrored Strategy](multi-worker-mirrored-strategy)
 1. [Keras](keras)
 
+## Install
+
+```
+pip install tensorflow # pip install tensorflow-macos
+```
+
+## Basics
+
+- Dataset:
+    1. `batch`: Combines consecutive elements of this dataset into batches.
+
+        ```python
+        dataset = tf.data.Dataset.range(8)
+        dataset = dataset.batch(3)
+        list(dataset.as_numpy_iterator())
+        [array([0, 1, 2]), array([3, 4, 5]), array([6, 7])]
+        ```
+
 ## Tensorboard
 
 ```

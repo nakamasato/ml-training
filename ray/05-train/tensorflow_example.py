@@ -61,7 +61,7 @@ def train_func(config):
         multi_worker_model = build_and_compile_cnn_model(config)
 
     history = multi_worker_model.fit(
-        multi_worker_dataset,
+        x=multi_worker_dataset,
         epochs=epochs,
         steps_per_epoch=steps_per_epoch,
         callbacks=[TrainReportCallback()],
