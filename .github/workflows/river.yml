@@ -8,7 +8,7 @@ defaults:
   run:
     working-directory: river/quickstart
 jobs:
-  ray:
+  quickstart:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
