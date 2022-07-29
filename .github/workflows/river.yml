@@ -1,0 +1,21 @@
+name: river
+on:
+  pull_request:
+    paths:
+      - river/quickstart/**
+      - .github/workflows/river.yml
+defaults:
+  run:
+    working-directory: river/quickstart
+jobs:
+  quickstart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: install
+        run: pip install -r requirements.txt
+      - name: run
+        run: python quickstart.py
