@@ -1,5 +1,9 @@
 # FM
 
+
+$$
+\bm{w}_{ESPN} \cdot \bm{w}_{Nike} + \bm{w}_{ESPN} \cdot \bm{w}_{Male} + \bm{w}_{Nike} \cdot \bm{w}_{Male}
+$$
 ## Theory
 
 1. Solve the following optimization problem:
