@@ -17,12 +17,3 @@ $$
 1. `self.intercept`
 2. `self.weights`
 3. `self.latents`
-
-## Implementation memo
-
-![](ml-with-kubernetes.drawio.svg)
-
-1. Deploy trainer
-    1. Train batch
-    1. Start online training after completing batch training
-1. Predictor is a cache that stores parameters
