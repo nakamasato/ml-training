@@ -54,7 +54,7 @@ def train_func(config):
 
     strategy = tf.distribute.MultiWorkerMirroredStrategy()
 
-    global_batch_size = per_worker_batch_size * num_workers # 64 * 2 = 128
+    global_batch_size = per_worker_batch_size * num_workers  # 64 * 2 = 128
     multi_worker_dataset = mnist_dataset(global_batch_size)
 
     with strategy.scope():
