@@ -54,14 +54,14 @@ def train_func(config):
 
     strategy = tf.distribute.MultiWorkerMirroredStrategy()
 
-    global_batch_size = per_worker_batch_size * num_workers
+    global_batch_size = per_worker_batch_size * num_workers  # 64 * 2 = 128
     multi_worker_dataset = mnist_dataset(global_batch_size)
 
     with strategy.scope():
         multi_worker_model = build_and_compile_cnn_model(config)
 
     history = multi_worker_model.fit(
-        multi_worker_dataset,
+        x=multi_worker_dataset,
         epochs=epochs,
         steps_per_epoch=steps_per_epoch,
         callbacks=[TrainReportCallback()],
@@ -117,3 +117,6 @@ if __name__ == "__main__":
         train_tensorflow_mnist(
             num_workers=args.num_workers, use_gpu=args.use_gpu, epochs=args.epochs
         )
+    # batch_size = 128
+    # for i, element in enumerate(mnist_dataset(batch_size)):
+    #     print(i, len(element))

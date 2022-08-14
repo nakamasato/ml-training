@@ -121,7 +121,7 @@ net = Net()
 print(net)
 
 
-def init_process(rank, size, fn, backend='gloo'):
+def init_process(rank, size, fn, backend='gloo'):  # backend gloo for distributed CPU training, NCCL for distributed GPU training
     """ Initialize the distributed environment. """
     os.environ['MASTER_ADDR'] = '127.0.0.1'
     os.environ['MASTER_PORT'] = '29500'
