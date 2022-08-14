@@ -18,9 +18,9 @@
 1. FM vs FFM:
     1. In **FMs**, every feature has only one latent vector to learn
 the latent effect with any other features. -> ESPN is learned with `(w_espn, w_nike)` and `(w_espn, w_male)`. The latent effects of them might be different because `Nike` and `Male` belong to different fields.
-        ```math
+        $$
         \bm{w}_{ESPN} \cdot \bm{w}_{Nike} + \bm{w}_{ESPN} \cdot \bm{w}_{Male} + \bm{w}_{Nike} \cdot \bm{w}_{Male}
-        ```
+        $$
 
         ```math
         \phi(\bm{w}, \bm{x}_i) = \sum_{j_{1}=1}^{n} \sum_{j_{2}=1}^{n} (\bm{w}_{j_{1}} \cdot \bm{w}_{j_{2}}) x_{j_{1}} x_{j_{2}}
