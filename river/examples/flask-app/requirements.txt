@@ -1,6 +1,6 @@
 ansible==4.4.0
 ansible-core==2.11.3
-ansible-runner==1.4.7
+ansible-runner==2.1.1
 appdirs==1.4.4
 asgiref==3.4.1
 backports.entry-points-selectable==1.1.0
