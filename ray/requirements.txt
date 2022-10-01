@@ -21,7 +21,7 @@ importlib-metadata==4.11.4
 jsonschema==4.8.0
 keras==2.9.0
 Keras-Preprocessing==1.1.2
-libclang==14.0.1
+libclang==14.0.6
 Markdown==3.3.7
 msgpack==1.0.4
 numpy==1.22.4
