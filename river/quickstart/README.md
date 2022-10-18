@@ -25,10 +25,10 @@
     pip install -r requirements.txt
     ```
 
-1. Run `quickstart.py`
+1. Run `main.py`
 
     ```
-    python quickstart.py
+    python main.py
     ```
 
     ```

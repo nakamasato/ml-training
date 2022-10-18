@@ -1,22 +1,21 @@
 import json
-from river import stats
-from river import datasets
-from river import metrics
+
+from river import (compose, datasets, facto, metrics, optim, preprocessing,
+                   reco, stats)
 from river.evaluate import progressive_val_score
 
-from river import optim
-from river import reco
-from river import compose
-from river import facto
-from river import preprocessing
-
-for x, y in datasets.MovieLens100K():
+for x, y in datasets.MovieLens100K(False):
     print(f'x = {json.dumps(x, indent=4)}\ny = {y}')
     break
 
 
-def evaluate(model):
-    X_y = datasets.MovieLens100K()
+for x, y, d in datasets.MovieLens100K(True):
+    print(f'{x=}\n{y=}\n{d=}')
+    break
+
+
+def evaluate(model, unpack_user_and_item=False):
+    X_y = datasets.MovieLens100K(unpack_user_and_item)
     metric = metrics.MAE() + metrics.RMSE()
     _ = progressive_val_score(X_y, model, metric, print_every=25_000, show_time=True, show_memory=True)
 
@@ -64,7 +63,7 @@ def linear_regression(run=False):
         y_max=5
     )
 
-    evaluate(model)
+    evaluate(model, True)
 
 
 def funk_mf(run=False):
@@ -87,7 +86,7 @@ def funk_mf(run=False):
         y_max=5
     )
 
-    evaluate(model)
+    evaluate(model, True)
 
 
 def biased_mf(run=False):
@@ -112,7 +111,7 @@ def biased_mf(run=False):
         y_max=5
     )
 
-    evaluate(model)
+    evaluate(model, True)
 
 
 def mimic_biased_mf(run=False):
@@ -146,7 +145,7 @@ def mimic_biased_mf(run=False):
         y_max=5
     )
 
-    evaluate(model)
+    evaluate(model, True)
     print(regressor)
 
 
@@ -334,7 +333,7 @@ def ffm_with_n(n, run=False):
         y_max=5
     )
 
-    evaluate(model)
+    evaluate(model, True)
 
 
 def debug_fm():
@@ -363,7 +362,7 @@ def debug_fm():
         compose.FuncTransformer(bin_age)
     )
     regressor |= facto.FMRegressor(**fm_params)
-    evaluate(regressor)
+    evaluate(regressor, True)
     debug(regressor)
 
 
@@ -380,34 +379,34 @@ def debug_ffm():
     regressor += (
         compose.Select('genres') |
         compose.FuncTransformer(split_genres) |
-        compose.Renamer(prefix='item_')
+        compose.Prefixer('item_')
     )
     regressor += (
         compose.Select('age') |
         compose.FuncTransformer(bin_age) |
-        compose.Renamer(prefix='user_')
+        compose.Prefixer('user_')
     )
     regressor += (
         compose.Select('gender') |
-        compose.Renamer(prefix='user_')
+        compose.Prefixer('user_')
     )
     regressor |= facto.FFMRegressor(**ffm_params)
 
     print(regressor)
-    evaluate(regressor)
+    evaluate(regressor, False)
     debug(regressor)
 
 
 def main():
-    naive_prediction()
-    linear_regression()
-    funk_mf()
-    biased_mf()
+    naive_prediction(True)
+    linear_regression(False)
+    funk_mf(True)
+    biased_mf(True)
     mimic_biased_mf(False)
-    mf_with_improved_feature()
-    high_order_fm()
-    ffm()
-    fwfm()
+    mf_with_improved_feature(True)
+    high_order_fm(True)
+    ffm(True)
+    fwfm(True)
     for n in range(2, 20, 3):
         ffm_with_n(n, False)
     debug_ffm()
