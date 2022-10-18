@@ -13,11 +13,11 @@ for x, y, d in datasets.MovieLens100K(True):
     print(f'{x=}\n{y=}\n{d=}')
     break
 
+
 def evaluate(model, unpack_user_and_item=False):
     X_y = datasets.MovieLens100K(unpack_user_and_item)
     metric = metrics.MAE() + metrics.RMSE()
     _ = progressive_val_score(X_y, model, metric, print_every=25_000, show_time=True, show_memory=True)
-
 
 
 def debug(model):
@@ -399,7 +399,7 @@ def debug_ffm():
 
 def main():
     naive_prediction(True)
-    linear_regression(False) # need to fix
+    linear_regression(False)
     funk_mf(True)
     biased_mf(True)
     mimic_biased_mf(False)
