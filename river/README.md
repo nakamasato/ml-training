@@ -9,6 +9,12 @@ Practice online machine learning library [river](https://github.com/online-ml/ri
 - Python >=3.8
 - river >= [0.9.0](https://pypi.org/project/river/0.9.0/)
 
+
+## Components
+
+- `Regressor`
+- [PredClipper](https://github.com/online-ml/river/blob/main/river/preprocessing/pred_clipper.py): wrap a regressor with max_x and max_y used when prediction
+
 ## Contents
 
 - [Quickstart](quickstart)
