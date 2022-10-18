@@ -11,7 +11,7 @@ jobs:
       matrix:
         dir:
           - river/quickstart
-          - iver/examples/fm-for-datalens
+          - river/examples/fm-for-datalens
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
