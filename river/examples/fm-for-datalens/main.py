@@ -399,10 +399,10 @@ def debug_ffm():
 
 def main():
     naive_prediction(True)
-    linear_regression(False)
+    linear_regression(True)
     funk_mf(True)
     biased_mf(True)
-    mimic_biased_mf(False)
+    mimic_biased_mf(False) # TODO: Fix
     mf_with_improved_feature(True)
     high_order_fm(True)
     ffm(True)
