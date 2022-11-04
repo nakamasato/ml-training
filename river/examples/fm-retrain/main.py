@@ -1,6 +1,6 @@
 import json
 
-from river import compose, datasets, facto, metrics, optim, preprocessing, reco, stats
+from river import compose, datasets, facto, metrics, optim, preprocessing
 from river.evaluate import progressive_val_score
 
 for x, y in datasets.MovieLens100K():
@@ -23,31 +23,55 @@ def debug(model):
         break
 
 
-def biased_mf(run=False):
-    # Biased Matrix Factorization
-    print("---- Biased Matrix Factorization ----")
-    if not run:
-        print("[100,000] MAE: 0.748559, RMSE: 0.947854 – 0:00:07.202234 – 1.69 MB")
-        return
-    biased_mf_params = {
+# feature engineering
+# 1. categorical values
+def split_genres(x):
+    genres = x["genres"].split(", ")
+    return {f"genre_{genre}": 1 / len(genres) for genre in genres}
+
+
+# 2. Numerical variables
+def bin_age(x):
+    if x["age"] <= 18:
+        return {"age_0-18": 1}
+    elif x["age"] <= 32:
+        return {"age_19-32": 1}
+    elif x["age"] < 55:
+        return {"age_33-54": 1}
+    else:
+        return {"age_55-100": 1}
+
+
+def debug_ffm():
+    ffm_params = {
         "n_factors": 10,
-        "bias_optimizer": optim.SGD(0.025),
-        "latent_optimizer": optim.SGD(0.05),
-        "weight_initializer": optim.initializers.Zeros(),
-        "latent_initializer": optim.initializers.Normal(mu=0.0, sigma=0.1, seed=73),
-        "l2_bias": 0.0,
-        "l2_latent": 0.0,
+        "weight_optimizer": optim.SGD(0.01),
+        "latent_optimizer": optim.SGD(0.025),
+        "intercept": 3,
+        "latent_initializer": optim.initializers.Normal(mu=0.0, sigma=0.05, seed=73),
     }
 
-    model = preprocessing.PredClipper(
-        regressor=reco.BiasedMF(**biased_mf_params), y_min=1, y_max=5
+    regressor = compose.Select("user", "item")
+    regressor += (
+        compose.Select("genres")
+        | compose.FuncTransformer(split_genres)
+        | compose.Prefixer("item_")
     )
+    regressor += (
+        compose.Select("age")
+        | compose.FuncTransformer(bin_age)
+        | compose.Prefixer("user_")
+    )
+    regressor += compose.Select("gender") | compose.Prefixer("user_")
+    regressor |= facto.FFMRegressor(**ffm_params)
 
-    evaluate(model)
+    print(regressor)
+    evaluate(regressor, False)
+    debug(regressor)
 
 
 def main():
-    biased_mf(True)
+    debug_ffm()
 
 
 main()
