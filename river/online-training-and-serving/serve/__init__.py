@@ -1,5 +1,4 @@
 import functools
-import os
 from collections import defaultdict
 
 import redis
