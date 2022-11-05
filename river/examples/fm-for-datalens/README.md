@@ -2,6 +2,12 @@
 
 ## Theory
 
+1. The model equation:
+
+    ```math
+    \hat{y}(x) = w_0 + \sum_{j=1}^{p} w_j x_j + \sum_{j=1}^{p} \sum_{j^{\prime}=j+1}^{p} <\bm{v}_{j, f_{j^{\prime}}}, \bm{v}_{j^{\prime}, f_{j}}> x_j x_{j^{\prime}}
+    ```
+
 1. Solve the following optimization problem:
     ```math
     \min_w \quad \frac{\lambda}{2} \quad || \bm{w} ||^2_2 + \sum_{i=1}^m{\log{(1+\exp{(-y_i \phi(\bm{w}, \bm{x}_i)))}}}

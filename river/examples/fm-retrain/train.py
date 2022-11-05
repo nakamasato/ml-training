@@ -1,5 +1,9 @@
+import functools
 import json
+from collections import defaultdict
 
+import redis
+from redis_collections import DefaultDict
 from river import compose, datasets, facto, metrics, optim, preprocessing
 from river.evaluate import progressive_val_score
 
@@ -18,6 +22,7 @@ def evaluate(model, unpack_user_and_item=True):
 
 def debug(model):
     for x, _ in datasets.MovieLens100K():
+        print(x)
         report = model.debug_one(x)
         print(report)
         break
@@ -42,13 +47,28 @@ def bin_age(x):
         return {"age_55-100": 1}
 
 
-def debug_ffm():
+def main():
+    # redis
+    conn = redis.StrictRedis(host="localhost", port=6379, db=0)
+
+    # init latents with DefaultDict
+    latent_initializer = optim.initializers.Normal(mu=0.0, sigma=0.05, seed=73)
+    random_latents = functools.partial(latent_initializer, shape=10)
+    field_latents_dict = functools.partial(defaultdict, random_latents)
+    latents = DefaultDict(field_latents_dict, key="ffm_latents", redis=conn)
+
+    # init weights
+    weight_initializer = optim.initializers.Zeros()
+    weights = DefaultDict(weight_initializer, key="ffm_weights", redis=conn)
+
     ffm_params = {
         "n_factors": 10,
         "weight_optimizer": optim.SGD(0.01),
         "latent_optimizer": optim.SGD(0.025),
         "intercept": 3,
+        "latents": latents,
         "latent_initializer": optim.initializers.Normal(mu=0.0, sigma=0.05, seed=73),
+        "weights": weights,
     }
 
     regressor = compose.Select("user", "item")
@@ -68,10 +88,11 @@ def debug_ffm():
     print(regressor)
     evaluate(regressor, False)
     debug(regressor)
-
-
-def main():
-    debug_ffm()
+    # print(
+    #     f"intercept: {regressor.steps['FFMRegressor'].intercept}\n"
+    #     f"weights: {regressor.steps['FFMRegressor'].weights}\n"
+    #     f"latents: {regressor.steps['FFMRegressor'].latents}\n"
+    # )
 
 
 main()
