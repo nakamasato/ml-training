@@ -4,7 +4,7 @@ from collections import defaultdict
 
 import redis
 from redis_collections import DefaultDict
-from river import compose, datasets, facto, metrics, optim, preprocessing
+from river import compose, datasets, facto, metrics, optim
 from river.evaluate import progressive_val_score
 
 for x, y in datasets.MovieLens100K():
