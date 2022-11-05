@@ -67,7 +67,6 @@ def main():
         "latent_optimizer": optim.SGD(0.025),
         "intercept": 3,
         "latents": latents,
-        "latent_initializer": optim.initializers.Normal(mu=0.0, sigma=0.05, seed=73),
         "weights": weights,
     }
 
@@ -88,11 +87,11 @@ def main():
     print(regressor)
     evaluate(regressor, False)
     debug(regressor)
-    # print(
-    #     f"intercept: {regressor.steps['FFMRegressor'].intercept}\n"
-    #     f"weights: {regressor.steps['FFMRegressor'].weights}\n"
-    #     f"latents: {regressor.steps['FFMRegressor'].latents}\n"
-    # )
+    print(
+        f"intercept: {regressor.steps['FFMRegressor'].intercept}\n"
+        f"weights (len): {len(regressor.steps['FFMRegressor'].weights)}\n"
+        f"latents (len): {len(regressor.steps['FFMRegressor'].latents)}\n"
+    )
 
 
 main()

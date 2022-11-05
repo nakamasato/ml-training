@@ -46,6 +46,7 @@ def bin_age(x):
 
 
 def init_model_with_redis():
+    # TODO: Use common model for serving and training
     conn = redis.StrictRedis(host="localhost", port=6379, db=0)
 
     # init latents with DefaultDict
