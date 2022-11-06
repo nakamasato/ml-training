@@ -18,6 +18,7 @@ Practice online machine learning library [river](https://github.com/online-ml/ri
 ## Contents
 
 - [Quickstart](quickstart)
+- [Online Training & Serving](online-training-and-serving)
 - [examples](examples)
     - [flask-app](examples/flask-app)
     - [Factorization Machines for datalens](examples/fm-for-datalens)
