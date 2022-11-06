@@ -9,9 +9,11 @@ jobs:
   check:
     strategy:
       matrix:
-        dir:
-          - river/quickstart
-          - river/examples/fm-for-datalens
+        execute:
+          - dir: river/quickstart
+            script: main.py
+          - dir: river/examples/fm-for-datalens
+            script: main.py --native-prediction --linear-regression --funk-mf --biased-mf --mimic-biased-mf --mf-with-improved-feature
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,8 +22,8 @@ jobs:
           python-version: "3.9"
           cache: 'pip'
       - name: install
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.execute.dir }}
         run: pip install -r requirements.txt
       - name: run
-        working-directory: ${{ matrix.dir }}
-        run: python main.py
+        working-directory: ${{ matrix.execute.dir }}
+        run: python ${{ matrix.execute.script }}

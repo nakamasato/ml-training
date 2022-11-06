@@ -4,10 +4,10 @@ Practice online machine learning library [river](https://github.com/online-ml/ri
 
 ![](docs/diagram.drawio.svg)
 
-## Prerequisite
+## Versions
 
-- Python >=3.8
-- river >= [0.9.0](https://pypi.org/project/river/0.9.0/)
+- Python: 3.9
+- river: [0.14.0](https://pypi.org/project/river/0.14.0/)
 
 
 ## Components
@@ -18,6 +18,7 @@ Practice online machine learning library [river](https://github.com/online-ml/ri
 ## Contents
 
 - [Quickstart](quickstart)
+- [Online Training & Serving](online-training-and-serving)
 - [examples](examples)
     - [flask-app](examples/flask-app)
     - [Factorization Machines for datalens](examples/fm-for-datalens)

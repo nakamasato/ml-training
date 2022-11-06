@@ -24,7 +24,7 @@
 
     ```
     cd sample
-    FLASK_ENV=development flask run
+    FLASK_DEBUG=1 flask run
     ```
 
 1. Send POST request. (train a model)

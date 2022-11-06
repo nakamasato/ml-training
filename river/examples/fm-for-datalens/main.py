@@ -1,3 +1,4 @@
+import argparse
 import json
 
 from river import compose, datasets, facto, metrics, optim, preprocessing, reco, stats
@@ -136,7 +137,7 @@ def mimic_biased_mf(run=False):
 
     model = preprocessing.PredClipper(regressor=regressor, y_min=1, y_max=5)
 
-    evaluate(model, True)
+    evaluate(model, False)
     print(regressor)
 
 
@@ -274,7 +275,7 @@ def ffm_with_n(n, run=False):
 
     model = preprocessing.PredClipper(regressor=regressor, y_min=1, y_max=5)
 
-    evaluate(model, True)
+    evaluate(model, False)
 
 
 def debug_fm():
@@ -329,19 +330,106 @@ def debug_ffm():
     debug(regressor)
 
 
-def main():
-    naive_prediction(True)
-    linear_regression(True)
-    funk_mf(True)
-    biased_mf(True)
-    mimic_biased_mf(False)  # TODO: Fix
-    mf_with_improved_feature(True)
-    high_order_fm(True)
-    ffm(True)
-    fwfm(True)
+def main(
+    run_naive_prediction=False,
+    run_linear_regression=False,
+    run_funk_mf=False,
+    run_biased_mf=False,
+    run_mimic_biased_mf=False,
+    run_mf_with_improved_feature=False,
+    run_high_order_fm=False,
+    run_ffm=False,
+    run_ffm_with_n=False,
+    run_fwfm=False,
+    run_all=False
+):
+    naive_prediction(run_naive_prediction or run_all)
+    linear_regression(run_linear_regression or run_all)
+    funk_mf(run_funk_mf or run_all)
+    biased_mf(run_biased_mf or run_all)
+    mimic_biased_mf(run_mimic_biased_mf or run_all)
+    mf_with_improved_feature(run_mf_with_improved_feature or run_all)
+    high_order_fm(run_high_order_fm or run_all)
+    ffm(run_ffm or run_all)
+    fwfm(run_fwfm or run_all)
     for n in range(2, 20, 3):
-        ffm_with_n(n, False)
-    debug_ffm()
+        ffm_with_n(n, run_ffm_with_n or run_all)
+    if run_ffm or run_all:
+        debug_ffm()
 
 
-main()
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(
+        prog="FM for datalens",
+        description="river example with FM for datalens data",
+    )
+    parser.add_argument(
+        "--native-prediction",
+        help="Execute native_prediction",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--linear-regression",
+        help="Execute linear_regression",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--funk-mf",
+        help="Execute funk_mf",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--biased-mf",
+        help="Execute biased_mf",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--mimic-biased-mf",
+        help="Execute mimic_biased_mf",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--mf-with-improved-feature",
+        help="Execute mf_with_improved_feature",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--high-order-fm",
+        help="Execute high_order_fm",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--ffm",
+        help="Execute ffm",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--ffm-with-n",
+        help="Execute ffm with different n",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--fwfm",
+        help="Execute fwfm",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--all",
+        help="Execute all",
+        action="store_true",
+    )
+    args = parser.parse_args()
+    main(
+        args.native_prediction,
+        args.linear_regression,
+        args.funk_mf,
+        args.biased_mf,
+        args.mimic_biased_mf,
+        args.mf_with_improved_feature,
+        args.high_order_fm,
+        args.ffm,
+        args.ffm_with_n,
+        args.fwfm,
+        args.all,
+    )
