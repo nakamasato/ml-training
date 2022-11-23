@@ -1,6 +1,15 @@
 name: update-readme
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+env:
+  BRANCH_NAME: terraform-datadog-keep-up-to-date
+  BASE_BRANCH_NAME: main
 
 jobs:
   update-readme:
@@ -28,11 +37,12 @@ jobs:
           echo "## ray" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
-          rm tmpfile
+          echo "VERSIONS=$(cat tmpfile)" >> "$GITHUB_OUTPUT"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          rm tmpfile
 
       - name: comment
-        if: steps.ray.outputs.VERSION_COUNT != '1'
+        if: ${{ github.event.pull_request.merged != true && steps.ray.outputs.VERSION_COUNT != '1' }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -40,7 +50,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions ((${{ steps.ray.outputs.VERSION_COUNT }})) are used for ray.`
+              body: `multiple versions are used for ray:\n\`\`\`${{ steps.ray.outputs.VERSIONS }}\`\`\``
             })
 
       - name: river
@@ -62,11 +72,12 @@ jobs:
           echo "## river" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
-          rm tmpfile
+          echo "VERSIONS=$(cat tmpfile)" >> "$GITHUB_OUTPUT"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          rm tmpfile
 
       - name: comment
-        if: steps.river.outputs.VERSION_COUNT != '1'
+        if: ${{ github.event.pull_request.merged != true && steps.river.outputs.VERSION_COUNT != '1' }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -74,7 +85,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions (${{ steps.river.outputs.VERSION_COUNT }}) are used for river.`
+              body: `multiple versions are used for river:\n\`\`\`${{ steps.river.outputs.VERSIONS }}\`\`\``
             })
 
       - name: tensorflow
@@ -96,11 +107,12 @@ jobs:
           echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
-          rm tmpfile
+          echo "VERSIONS=$(cat tmpfile)" >> "$GITHUB_OUTPUT"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          rm tmpfile
 
       - name: comment
-        if: steps.tensorflow.outputs.VERSION_COUNT != '1'
+        if: ${{ github.event.pull_request.merged != true && steps.tensorflow.outputs.VERSION_COUNT != '1' }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -108,24 +120,40 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions (${{ steps.tensorflow.outputs.VERSION_COUNT }}) are used for tensorflow.`
+              body: `multiple versions are used for tensorflow:\n\`\`\`${{ steps.tensorflow.outputs.VERSIONS }}\`\`\``
             })
 
-      - name: commit
-        id: commit
+      - name: check if need to commit (after merging)
+        if: github.event.pull_request.merged == true
+        id: need_commit
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            git status
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add .
-            git commit -m "update version in readme"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "::set-output name=need_commit::true
+          else
+            echo "::set-output name=need_commit::false
           fi
 
-      - name: push
-        uses: ad-m/github-push-action@master
-        if: steps.commit.outputs.changed == 'true'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+      - name: commit and push (after merging)
+        if: steps.need_commit.outputs.need_commit == 'true'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b ${{ env.BRANCH_NAME }}
+          git add .
+          git commit -m 'update date'
+          git push -u origin HEAD -f
+
+      - name: check if pr exists (after merging)
+        id: check_pr
+        if: steps.need_commit.outputs.need_commit == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # used by gh
+        run: |
+          echo "::set-output name=count::$(gh pr list -S head:${{ env.BRANCH_NAME }} -B ${{ env.BASE_BRANCH_NAME }} | wc -l)"
+
+      - name: create pr (after merging)
+        if: ${{ steps.need_commit.outputs.need_commit == 'true' && steps.check_pr.outputs.count == 0 }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # used by gh
+        run: |
+          gh pr create -B "${{ env.BASE_BRANCH_NAME }}" -t "Update last updated date in README" -b ""
