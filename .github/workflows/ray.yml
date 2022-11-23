@@ -2,7 +2,7 @@ name: ray
 on:
   pull_request:
     paths:
-      - ray/**/*
+      - 'ray/**'
       - '!ray/README.md'
       - '!ray/**/README.md'
       - .github/workflows/ray.yml
