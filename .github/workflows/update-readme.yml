@@ -22,10 +22,11 @@ jobs:
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
 
           echo "## ray" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
           rm tmpfile
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
@@ -55,10 +56,11 @@ jobs:
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
 
           echo "## river" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
           rm tmpfile
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
@@ -88,10 +90,11 @@ jobs:
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
 
           echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
           rm tmpfile
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
