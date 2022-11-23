@@ -6,6 +6,9 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - '**/requirements.txt'
+      - .github/workflows/update-readme.yml
 
 env:
   BRANCH_NAME: terraform-datadog-keep-up-to-date
