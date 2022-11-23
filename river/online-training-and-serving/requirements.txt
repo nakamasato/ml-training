@@ -8,7 +8,7 @@ contourpy==1.0.6
 cycler==0.11.0
 Deprecated==1.2.13
 distlib==0.3.6
-exceptiongroup==1.0.0
+exceptiongroup==1.0.4
 filelock==3.8.0
 flake8==5.0.4
 Flask==2.2.2
