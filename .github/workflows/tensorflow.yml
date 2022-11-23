@@ -2,7 +2,9 @@ name: tensorflow
 on:
   pull_request:
     paths:
-      - tensorflow/requirements.txt
+      - tensorflow/**/*
+      - '!tensorflow/README.md'
+      - '!tensorflow/**/README.md'
       - .github/workflows/tensorflow.yml
 defaults:
   run:
