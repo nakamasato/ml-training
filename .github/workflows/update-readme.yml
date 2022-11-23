@@ -41,7 +41,7 @@ jobs:
           {
             echo 'RIVER_VERSIONS<<EOF'
             echo '```'
-            cat tmpfile
+            cat tmpfile | sort | uniq
             echo '```'
             echo 'EOF'
           } >> "$GITHUB_ENV"
@@ -82,7 +82,7 @@ jobs:
           {
             echo 'RIVER_VERSIONS<<EOF'
             echo '```'
-            cat tmpfile
+            cat tmpfile | sort | uniq
             echo '```'
             echo 'EOF'
           } >> "$GITHUB_ENV"
@@ -123,7 +123,7 @@ jobs:
           {
             echo 'TENSORFLOW_VERSIONS<<EOF'
             echo '```'
-            cat tmpfile
+            cat tmpfile | sort | uniq
             echo '```'
             echo 'EOF'
           } >> "$GITHUB_ENV"
