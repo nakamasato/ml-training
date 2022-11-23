@@ -29,25 +29,26 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/ray-project/ray/releases/tag/ray-
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for rec in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
-            echo "- ${rec}: ${version}" >> tmpfile
+          for req in `find . -type f -name requirements.txt`; do
+            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "$version" >> versions
+            echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
           echo "## ray" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          cat req_versions >> $GITHUB_STEP_SUMMARY
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'RIVER_VERSIONS<<EOF'
-            cat tmpfile
+            cat req_versions
             echo 'EOF'
           } >> "$GITHUB_ENV"
-          rm tmpfile
+          rm req_versions versions
 
       - name: comment
         if: ${{ github.event.pull_request.merged != true && steps.ray.outputs.VERSION_COUNT != '1' }}
@@ -69,27 +70,26 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/online-ml/river/releases/tag/
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for rec in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
-            echo "- ${rec}: ${version}" >> tmpfile
+          for req in `find . -type f -name requirements.txt`; do
+            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "$version" >> versions
+            echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
           echo "## river" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          cat req_versions >> $GITHUB_STEP_SUMMARY
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'RIVER_VERSIONS<<EOF'
-            echo '```'
-            cat tmpfile | sort | uniq
-            echo '```'
+            cat req_versions
             echo 'EOF'
           } >> "$GITHUB_ENV"
-          rm tmpfile
+          rm req_versions versions
 
       - name: comment
         if: ${{ github.event.pull_request.merged != true && steps.river.outputs.VERSION_COUNT != '1' }}
@@ -111,27 +111,26 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/tensorflow/tensorflow/releases/tag/v
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for rec in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
-            echo "- ${rec}: ${version}" >> tmpfile
+          for req in `find . -type f -name requirements.txt`; do
+            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "$version" >> versions
+            echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
           echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          cat req_versions >> $GITHUB_STEP_SUMMARY
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'TENSORFLOW_VERSIONS<<EOF'
-            echo '```'
-            cat tmpfile | sort | uniq
-            echo '```'
+            cat req_versions
             echo 'EOF'
           } >> "$GITHUB_ENV"
-          rm tmpfile
+          rm req_versions versions
 
       - name: comment
         if: ${{ github.event.pull_request.merged != true && steps.tensorflow.outputs.VERSION_COUNT != '1' }}
