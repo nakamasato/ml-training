@@ -11,7 +11,7 @@ on:
       - .github/workflows/update-readme.yml
 
 env:
-  BRANCH_NAME: terraform-datadog-keep-up-to-date
+  BRANCH_NAME: update-readme
   BASE_BRANCH_NAME: main
 
 jobs:
