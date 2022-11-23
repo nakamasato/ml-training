@@ -37,8 +37,14 @@ jobs:
           echo "## ray" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
-          echo "VERSIONS=$(cat tmpfile)" >> "$GITHUB_OUTPUT"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'RIVER_VERSIONS<<EOF'
+            echo '```'
+            cat tmpfile
+            echo '```'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
           rm tmpfile
 
       - name: comment
@@ -50,7 +56,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions are used for ray:\n\`\`\`${{ steps.ray.outputs.VERSIONS }}\`\`\``
+              body: `multiple versions are used for ray:\n${process.env.RAY_VERSIONS}`
             })
 
       - name: river
@@ -72,8 +78,14 @@ jobs:
           echo "## river" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
-          echo "VERSIONS=$(cat tmpfile)" >> "$GITHUB_OUTPUT"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'RIVER_VERSIONS<<EOF'
+            echo '```'
+            cat tmpfile
+            echo '```'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
           rm tmpfile
 
       - name: comment
@@ -85,7 +97,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions are used for river:\n\`\`\`${{ steps.river.outputs.VERSIONS }}\`\`\``
+              body: `multiple versions are used for river:\n${process.env.RIVER_VERSIONS}`
             })
 
       - name: tensorflow
@@ -107,8 +119,14 @@ jobs:
           echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
           echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
           cat tmpfile >> $GITHUB_STEP_SUMMARY
-          echo "VERSIONS=$(cat tmpfile)" >> "$GITHUB_OUTPUT"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'TENSORFLOW_VERSIONS<<EOF'
+            echo '```'
+            cat tmpfile
+            echo '```'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
           rm tmpfile
 
       - name: comment
@@ -120,7 +138,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions are used for tensorflow:\n\`\`\`${{ steps.tensorflow.outputs.VERSIONS }}\`\`\``
+              body: `multiple versions are used for tensorflow:\n${process.env.TENSORFLOW_VERSIONS}`
             })
 
       - name: check if need to commit (after merging)
