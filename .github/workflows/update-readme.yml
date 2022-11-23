@@ -24,8 +24,9 @@ jobs:
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
-          rm tmpfile
 
+          echo "## ray\n$(cat tmpfile)" >> $GITHUB_STEP_SUMMARY
+          rm tmpfile
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
 
       - name: comment
@@ -55,8 +56,9 @@ jobs:
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
-          rm tmpfile
 
+          echo "## river\n$(cat tmpfile)" >> $GITHUB_STEP_SUMMARY
+          rm tmpfile
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
 
       - name: comment
@@ -86,8 +88,9 @@ jobs:
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
-          rm tmpfile
 
+          echo "## tensorflow\n$(cat tmpfile)" >> $GITHUB_STEP_SUMMARY
+          rm tmpfile
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
 
       - name: comment
