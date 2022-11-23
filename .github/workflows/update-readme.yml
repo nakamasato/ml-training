@@ -27,7 +27,7 @@ jobs:
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
           for rec in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/"))
+            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
             echo "- ${rec}: ${version}" >> tmpfile
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
@@ -67,7 +67,7 @@ jobs:
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
           for rec in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/"))
+            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
             echo "- ${rec}: ${version}" >> tmpfile
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
@@ -109,7 +109,7 @@ jobs:
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
           for rec in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/"))
+            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
             echo "- ${rec}: ${version}" >> tmpfile
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
