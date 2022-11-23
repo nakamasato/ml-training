@@ -6,6 +6,9 @@ on:
       - synchronize
       - reopened
       - closed
+    paths:
+      - '**/requirements.txt'
+      - .github/workflows/update-readme.yml
 
 env:
   BRANCH_NAME: terraform-datadog-keep-up-to-date
@@ -27,7 +30,8 @@ jobs:
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
           for rec in `find . -type f -name requirements.txt`; do
-            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "- ${rec}: ${version}" >> tmpfile
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
@@ -40,9 +44,7 @@ jobs:
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'RIVER_VERSIONS<<EOF'
-            echo '```'
-            cat tmpfile | sort | uniq
-            echo '```'
+            cat tmpfile
             echo 'EOF'
           } >> "$GITHUB_ENV"
           rm tmpfile
@@ -68,7 +70,8 @@ jobs:
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
           for rec in `find . -type f -name requirements.txt`; do
-            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "- ${rec}: ${version}" >> tmpfile
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
@@ -109,7 +112,8 @@ jobs:
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
           for rec in `find . -type f -name requirements.txt`; do
-            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+            version=$(grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "- ${rec}: ${version}" >> tmpfile
           done
           VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
