@@ -15,6 +15,7 @@ jobs:
         run: |
           PACKAGE=ray;
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/ray-project/ray/releases/tag/ray-
+          ls **/requirements.txt
           VERSION_COUNT=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | sort | uniq | wc -l | sed 's/ *//g')
           LATEST_VERSION=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
