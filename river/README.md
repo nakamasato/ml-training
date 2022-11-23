@@ -6,7 +6,7 @@ Practice online machine learning library [river](https://github.com/online-ml/ri
 
 ## Versions
 
-river: [](https://github.com/online-ml/river/releases/tag/0.14.0)
+river: [0.14.0](https://github.com/online-ml/river/releases/tag/0.14.0)
 
 
 ## Components
