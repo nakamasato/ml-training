@@ -6,8 +6,7 @@ Practice online machine learning library [river](https://github.com/online-ml/ri
 
 ## Versions
 
-- Python: 3.9
-- river: [0.14.0](https://pypi.org/project/river/0.14.0/)
+river: [](https://github.com/online-ml/river/releases/tag/0.14.0)
 
 
 ## Components
