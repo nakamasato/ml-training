@@ -2,7 +2,7 @@
 
 ## Version
 
-tensorflow: [](https://github.com/tensorflow/tensorflow/releases/tag/v)
+tensorflow: [](https://github.com/tensorflow/tensorflow/releases/tag/v2.11.0)
 ## Contents
 1. [Parameter Server Training](parameter-server-training)
 1. [Multi Worker Mirrored Strategy](multi-worker-mirrored-strategy)
