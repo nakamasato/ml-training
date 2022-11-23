@@ -28,7 +28,7 @@ numpy==1.22.4
 oauthlib==3.2.2
 opt-einsum==3.3.0
 packaging==21.3
-platformdirs==2.5.2
+platformdirs==2.5.4
 protobuf==3.19.5
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
