@@ -1,8 +1,10 @@
 # Pytorch
 
-version 1.11.0
+## version
 
-Prepare:
+pytorch: 1.11.0
+
+## Prepare
 
 ```
 python -m venv venv
@@ -11,7 +13,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Run:
+## Run
 
 ```
 python distributed_example.py

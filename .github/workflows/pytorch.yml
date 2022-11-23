@@ -2,7 +2,9 @@ name: pytorch
 on:
   pull_request:
     paths:
-      - pytorch/requirements.txt
+      - 'pytorch/**'
+      - '!pytorch/README.md'
+      - '!pytorch/**/README.md'
       - .github/workflows/pytorch.yml
 defaults:
   run:
