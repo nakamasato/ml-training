@@ -144,6 +144,47 @@ jobs:
               body: `## tensorflow\nmultiple versions are used:\n${process.env.TENSORFLOW_VERSIONS}`
             })
 
+      - name: pytorch
+        id: pytorch
+        working-directory: pytorch
+        run: |
+          PACKAGE=pytorch;
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/pytorch/pytorch/releases/tag/v
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for req in `find . -type f -name requirements.txt`; do
+            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+            echo "$version" >> versions
+            echo "- ${req}: ${version}" >> req_versions
+          done
+          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## pytorch" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat req_versions >> $GITHUB_STEP_SUMMARY
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'PYTORCH_VERSIONS<<EOF'
+            cat req_versions
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+          rm req_versions versions
+
+      - name: comment
+        if: ${{ github.event.pull_request.merged != true && steps.pytorch.outputs.VERSION_COUNT != '1' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## pytorch\nmultiple versions are used:\n${process.env.PYTORCH_VERSIONS}`
+            })
+
       - name: check if need to commit (after merging)
         if: github.event.pull_request.merged == true
         id: need_commit
