@@ -1,0 +1,177 @@
+name: update-readme
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+env:
+  BRANCH_NAME: terraform-datadog-keep-up-to-date
+  BASE_BRANCH_NAME: main
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: ray
+        id: ray
+        working-directory: ray
+        run: |
+          PACKAGE=ray
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/ray-project/ray/releases/tag/ray-
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## ray" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'RIVER_VERSIONS<<EOF'
+            echo '```'
+            cat tmpfile | sort | uniq
+            echo '```'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+          rm tmpfile
+
+      - name: comment
+        if: ${{ github.event.pull_request.merged != true && steps.ray.outputs.VERSION_COUNT != '1' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ray\nmultiple versions are used:\n${process.env.RAY_VERSIONS}`
+            })
+
+      - name: river
+        id: river
+        working-directory: river
+        run: |
+          PACKAGE=river;
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/online-ml/river/releases/tag/
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## river" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'RIVER_VERSIONS<<EOF'
+            echo '```'
+            cat tmpfile | sort | uniq
+            echo '```'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+          rm tmpfile
+
+      - name: comment
+        if: ${{ github.event.pull_request.merged != true && steps.river.outputs.VERSION_COUNT != '1' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## river\nmultiple versions are used:\n${process.env.RIVER_VERSIONS}`
+            })
+
+      - name: tensorflow
+        id: tensorflow
+        working-directory: tensorflow
+        run: |
+          PACKAGE=tensorflow;
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/tensorflow/tensorflow/releases/tag/v
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'TENSORFLOW_VERSIONS<<EOF'
+            echo '```'
+            cat tmpfile | sort | uniq
+            echo '```'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+          rm tmpfile
+
+      - name: comment
+        if: ${{ github.event.pull_request.merged != true && steps.tensorflow.outputs.VERSION_COUNT != '1' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## tensorflow\nmultiple versions are used:\n${process.env.TENSORFLOW_VERSIONS}`
+            })
+
+      - name: check if need to commit (after merging)
+        if: github.event.pull_request.merged == true
+        id: need_commit
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "::set-output name=need_commit::true
+          else
+            echo "::set-output name=need_commit::false
+          fi
+
+      - name: commit and push (after merging)
+        if: steps.need_commit.outputs.need_commit == 'true'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b ${{ env.BRANCH_NAME }}
+          git add .
+          git commit -m 'update date'
+          git push -u origin HEAD -f
+
+      - name: check if pr exists (after merging)
+        id: check_pr
+        if: steps.need_commit.outputs.need_commit == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # used by gh
+        run: |
+          echo "::set-output name=count::$(gh pr list -S head:${{ env.BRANCH_NAME }} -B ${{ env.BASE_BRANCH_NAME }} | wc -l)"
+
+      - name: create pr (after merging)
+        if: ${{ steps.need_commit.outputs.need_commit == 'true' && steps.check_pr.outputs.count == 0 }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # used by gh
+        run: |
+          gh pr create -B "${{ env.BASE_BRANCH_NAME }}" -t "Update last updated date in README" -b ""
