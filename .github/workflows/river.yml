@@ -2,7 +2,9 @@ name: river
 on:
   pull_request:
     paths:
-      - river/**
+      - 'river/**'
+      - '!river/README.md'
+      - '!river/**/README.md'
       - .github/workflows/river.yml
 
 jobs:
