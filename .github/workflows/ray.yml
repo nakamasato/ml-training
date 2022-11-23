@@ -2,7 +2,9 @@ name: ray
 on:
   pull_request:
     paths:
-      - ray/requirements.txt
+      - ray/**/*
+      - '!ray/README.md'
+      - '!ray/**/README.md'
       - .github/workflows/ray.yml
 defaults:
   run:
