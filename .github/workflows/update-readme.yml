@@ -56,7 +56,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions are used for ray:\n${process.env.RAY_VERSIONS}`
+              body: `## ray\nmultiple versions are used:\n${process.env.RAY_VERSIONS}`
             })
 
       - name: river
@@ -97,7 +97,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions are used for river:\n${process.env.RIVER_VERSIONS}`
+              body: `## river\nmultiple versions are used:\n${process.env.RIVER_VERSIONS}`
             })
 
       - name: tensorflow
@@ -138,7 +138,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `multiple versions are used for tensorflow:\n${process.env.TENSORFLOW_VERSIONS}`
+              body: `## tensorflow\nmultiple versions are used:\n${process.env.TENSORFLOW_VERSIONS}`
             })
 
       - name: check if need to commit (after merging)
