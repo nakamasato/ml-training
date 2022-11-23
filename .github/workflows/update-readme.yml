@@ -13,11 +13,15 @@ jobs:
         id: ray
         working-directory: ray
         run: |
-          PACKAGE=ray;
+          PACKAGE=ray
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/ray-project/ray/releases/tag/ray-
-          ls
-          VERSION_COUNT=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
 
@@ -42,10 +46,14 @@ jobs:
           PACKAGE=river;
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/online-ml/river/releases/tag/
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
-          VERSION_COUNT=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
-          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
 
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
 
@@ -68,10 +76,14 @@ jobs:
           PACKAGE=tensorflow;
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/tensorflow/tensorflow/releases/tag/v
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
-          VERSION_COUNT=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(grep "${PACKAGE}==" **/requirements.txt | sed "s/.*:${PACKAGE}==\(.*\)/\1/" | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
-          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
 
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
 
