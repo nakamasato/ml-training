@@ -1,0 +1,131 @@
+name: update-readme
+on:
+  pull_request:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: ray
+        id: ray
+        working-directory: ray
+        run: |
+          PACKAGE=ray
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/ray-project/ray/releases/tag/ray-
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## ray" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          rm tmpfile
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: comment
+        if: steps.ray.outputs.VERSION_COUNT != '1'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `multiple versions ((${{ steps.ray.outputs.VERSION_COUNT }})) are used for ray.`
+            })
+
+      - name: river
+        id: river
+        working-directory: river
+        run: |
+          PACKAGE=river;
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/online-ml/river/releases/tag/
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## river" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          rm tmpfile
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: comment
+        if: steps.river.outputs.VERSION_COUNT != '1'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `multiple versions (${{ steps.river.outputs.VERSION_COUNT }}) are used for river.`
+            })
+
+      - name: tensorflow
+        id: tensorflow
+        working-directory: tensorflow
+        run: |
+          PACKAGE=tensorflow;
+          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/tensorflow/tensorflow/releases/tag/v
+          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
+
+          for rec in `find . -type f -name requirements.txt`; do
+            grep "${PACKAGE}==" $rec | sed "s/${PACKAGE}==\(.*\)/\1/" >> tmpfile
+          done
+          VERSION_COUNT=$(cat tmpfile | sort | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(cat tmpfile | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$VERSION]($RELEASE_LINK)#" README.md
+
+          echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
+          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
+          cat tmpfile >> $GITHUB_STEP_SUMMARY
+          rm tmpfile
+          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: comment
+        if: steps.tensorflow.outputs.VERSION_COUNT != '1'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `multiple versions (${{ steps.tensorflow.outputs.VERSION_COUNT }}) are used for tensorflow.`
+            })
+
+      - name: commit
+        id: commit
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git status
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add .
+            git commit -m "update version in readme"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: push
+        uses: ad-m/github-push-action@master
+        if: steps.commit.outputs.changed == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}

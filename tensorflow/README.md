@@ -1,4 +1,8 @@
 # Tensorflow Training
+
+## Version
+
+tensorflow: [](https://github.com/tensorflow/tensorflow/releases/tag/v)
 ## Contents
 1. [Parameter Server Training](parameter-server-training)
 1. [Multi Worker Mirrored Strategy](multi-worker-mirrored-strategy)
