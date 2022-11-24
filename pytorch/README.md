@@ -2,7 +2,7 @@
 
 ## version
 
-torch: 1.11.0
+torch: [1.11.0](https://github.com/pytorch/pytorch/releases/tag/v1.11.0)
 
 ## Prepare
 
