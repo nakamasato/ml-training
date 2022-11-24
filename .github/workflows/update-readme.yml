@@ -8,6 +8,7 @@ on:
       - closed
     paths:
       - '**/requirements.txt'
+      - '**/README.md'
       - .github/workflows/update-readme.yml
 
 env:
