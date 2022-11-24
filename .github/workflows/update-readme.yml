@@ -148,7 +148,7 @@ jobs:
         id: pytorch
         working-directory: pytorch
         run: |
-          PACKAGE=pytorch;
+          PACKAGE=torch;
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/pytorch/pytorch/releases/tag/v
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
