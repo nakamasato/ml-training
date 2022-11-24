@@ -1,4 +1,4 @@
-certifi==2022.6.15
+certifi==2022.9.24
 charset-normalizer==2.0.12
 idna==3.3
 numpy==1.22.4
