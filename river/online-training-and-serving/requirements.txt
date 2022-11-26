@@ -61,4 +61,4 @@ typing_extensions==4.4.0
 virtualenv==20.16.7
 Werkzeug==2.2.2
 wrapt==1.14.1
-zipp==3.10.0
+zipp==3.11.0
