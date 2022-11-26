@@ -52,4 +52,4 @@ urllib3==1.26.13
 virtualenv==20.16.7
 Werkzeug==2.2.2
 wrapt==1.14.1
-zipp==3.8.0
+zipp==3.11.0
