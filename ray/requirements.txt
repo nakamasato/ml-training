@@ -49,7 +49,7 @@ termcolor==2.1.1
 torch==1.11.0
 typing_extensions==4.4.0
 urllib3==1.26.13
-virtualenv==20.17.0
+virtualenv==20.17.1
 Werkzeug==2.2.2
 wrapt==1.14.1
 zipp==3.11.0
