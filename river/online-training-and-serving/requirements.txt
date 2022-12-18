@@ -17,7 +17,7 @@ graphviz==0.20.1
 gym==0.26.2
 gym-notices==0.0.8
 identify==2.5.10
-importlib-metadata==5.1.0
+importlib-metadata==5.2.0
 iniconfig==1.1.1
 isort==5.11.3
 itsdangerous==2.1.2
