@@ -219,4 +219,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # used by gh
         run: |
-          gh pr create -B "${{ env.BASE_BRANCH_NAME }}" -t "Update last updated date in README" -b ""
+          gh pr create -B "${{ env.BASE_BRANCH_NAME }}" -t "Update versions in README" -b ""
