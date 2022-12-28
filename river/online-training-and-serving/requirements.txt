@@ -9,7 +9,7 @@ cycler==0.11.0
 Deprecated==1.2.13
 distlib==0.3.6
 exceptiongroup==1.1.0
-filelock==3.8.2
+filelock==3.9.0
 flake8==6.0.0
 Flask==2.2.2
 fonttools==4.38.0
