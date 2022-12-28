@@ -36,7 +36,7 @@ packaging==22.0
 pandas==1.5.2
 pathspec==0.10.3
 Pillow==9.3.0
-platformdirs==2.6.1
+platformdirs==2.6.2
 pluggy==1.0.0
 pre-commit==2.21.0
 pycodestyle==2.10.0
