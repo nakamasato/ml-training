@@ -18,7 +18,7 @@ gym==0.26.2
 gym-notices==0.0.8
 identify==2.5.12
 importlib-metadata==6.0.0
-iniconfig==1.1.1
+iniconfig==2.0.0
 isort==5.11.4
 itsdangerous==2.1.2
 Jinja2==3.1.2
