@@ -19,7 +19,7 @@ Markdown==3.4.1
 numpy==1.24.1
 oauthlib==3.2.2
 opt-einsum==3.3.0
-packaging==22.0
+packaging==23.0
 portpicker==1.5.2
 protobuf==3.19.5
 psutil==5.9.4

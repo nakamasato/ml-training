@@ -27,7 +27,7 @@ msgpack==1.0.4
 numpy==1.24.1
 oauthlib==3.2.2
 opt-einsum==3.3.0
-packaging==22.0
+packaging==23.0
 platformdirs==2.6.2
 protobuf==3.19.5
 pyasn1==0.4.8
