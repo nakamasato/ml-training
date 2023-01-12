@@ -2,7 +2,7 @@ absl-py==1.4.0
 astunparse==1.6.3
 cachetools==5.2.1
 certifi==2022.12.7
-charset-normalizer==2.1.1
+charset-normalizer==3.0.1
 flatbuffers==23.1.4
 gast==0.4.0
 google-auth==2.16.0
