@@ -7,7 +7,7 @@ pandas==1.5.2
 pathspec==0.10.3
 platformdirs==2.6.2
 python-dateutil==2.8.2
-pytz==2022.7
+pytz==2022.7.1
 regex==2022.10.31
 river==0.14.0
 scipy==1.10.0
