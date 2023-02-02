@@ -29,7 +29,7 @@ oauthlib==3.2.2
 opt-einsum==3.3.0
 packaging==23.0
 platformdirs==2.6.2
-protobuf==3.19.5
+protobuf==4.21.12
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==3.0.9
@@ -44,7 +44,8 @@ tensorboard==2.11.2
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
 tensorflow-estimator==2.11.0
-tensorflow==2.11.0
+tensorflow==2.11.0; sys_platform != 'darwin' or platform_machine != 'arm64'
+tensorflow-macos==2.11.0; sys_platform == 'darwin' and platform_machine == 'arm64'
 termcolor==2.2.0
 torch==1.13.1
 typing_extensions==4.4.0
