@@ -14,7 +14,7 @@ on:
 env:
   BRANCH_NAME: update-readme
   BASE_BRANCH_NAME: main
-  COMMENT_BODY_IDENTIFIER: github-comment
+  COMMENT_BODY_IDENTIFIER: multiple versions are used
 
 jobs:
   update-readme:
