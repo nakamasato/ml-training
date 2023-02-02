@@ -3,10 +3,12 @@ import json
 import os
 
 import numpy as np
+from ray.air import ScalingConfig, session
+from ray.train.tensorflow import TensorflowTrainer
+
 import ray
 import tensorflow as tf
 from ray import train
-from ray.train import Trainer
 from tensorflow.keras.callbacks import Callback
 
 
@@ -21,32 +23,39 @@ def mnist_dataset(batch_size):
     # You need to convert them to float32 with values in the [0, 1] range.
     x_train = x_train / np.float32(255)
     y_train = y_train.astype(np.int64)
-    train_dataset = tf.data.Dataset.from_tensor_slices(
-        (x_train, y_train)).shuffle(60000).repeat().batch(batch_size)
+    train_dataset = (
+        tf.data.Dataset.from_tensor_slices((x_train, y_train))
+        .shuffle(60000)
+        .repeat()
+        .batch(batch_size)
+    )
     return train_dataset
 
 
 def build_and_compile_cnn_model(config):
     learning_rate = config.get("lr", 0.001)
-    model = tf.keras.Sequential([
-        tf.keras.layers.InputLayer(input_shape=(28, 28)),
-        tf.keras.layers.Reshape(target_shape=(28, 28, 1)),
-        tf.keras.layers.Conv2D(32, 3, activation='relu'),
-        tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(10)
-    ])
+    model = tf.keras.Sequential(
+        [
+            tf.keras.layers.InputLayer(input_shape=(28, 28)),
+            tf.keras.layers.Reshape(target_shape=(28, 28, 1)),
+            tf.keras.layers.Conv2D(32, 3, activation="relu"),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dense(10),
+        ]
+    )
     model.compile(
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate),
-        metrics=['accuracy'])
+        metrics=["accuracy"],
+    )
     return model
 
 
 def train_func(config):
 
     per_worker_batch_size = config.get("batch_size", 64)
-    epochs = config.get("epochs", 3)
+    epochs = config.get("num_epochs", 3)
     steps_per_epoch = config.get("steps_per_epoch", 70)
 
     tf_config = json.loads(os.environ["TF_CONFIG"])
@@ -71,21 +80,24 @@ def train_func(config):
 
 
 def train_tensorflow_mnist(num_workers=2, use_gpu=False, epochs=4):
-    trainer = Trainer(backend="tensorflow", num_workers=num_workers, use_gpu=use_gpu)
-
-    trainer.start()  # set up resources
-    results = trainer.run(
-        train_func=train_func,
-        config={"lr": 1e-3, "batch_size": 64, "epochs": epochs}
+    trainer = TensorflowTrainer(
+        train_func,
+        train_loop_config={"lr": 1e-3, "batch_size": 64, "num_epochs": epochs},
+        scaling_config=ScalingConfig(num_workers=num_workers, use_gpu=use_gpu),
     )
-    trainer.shutdown()  # clean up resources
-    print(f"Results: {results[0]}")
+
+    results = trainer.fit()
+    print(f"Results: {results}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--address", required=False, default="auto", type=str, help="the address to use for Ray"
+        "--address",
+        required=False,
+        default="auto",
+        type=str,
+        help="the address to use for Ray",
     )
     parser.add_argument(
         "--num-workers",
