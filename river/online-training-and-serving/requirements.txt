@@ -31,7 +31,7 @@ mpmath==1.2.1
 mypy==0.991
 mypy-extensions==1.0.0
 nodeenv==1.7.0
-numpy==1.24.1
+numpy==1.24.2
 packaging==23.0
 pandas==1.5.3
 pathspec==0.11.0
