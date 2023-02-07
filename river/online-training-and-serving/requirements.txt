@@ -46,7 +46,7 @@ pytest==7.2.1
 python-dateutil==2.8.2
 pytz==2022.7.1
 PyYAML==6.0
-redis==4.4.2
+redis==4.5.0
 redis-collections==0.11.0
 -e git+ssh://git@github.com/nakamasato/river@9e1ec6e2966bfdb03de5c64829824de5a4158d80#egg=river
 scikit-learn==1.2.1
