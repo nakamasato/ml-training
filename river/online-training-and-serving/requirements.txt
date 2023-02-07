@@ -28,7 +28,7 @@ MarkupSafe==2.1.2
 matplotlib==3.6.3
 mccabe==0.7.0
 mpmath==1.2.1
-mypy==0.991
+mypy==1.0.0
 mypy-extensions==1.0.0
 nodeenv==1.7.0
 numpy==1.24.2
