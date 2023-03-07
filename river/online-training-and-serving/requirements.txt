@@ -12,7 +12,7 @@ exceptiongroup==1.1.0
 filelock==3.9.0
 flake8==6.0.0
 Flask==2.2.3
-fonttools==4.38.0
+fonttools==4.39.0
 graphviz==0.20.1
 gym==0.26.2
 gym-notices==0.0.8
