@@ -1,7 +1,6 @@
 import argparse
 
 from ray.air import ScalingConfig, session
-from ray.train import Trainer
 from ray.train.tensorflow import TensorflowTrainer
 from ray.train.torch import TorchTrainer
 

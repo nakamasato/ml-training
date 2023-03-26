@@ -3,7 +3,7 @@ import json
 import os
 
 import numpy as np
-from ray.air import ScalingConfig, session
+from ray.air import ScalingConfig
 from ray.train.tensorflow import TensorflowTrainer
 
 import ray
