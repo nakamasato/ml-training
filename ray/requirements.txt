@@ -29,7 +29,7 @@ oauthlib==3.2.2
 opt-einsum==3.3.0
 packaging==23.0
 platformdirs==3.1.1
-protobuf==3.20.0
+protobuf==3.20.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==3.0.9
