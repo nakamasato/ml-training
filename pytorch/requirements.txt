@@ -7,4 +7,4 @@ requests==2.31.0
 torch==1.13.1
 torchvision==0.14.1
 typing_extensions==4.5.0
-urllib3==1.26.15
+urllib3==1.26.16
