@@ -60,7 +60,7 @@ river==0.15.0
 rsa==4.7.2
 ruamel.yaml==0.17.10
 ruamel.yaml.clib==0.2.6
-scipy==1.9.3
+scipy==1.10.0
 six==1.16.0
 starlette==0.27.0
 toml==0.10.2
