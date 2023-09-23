@@ -18,11 +18,18 @@ jobs:
         with:
           python-version: "3.9"
           cache: 'pip'
+
       - name: install
         run: pip install -r requirements.txt
-      - name: run
-        run: |
-          python 02-task-pattern/task_pattern_map_and_reduce.py
-          python 05-train/simple_example.py -b torch
-          python 05-train/simple_example.py -b tensorflow
-          python 05-train/tensorflow_example.py --smoke-test
+
+      - name: 02-task-pattern
+        run: python 02-task-pattern/task_pattern_map_and_reduce.py
+
+      - name: 05-train simple with torch
+        run: python 05-train/simple_example.py -b torch
+
+      - name: 05-train simple with tensorflow
+        run: python 05-train/simple_example.py -b tensorflow
+
+      - name: 05-train tensorflow example
+        run: python 05-train/tensorflow_example.py --smoke-test
