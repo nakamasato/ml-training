@@ -44,5 +44,6 @@ jobs:
       # | TensorflowTrainer_6383c_00000 | PENDING  |       |
       # +-------------------------------+----------+-------+
 
-      - name: 05-train tensorflow example
-        run: python 05-train/tensorflow_example.py --smoke-test
+      # - name: 05-train tensorflow example
+      #   run: python 05-train/tensorflow_example.py --smoke-test
+      # TODO: https://github.com/nakamasato/ml-training/issues/298
