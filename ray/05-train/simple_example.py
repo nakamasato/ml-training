@@ -8,7 +8,7 @@ import ray
 
 
 def train_func(config):
-    train_dataset = session.get_dataset_shard("train")
+    # train_dataset = session.get_dataset_shard("train")
     for i in range(config["num_epochs"]):
         session.report({"epoch": i})
 
