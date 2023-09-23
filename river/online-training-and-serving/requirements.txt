@@ -1,4 +1,4 @@
-async-timeout==4.0.2
+async-timeout==4.0.3
 attrs==22.2.0
 black==23.3.0
 cfgv==3.3.1
