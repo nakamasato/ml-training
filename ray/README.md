@@ -2,7 +2,7 @@
 
 ## Version
 
-ray: [2.2.0](https://github.com/ray-project/ray/releases/tag/ray-2.2.0)
+ray: [2.3.1](https://github.com/ray-project/ray/releases/tag/ray-2.3.1)
 
 ## 1. [Getting Started](https://docs.ray.io/en/latest/ray-overview/index.html)
 

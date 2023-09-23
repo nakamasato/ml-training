@@ -18,6 +18,8 @@ env:
 
 jobs:
   update-readme:
+    permissions:
+      pull-requests: write  # for dependabot
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
