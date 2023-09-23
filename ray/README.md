@@ -38,6 +38,6 @@ python 01-getting-started/task_example.py
 
 ## Other Contents
 
-- [3. Cluster](03-cluster)
-- [4. Serve](04-serve)
-- [5. Train](05-train)
+3. [Cluster](03-cluster)
+4. [Serve](04-serve)
+5. [Train](05-train)
