@@ -62,7 +62,7 @@ ruamel.yaml==0.17.10
 ruamel.yaml.clib==0.2.6
 scipy==1.9.3
 six==1.16.0
-starlette==0.25.0
+starlette==0.27.0
 toml==0.10.2
 tomli==1.2.1
 typing-extensions==3.10.0.0
