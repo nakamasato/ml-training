@@ -5,7 +5,7 @@ attrs==22.2.0
 cachetools==5.3.1
 certifi==2023.7.22
 charset-normalizer==3.1.0
-click==8.0.4
+click==8.1.7
 distlib==0.3.6
 filelock==3.9.1
 flatbuffers==23.3.3
