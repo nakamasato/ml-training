@@ -1,6 +1,6 @@
 async-timeout==4.0.3
 attrs==22.2.0
-black==23.3.0
+black==23.9.1
 cfgv==3.4.0
 click==8.1.7
 cloudpickle==2.2.1
