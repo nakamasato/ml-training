@@ -4,7 +4,7 @@ black==23.9.1
 cfgv==3.4.0
 click==8.1.7
 cloudpickle==2.2.1
-contourpy==1.0.7
+contourpy==1.1.1
 cycler==0.11.0
 Deprecated==1.2.14
 distlib==0.3.7
