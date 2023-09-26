@@ -54,7 +54,7 @@ scipy==1.11.2
 six==1.16.0
 SQLAlchemy==2.0.21
 sympy==1.11.1
-threadpoolctl==3.1.0
+threadpoolctl==3.2.0
 toml==0.10.2
 tomli==2.0.1
 typing_extensions==4.5.0
