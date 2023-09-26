@@ -50,7 +50,7 @@ redis==4.5.4
 redis-collections==0.11.0
 -e git+ssh://git@github.com/nakamasato/river@9e1ec6e2966bfdb03de5c64829824de5a4158d80#egg=river
 scikit-learn==1.2.2
-scipy==1.10.1
+scipy==1.11.2
 six==1.16.0
 SQLAlchemy==2.0.21
 sympy==1.11.1
