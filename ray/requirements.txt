@@ -29,7 +29,7 @@ numpy==1.23.0
 oauthlib==3.2.2
 opt-einsum==3.3.0
 packaging==23.0
-platformdirs==3.1.1
+platformdirs==3.10.0
 protobuf==4.24.3
 pandas==2.1.1
 pyarrow==13.0.0
