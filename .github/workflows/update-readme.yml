@@ -50,19 +50,22 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/ray-project/ray/releases/tag/ray-
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for req in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+          # shellcheck disable=SC2044
+          for req in $(find . -type f -name requirements.txt); do
+            version=$(grep "${PACKAGE}==" "$req" | sed "s/${PACKAGE}==\(.*\)/\1/")
             echo "$version" >> versions
             echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          VERSION_COUNT=$(sort versions | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(grep -E "$VERSION_REGEX" versions | sort -r | uniq | head -1)
+          RELEASE_LINK="${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}"
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
-          echo "## ray" >> $GITHUB_STEP_SUMMARY
-          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat req_versions >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## ray"
+            echo "release link: $RELEASE_LINK"
+            cat req_versions
+          } >> "$GITHUB_STEP_SUMMARY"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'RIVER_VERSIONS<<EOF'
@@ -91,19 +94,22 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/online-ml/river/releases/tag/
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for req in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+          # shellcheck disable=SC2044
+          for req in $(find . -type f -name requirements.txt); do
+            version=$(grep "${PACKAGE}==" "$req" | sed "s/${PACKAGE}==\(.*\)/\1/")
             echo "$version" >> versions
             echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
+          VERSION_COUNT=$(sort versions | uniq | wc -l | sed 's/ *//g')
+          LATEST_VERSION=$(grep -E "$VERSION_REGEX" versions | sort -r | uniq | head -1)
           RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
-          echo "## river" >> $GITHUB_STEP_SUMMARY
-          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat req_versions >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## river"
+            echo "release link: $RELEASE_LINK"
+            cat req_versions
+          } >> "$GITHUB_STEP_SUMMARY"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'RIVER_VERSIONS<<EOF'
@@ -132,19 +138,22 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/tensorflow/tensorflow/releases/tag/v
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for req in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+          # shellcheck disable=SC2044
+          for req in $(find . -type f -name requirements.txt); do
+            version=$(grep "${PACKAGE}==" "$req" | sed "s/${PACKAGE}==\(.*\)/\1/")
             echo "$version" >> versions
             echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          VERSION_COUNT="$(sort versions | uniq | wc -l | sed 's/ *//g')"
+          LATEST_VERSION="$(grep -E "$VERSION_REGEX" versions | sort -r | uniq | head -1)"
+          RELEASE_LINK="${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}"
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
-          echo "## tensorflow" >> $GITHUB_STEP_SUMMARY
-          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat req_versions >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## tensorflow"
+            echo "release link: $RELEASE_LINK"
+            cat req_versions
+          } >> "$GITHUB_STEP_SUMMARY"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'TENSORFLOW_VERSIONS<<EOF'
@@ -173,19 +182,23 @@ jobs:
           PACKAGE_RELEASE_LINK_PREFIX=https://github.com/pytorch/pytorch/releases/tag/v
           VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
 
-          for req in `find . -type f -name requirements.txt`; do
-            version=$(grep "${PACKAGE}==" $req | sed "s/${PACKAGE}==\(.*\)/\1/")
+          # TODO: fix
+          # shellcheck disable=SC2044
+          for req in $(find . -type f -name requirements.txt); do
+            version="$(grep "${PACKAGE}==" "$req" | sed "s/${PACKAGE}==\(.*\)/\1/")"
             echo "$version" >> versions
             echo "- ${req}: ${version}" >> req_versions
           done
-          VERSION_COUNT=$(cat versions | sort | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(cat versions | grep -E $VERSION_REGEX | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
+          VERSION_COUNT="$(sort versions | uniq | wc -l | sed 's/ *//g')"
+          LATEST_VERSION="$(grep -E "$VERSION_REGEX" versions| sort -r | uniq | head -1)"
+          RELEASE_LINK="${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}"
           sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
 
-          echo "## pytorch" >> $GITHUB_STEP_SUMMARY
-          echo "release link: $RELEASE_LINK" >> $GITHUB_STEP_SUMMARY
-          cat req_versions >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## pytorch"
+            echo "release link: $RELEASE_LINK"
+            cat req_versions
+          } >> "$GITHUB_STEP_SUMMARY"
           echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
           {
             echo 'PYTORCH_VERSIONS<<EOF'
@@ -211,9 +224,9 @@ jobs:
         id: need_commit
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "::set-output name=need_commit::true
+            echo "need_commit=true" >> "$GITHUB_OUTPUT"
           else
-            echo "::set-output name=need_commit::false
+            echo "need_commit=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: commit and push (after merging)
@@ -232,7 +245,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # used by gh
         run: |
-          echo "::set-output name=count::$(gh pr list -S head:${{ env.BRANCH_NAME }} -B ${{ env.BASE_BRANCH_NAME }} | wc -l)"
+          echo "count=$(gh pr list -S head:${{ env.BRANCH_NAME }} -B ${{ env.BASE_BRANCH_NAME }} | wc -l)" >> "$GITHUB_OUTPUT"
 
       - name: create pr (after merging)
         if: ${{ steps.need_commit.outputs.need_commit == 'true' && steps.check_pr.outputs.count == 0 }}
