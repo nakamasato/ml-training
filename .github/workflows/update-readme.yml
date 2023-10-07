@@ -224,9 +224,9 @@ jobs:
         id: need_commit
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "::set-output name=need_commit::true
+            echo "need_commit=true" >> "$GITHUB_OUTPUT"
           else
-            echo "::set-output name=need_commit::false
+            echo "need_commit=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: commit and push (after merging)
