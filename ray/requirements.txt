@@ -58,6 +58,6 @@ typing_extensions==4.5.0
 tzdata==2023.3
 urllib3==1.26.18
 virtualenv==20.24.5
-Werkzeug==2.3.7
+Werkzeug==3.0.1
 wrapt==1.15.0
 zipp==3.17.0
