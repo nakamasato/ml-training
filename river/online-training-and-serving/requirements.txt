@@ -59,6 +59,6 @@ toml==0.10.2
 tomli==2.0.1
 typing_extensions==4.5.0
 virtualenv==20.24.5
-Werkzeug==2.3.7
+Werkzeug==3.0.1
 wrapt==1.15.0
 zipp==3.17.0
