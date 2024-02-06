@@ -1,5 +1,5 @@
 ansible==8.5.0
-ansible-core==2.15.8
+ansible-core==2.15.9
 ansible-runner==2.1.1
 appdirs==1.4.4
 asgiref==3.4.1
