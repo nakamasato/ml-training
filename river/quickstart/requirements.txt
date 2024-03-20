@@ -1,4 +1,4 @@
-black==23.9.1
+black==24.3.0
 click==8.1.7
 Cython==3.0.2
 mypy-extensions==1.0.0
