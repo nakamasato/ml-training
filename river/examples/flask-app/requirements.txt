@@ -4,7 +4,7 @@ ansible-runner==2.1.1
 appdirs==1.4.4
 asgiref==3.4.1
 backports.entry-points-selectable==1.1.0
-black==21.7b0
+black==24.3.0
 cachetools==4.2.2
 certifi==2023.7.22
 cffi==1.14.6
