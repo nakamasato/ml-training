@@ -4,7 +4,7 @@ idna==3.4
 numpy==1.24.2
 Pillow==10.2.0
 requests==2.31.0
-torch==1.13.1
+torch==2.2.2
 torchvision==0.14.1
 typing_extensions==4.5.0
 urllib3==1.26.18
