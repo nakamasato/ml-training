@@ -1,6 +1,6 @@
 certifi==2023.7.22
 charset-normalizer==3.2.0
-idna==3.4
+idna==3.7
 numpy==1.24.2
 Pillow==10.2.0
 requests==2.31.0

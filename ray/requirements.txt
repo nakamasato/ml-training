@@ -16,7 +16,7 @@ google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 grpcio==1.58.0
 h5py==3.9.0
-idna==3.4
+idna==3.7
 importlib-metadata==6.8.0
 jsonschema==4.19.1
 keras==2.13.1
