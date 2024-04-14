@@ -10,6 +10,10 @@ jobs:
 
       - name: Set up Python & Poetry
         uses: ./.github/actions/setup-poetry
+        with:
+          install-dependencies: false
 
       - name: ruff
-        run: poetry run ruff check
+        run: |
+          poetry install --only dev --no-root
+          poetry run ruff check
