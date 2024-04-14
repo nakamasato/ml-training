@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Masato Naka <masatonaka1989@gmail.com>"]
 readme = "README.md"
-packages = [{include = "ml_training"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.9"
