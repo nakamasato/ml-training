@@ -25,13 +25,13 @@ def main(backend):
 Train with tensorflow:
 
 ```
-python simple_example.py -b tensorflow
+poetry run python ray/05-train/simple_example.py -b tensorflow
 ```
 
 Train with pytorch:
 
 ```
-python simple_example.py -b pytorch
+poetry run python ray/05-train/simple_example.py -b pytorch
 ```
 
 ## Tensorflow
