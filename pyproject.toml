@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ml-training"
+version = "0.1.0"
+description = ""
+authors = ["Masato Naka <masatonaka1989@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ml_training"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
