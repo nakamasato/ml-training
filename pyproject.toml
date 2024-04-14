@@ -13,6 +13,11 @@ python = "^3.9"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.7"
 
+
+[tool.poetry.group.pytorch.dependencies]
+torch = "1.13.1"
+torchvision = "0.14.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
