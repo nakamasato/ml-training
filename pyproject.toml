@@ -18,6 +18,10 @@ ruff = "^0.3.7"
 torch = "1.13.1"
 torchvision = "0.14.1"
 
+
+[tool.poetry.group.ray.dependencies]
+ray = "2.7.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
