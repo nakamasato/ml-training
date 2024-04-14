@@ -20,4 +20,4 @@ jobs:
 
       - name: run
         run: |
-          poetry run python pytorch/distributed_example.py
+          poetry run python distributed_example.py
