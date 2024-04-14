@@ -14,12 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          cache: 'pip'
-      - name: install
-        run: pip install -r requirements.txt
+
+      - name: Set up Python & Poetry
+        uses: ./.github/actions/setup-poetry
+
       - name: run
         run: |
-          python distributed_example.py
+          poetry run python distributed_example.py

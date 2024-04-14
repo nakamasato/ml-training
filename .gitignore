@@ -7,3 +7,5 @@ __pycache__
 terraform.tfstate*
 *env
 data
+.ruff_cache
+.mypy_cache
