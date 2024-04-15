@@ -2,33 +2,10 @@
 
 ## Steps
 
-1. Check python
-
-    ```
-    python -V
-    Python 3.9.0
-    ```
-
-1. Create venv
-
-    ```
-    python3 -m venv venv
-    ```
-
-    ```
-    source venv/bin/activate
-    ```
-
-1. Install `river`
-
-    ```
-    pip install -r requirements.txt
-    ```
-
 1. Run `main.py`
 
     ```
-    python main.py
+    poetry run python river/quickstart/main.py
     ```
 
     ```

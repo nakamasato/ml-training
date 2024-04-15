@@ -53,26 +53,14 @@ the latent effect with any other features. -> ESPN is learned with `(w_espn, w_n
     - It is more difficult to apply FFMs on numerical data sets.
 ## Prepare
 
-1. Create venv
-
-    ```
-    python3 -m venv venv
-    ```
-
-    ```
-    source venv/bin/activate
-    ```
-
-1. Install `river`.
-
-    ```
-    pip install -r requirements.txt
-    ```
+```
+poetry install --only river --no-root
+```
 
 ## Run
 
 ```
-python main.py
+poetry run python river/examples/fm-for-datalens/main.py
 ```
 
 ```python
