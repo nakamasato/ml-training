@@ -21,11 +21,11 @@ jobs:
       - name: 02-task-pattern
         run: poetry run python 02-task-pattern/task_pattern_map_and_reduce.py
 
-      # - name: 05-train simple with torch
-      #   run: python 05-train/simple_example.py -b torch
+      - name: 05-train simple with torch
+        run: poetry run python 05-train/simple_example.py -b torch
 
-      # - name: 05-train simple with tensorflow
-      #   run: python 05-train/simple_example.py -b tensorflow
+      - name: 05-train simple with tensorflow
+        run: poetry run python 05-train/simple_example.py -b tensorflow
 
       # == Status ==
       # Current time: 2023-09-23 10:32:09 (running for 00:07:35.39)

@@ -7,16 +7,13 @@ torch: [1.13.1](https://github.com/pytorch/pytorch/releases/tag/v1.13.1)
 ## Prepare
 
 ```
-python -m venv venv
-. venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
+poetry install
 ```
 
 ## Run
 
 ```
-python distributed_example.py
+poetry run python pytorch/distributed_example.py
 ```
 
 ## CNN
@@ -54,20 +51,6 @@ ModuleNotFoundError: No module named '_lzma'
 
 ```
 brew install xz
-```
-
-```
-pyenv uninstall 3.9.0
-pyenv install 3.9.0
-```
-encountered error https://github.com/pyenv/pyenv/issues/2143
-
-```
-brew install pyenv # upgrade pyenv from 2.2.5 -> 2.3.1
-```
-
-```
-pyenv install 3.9.0
 ```
 
 </details>
