@@ -21,7 +21,7 @@ torchvision = "0.14.1"
 
 
 [tool.poetry.group.ray.dependencies]
-pyarrow = "14.0.1"
+pyarrow = "14.0.2"
 pandas = "2.1.1"
 ray = {extras = ["train"], version = "^2.10.0"}
 
