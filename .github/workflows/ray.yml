@@ -2,6 +2,8 @@ name: ray
 on:
   pull_request:
     paths:
+      - poetry.lock
+      - pyproject.toml
       - 'ray/**'
       - '!ray/README.md'
       - '!ray/**/README.md'

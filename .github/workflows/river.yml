@@ -2,6 +2,8 @@ name: river
 on:
   pull_request:
     paths:
+      - poetry.lock
+      - pyproject.toml
       - 'river/**'
       - '!river/README.md'
       - '!river/**/README.md'
