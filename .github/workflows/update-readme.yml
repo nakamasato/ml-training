@@ -42,50 +42,6 @@ jobs:
           comment_id: ${{ steps.fc.outputs.comment-id }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: river
-        id: river
-        working-directory: river
-        run: |
-          PACKAGE=river;
-          PACKAGE_RELEASE_LINK_PREFIX=https://github.com/online-ml/river/releases/tag/
-          VERSION_REGEX='[0-9]*\.[0-9]*\.[0-9]*'
-
-          # shellcheck disable=SC2044
-          for req in $(find . -type f -name requirements.txt); do
-            version=$(grep "${PACKAGE}==" "$req" | sed "s/${PACKAGE}==\(.*\)/\1/")
-            echo "$version" >> versions
-            echo "- ${req}: ${version}" >> req_versions
-          done
-          VERSION_COUNT=$(sort versions | uniq | wc -l | sed 's/ *//g')
-          LATEST_VERSION=$(grep -E "$VERSION_REGEX" versions | sort -r | uniq | head -1)
-          RELEASE_LINK=${PACKAGE_RELEASE_LINK_PREFIX}${LATEST_VERSION}
-          sed -i "s#^$PACKAGE:.*#$PACKAGE: [$LATEST_VERSION]($RELEASE_LINK)#" README.md
-
-          {
-            echo "## river"
-            echo "release link: $RELEASE_LINK"
-            cat req_versions
-          } >> "$GITHUB_STEP_SUMMARY"
-          echo "VERSION_COUNT=${VERSION_COUNT}" >> "$GITHUB_OUTPUT"
-          {
-            echo 'RIVER_VERSIONS<<EOF'
-            cat req_versions
-            echo 'EOF'
-          } >> "$GITHUB_ENV"
-          rm req_versions versions
-
-      - name: comment
-        if: ${{ github.event.pull_request.merged != true && steps.river.outputs.VERSION_COUNT != '1' }}
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## river\nmultiple versions are used:\n${process.env.RIVER_VERSIONS}`
-            })
-
       - name: tensorflow
         id: tensorflow
         working-directory: tensorflow
