@@ -25,6 +25,11 @@ pyarrow = "14.0.1"
 pandas = "2.1.1"
 ray = {extras = ["train"], version = "^2.10.0"}
 
+
+[tool.poetry.group.river.dependencies]
+river = "0.15.0"
+flask = "2.2.5"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

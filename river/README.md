@@ -30,27 +30,10 @@ river: [0.15.0](https://github.com/online-ml/river/releases/tag/0.15.0)
     cd quickstart
     ```
 
-1. Check python
-
-    ```
-    python -V
-    Python 3.9.0
-    ```
-
-1. Create venv
-
-    ```
-    python3 -m venv venv
-    ```
-
-    ```
-    source venv/bin/activate
-    ```
-
 1. Install `river`
 
     ```
-    pip install -r requirements.txt
+    poetry install --only river
     ```
 
 1. Run `quickstart.py`
