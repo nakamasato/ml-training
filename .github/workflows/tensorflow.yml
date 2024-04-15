@@ -6,19 +6,16 @@ on:
       - '!tensorflow/README.md'
       - '!tensorflow/**/README.md'
       - .github/workflows/tensorflow.yml
-defaults:
-  run:
-    working-directory: tensorflow
+
 jobs:
   tensorflow:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-      - name: install
-        run: pip install -r requirements.txt
+
+      - name: Set up Python & Poetry
+        uses: ./.github/actions/setup-poetry
+
       - name: run
         run: |
-          python parameter-server-training/train_in_process_cluster.py
+          poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py

@@ -34,7 +34,7 @@ def main():
         min_shard_bytes=(256 << 10), max_shards=NUM_PS
     )
 
-    strategy = tf.distribute.experimental.ParameterServerStrategy(
+    strategy = tf.distribute.ParameterServerStrategy(
         cluster_resolver, variable_partitioner=variable_partitioner
     )
 
