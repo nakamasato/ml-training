@@ -17,7 +17,7 @@ ruff = "^0.3.7"
 
 [tool.poetry.group.pytorch.dependencies]
 torch = "1.13.1"
-torchvision = "0.14.1"
+torchvision = "0.17.2"
 
 
 [tool.poetry.group.ray.dependencies]
