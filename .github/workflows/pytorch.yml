@@ -2,6 +2,8 @@ name: pytorch
 on:
   pull_request:
     paths:
+      - poetry.lock
+      - pyproject.toml
       - 'pytorch/**'
       - '!pytorch/README.md'
       - '!pytorch/**/README.md'
