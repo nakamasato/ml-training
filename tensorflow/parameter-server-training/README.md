@@ -33,25 +33,15 @@ Synchronous vs Asynchronous (Data parallelism)
 
 ## Setup
 
-create virtual env
-
 ```
-python3 -m venv venv
-. venv/bin/activate
-python3 -m pip install --upgrade pip
-```
-
-install dependencies
-
-```
-pip install tensorflow portpicker
+poetry install --only tensorflow --no-root
 ```
 
 ## Practice 1 - [Create In-process cluster](https://www.tensorflow.org/tutorials/distribute/parameter_server_training#in-process_cluster)
 
 How to run:
 ```
-python train_in_process_cluster.py
+poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py
 ```
 
 <details><summary>result</summary>
@@ -166,7 +156,7 @@ Steps:
 ## practice 2 - distributed vs. non-distributed
 
 ```
-python non_distributed_sample.py
+poetry run python tensorflow/parameter-server-training/non_distributed_sample.py
 ```
 
 1. Create `tf.Variable`.
@@ -176,7 +166,7 @@ python non_distributed_sample.py
 1. Expect `tf.Variable` to be 15.
 
 ```
-python distributed_sample.py
+poetry run python tensorflow/parameter-server-training/distributed_sample.py
 ```
 
 1. Create in-process cluster.
@@ -191,7 +181,7 @@ python distributed_sample.py
 ## practice 2 - Training with Keras.models
 
 ```
-python train_with_keras.py
+poetry run python tensorflow/parameter-server-training/train_with_keras.py
 ```
 1. Create in-process cluster.
 1. Initialize `DatasetCreator` with `dataset_fn`.

@@ -1,16 +1,10 @@
 # Multi-worker Mirrored Strategy
 
-## Prepare
-
-```
-pip install -r ../requirements.txt
-```
-
 ## Run
 
 1. run on single worker
     ```
-    python run_with_single_worker.py
+    poetry run python tensorflow/multi-worker-mirrored-strategy/run_with_single_workers.py
     ```
 1. run on multi workers (2 workers)
 
