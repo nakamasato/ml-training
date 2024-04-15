@@ -2,6 +2,8 @@ name: tensorflow
 on:
   pull_request:
     paths:
+      - poetry.lock
+      - pyproject.toml
       - 'tensorflow/**'
       - '!tensorflow/README.md'
       - '!tensorflow/**/README.md'
