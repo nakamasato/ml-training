@@ -28,7 +28,7 @@ ray = {extras = ["train"], version = "^2.10.0"}
 
 [tool.poetry.group.river.dependencies]
 river = "0.21.0"
-flask = "2.2.5"
+flask = "3.0.3"
 
 
 [tool.poetry.group.tensorflow.dependencies]
