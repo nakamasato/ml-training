@@ -33,7 +33,7 @@ flask = "2.2.5"
 
 [tool.poetry.group.tensorflow.dependencies]
 portpicker = "1.6.0"
-tensorflow = "2.16.1"
+tensorflow = "2.13.0"
 
 [build-system]
 requires = ["poetry-core"]
