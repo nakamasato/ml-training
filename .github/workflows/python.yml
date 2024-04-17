@@ -8,6 +8,7 @@ jobs:
       pytorch: ${{steps.changes.outputs.pytorch}}
       ray: ${{steps.changes.outputs.ray}}
       river: ${{steps.changes.outputs.river}}
+      tensorflow: ${{steps.changes.outputs.tensorflow}}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,6 +39,13 @@ jobs:
               - '!river/README.md'
               - '!river/**/README.md'
               - .github/workflows/river.yml
+            tensorflow:
+              - poetry.lock
+              - pyproject.toml
+              - 'tensorflow/**'
+              - '!tensorflow/README.md'
+              - '!tensorflow/**/README.md'
+              - .github/workflows/tensorflow.yml
 
   status-check:
     # This job is used for the branch's branch protection rule's status check.
@@ -117,3 +125,16 @@ jobs:
 
       - name: run river/examples/fm-for-datalens/main.py
         run: poetry run python river/examples/fm-for-datalens/main.py --native-prediction --linear-regression --funk-mf --biased-mf --mimic-biased-mf --mf-with-improved-feature
+
+  tensorflow:
+    if: needs.path-filter.outputs.tensorflow == 'true'
+    needs: path-filter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python & Poetry
+        uses: ./.github/actions/setup-poetry
+
+      - name: run
+        run: poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py
