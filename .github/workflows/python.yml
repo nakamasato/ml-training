@@ -31,21 +31,21 @@ jobs:
               - 'ray/**'
               - '!ray/README.md'
               - '!ray/**/README.md'
-              - .github/workflows/ray.yml
+              - .github/workflows/python.yml
             river:
               - poetry.lock
               - pyproject.toml
               - 'river/**'
               - '!river/README.md'
               - '!river/**/README.md'
-              - .github/workflows/river.yml
+              - .github/workflows/python.yml
             tensorflow:
               - poetry.lock
               - pyproject.toml
               - 'tensorflow/**'
               - '!tensorflow/README.md'
               - '!tensorflow/**/README.md'
-              - .github/workflows/tensorflow.yml
+              - .github/workflows/python.yml
 
   status-check:
     # This job is used for the branch's branch protection rule's status check.
@@ -54,6 +54,8 @@ jobs:
     needs:
       - pytorch
       - ray
+      - river
+      - tensorflow
     permissions: {}
     if: failure()
     steps:
