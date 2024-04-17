@@ -60,17 +60,6 @@ tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
 
 [[package]]
-name = "blinker"
-version = "1.7.0"
-description = "Fast, simple object-to-object and broadcast signaling"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "blinker-1.7.0-py3-none-any.whl", hash = "sha256:c3f865d4d54db7abc53758a01601cf343fe55b84c1de4e3fa910e420b438d5b9"},
-    {file = "blinker-1.7.0.tar.gz", hash = "sha256:e6820ff6fa4e4d1d8e2747c2283749c3f547e4fee112b98555cdcdae32996182"},
-]
-
-[[package]]
 name = "certifi"
 version = "2024.2.2"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -223,21 +212,20 @@ typing = ["typing-extensions (>=4.8)"]
 
 [[package]]
 name = "flask"
-version = "3.0.3"
+version = "2.2.5"
 description = "A simple framework for building complex web applications."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.7"
 files = [
-    {file = "flask-3.0.3-py3-none-any.whl", hash = "sha256:34e815dfaa43340d1d15a5c3a02b8476004037eb4840b34910c6e21679d288f3"},
-    {file = "flask-3.0.3.tar.gz", hash = "sha256:ceb27b0af3823ea2737928a4d99d125a06175b8512c445cbd9a9ce200ef76842"},
+    {file = "Flask-2.2.5-py3-none-any.whl", hash = "sha256:58107ed83443e86067e41eff4631b058178191a355886f8e479e347fa1285fdf"},
+    {file = "Flask-2.2.5.tar.gz", hash = "sha256:edee9b0a7ff26621bd5a8c10ff484ae28737a2410d99b0bb9a6850c7fb977aa0"},
 ]
 
 [package.dependencies]
-blinker = ">=1.6.2"
-click = ">=8.1.3"
-itsdangerous = ">=2.1.2"
-Jinja2 = ">=3.1.2"
-Werkzeug = ">=3.0.0"
+click = ">=8.0"
+itsdangerous = ">=2.0"
+Jinja2 = ">=3.0"
+Werkzeug = ">=2.2.2"
 
 [package.extras]
 async = ["asgiref (>=3.2)"]
@@ -1512,62 +1500,54 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "river"
-version = "0.21.0"
+version = "0.15.0"
 description = "Online machine learning in Python"
 optional = false
-python-versions = ">=3.9,<3.13"
+python-versions = ">=3.8.0"
 files = [
-    {file = "river-0.21.0-cp310-cp310-macosx_11_0_universal2.whl", hash = "sha256:064db8a8e8e85dfd317275dec9662b49b6f4011b72f4332fb52db4d14d158276"},
-    {file = "river-0.21.0-cp310-cp310-macosx_12_0_universal2.whl", hash = "sha256:80d027f6c933091f29d462489a416e07e1d4b18cee3cb023e053842f88fdda83"},
-    {file = "river-0.21.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a0b970985a7741426f715cb5ce44172fca4b4e71ba6a692d50ae8cff03bce5e4"},
-    {file = "river-0.21.0-cp310-cp310-manylinux_2_17_i686.manylinux_2_5_i686.manylinux1_i686.manylinux2014_i686.whl", hash = "sha256:6cd5f6b4a4b9e6f35012f9bb8c368ab48437c00cfe6dfa0caf154abf2d926b57"},
-    {file = "river-0.21.0-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:b50e2052e031dbf38bcbd1b4eb89a7f795da6fd989cf59cc6c19bee4c1e9f637"},
-    {file = "river-0.21.0-cp310-cp310-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:dc3fd17213ad436374a884472bb6eabd76df58508352246f46147f5bb2f18837"},
-    {file = "river-0.21.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:eef9101df338154c47aa644f5475c91ee6699a8c4b3187b40df60d1631c61641"},
-    {file = "river-0.21.0-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:f429c9ed4ee80510dce833132b60dda453f4e477ac43205ebfe1bd7f472ebdaf"},
-    {file = "river-0.21.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:974f26da85399f2e65df268229e269ecf432967c1c78d80ff2fb38d0795c219e"},
-    {file = "river-0.21.0-cp310-cp310-win32.whl", hash = "sha256:990b0f7f6f688b997ab26ab86f9cf339681313c7a6f32737e43af60d0a98a800"},
-    {file = "river-0.21.0-cp310-cp310-win_amd64.whl", hash = "sha256:acb4ba872abe7732bec6e4aa2fa15a625e01c43b39f88f625dabb21c27f0a9e8"},
-    {file = "river-0.21.0-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:072d254151682c5f04a2a792984a8352f2a53dd31d552d4c1a299e2a7831661d"},
-    {file = "river-0.21.0-cp311-cp311-macosx_12_0_universal2.whl", hash = "sha256:86b0d19e0dc84f6f201941e96e487d12d8651c97469585b832c8a05bc5112201"},
-    {file = "river-0.21.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:efb338521f6486f662e6c7046306567f782dbf4080cbb273cd9d7a5c0695cbcc"},
-    {file = "river-0.21.0-cp311-cp311-manylinux_2_17_i686.manylinux_2_5_i686.manylinux1_i686.manylinux2014_i686.whl", hash = "sha256:73a996370b1009b288cf2fc8e0f9b733888b03639b2cafc5164f01443992f6ab"},
-    {file = "river-0.21.0-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:12018d7b190b73eb505d18966e88615498af2b44406f8bcbaecad2e3d9b64596"},
-    {file = "river-0.21.0-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:a0233cbf7d7c9f7327d0b6fe434d438b49db9462a44883856dc0231167452b37"},
-    {file = "river-0.21.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:983fcdc38268bb32f9f22d308e45fab79358791218ac7a257cfe148e39710e07"},
-    {file = "river-0.21.0-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:9597a38cefd7557ae20c90c4f3953fcb8655d0be93365b6c99689c3882df23e8"},
-    {file = "river-0.21.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:b6989cedd1d54775d2b4bfc793e25b911684a3f29959769737eb62a2d780f1a4"},
-    {file = "river-0.21.0-cp311-cp311-win32.whl", hash = "sha256:51fa6ad58a5a431de3c422e176fa66e7e38b67fecf4c724dc6a9859b7e5aa7d7"},
-    {file = "river-0.21.0-cp311-cp311-win_amd64.whl", hash = "sha256:9a3953e18b729d6890f51d05f00b7049d0a32aa85da11d0de9a3a19f9584b6a9"},
-    {file = "river-0.21.0-cp312-cp312-macosx_11_0_universal2.whl", hash = "sha256:04db98ad397358dbe886fe5d78a01eb2f37b0f70143281322f230331119899f7"},
-    {file = "river-0.21.0-cp312-cp312-macosx_12_0_universal2.whl", hash = "sha256:ebfdc8147f22648d902e607ef85054c6add8439ca6d5384a4182b716c4590c69"},
-    {file = "river-0.21.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0f70dff1044502adabc230284a83f38bdbf5af9f85fcdfb8c6f3a438a3b81216"},
-    {file = "river-0.21.0-cp312-cp312-manylinux_2_17_i686.manylinux_2_5_i686.manylinux1_i686.manylinux2014_i686.whl", hash = "sha256:a7f044801d0d80fd636d69de4f5ddddd2e9b7aff38ded496e9ab7b46d25197fa"},
-    {file = "river-0.21.0-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:911877f3bd2d3bd735d70123a39c06760f4d959190db2008373950b1a6b2060e"},
-    {file = "river-0.21.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:21027f337bf7e3faf54a14c8df85e0f6c1c6cdf11d141fa17e3dcb217e7b759b"},
-    {file = "river-0.21.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7a5c5c7103c06f2c3c2b2a86b16d637288d5485f293131fd712eea6850f8a114"},
-    {file = "river-0.21.0-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:651621b0f2e9b78b738630c347f3aec1fa7f55d9f8cfbbcdb9b618856a1ad51f"},
-    {file = "river-0.21.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:34669915a2aed726e5af8a870bed1b2354fb5e033f58606d03851d7f2930a3a2"},
-    {file = "river-0.21.0-cp312-cp312-win32.whl", hash = "sha256:787237353a39043764c104b22d418828d696a543c1d0b0e04cf859715f9bba84"},
-    {file = "river-0.21.0-cp312-cp312-win_amd64.whl", hash = "sha256:731733c5d106a59e0d05c2271a0e5f55ca36285b0d601e8b01693a84db36d84a"},
-    {file = "river-0.21.0-cp39-cp39-macosx_11_0_universal2.whl", hash = "sha256:6239aa2ac44f65567388cce55c8d922922dbb330b94d2005786ed435677a74c9"},
-    {file = "river-0.21.0-cp39-cp39-macosx_12_0_universal2.whl", hash = "sha256:a95471844b1f859f9fccb66880f75ef04f6aac03c6d46128890de58014b6c678"},
-    {file = "river-0.21.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bdeb12747e45ccc16cc7e0d45d8054da170ee84a3ab6a7ccd74bb54ba44dc2e0"},
-    {file = "river-0.21.0-cp39-cp39-manylinux_2_17_i686.manylinux_2_5_i686.manylinux1_i686.manylinux2014_i686.whl", hash = "sha256:79480f87d5c320fa490fba660f08b28f93e895f08d860cc6d9979ca366bd0241"},
-    {file = "river-0.21.0-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:c7c965c2eec62a0aba3612f5ff7ef959e30ebc8b98c96fa41562c163225e4289"},
-    {file = "river-0.21.0-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:87dd973e23f0f7f2a29a5c4d1c73c7f8b8bba1d89300615fdb518eef77cf72ed"},
-    {file = "river-0.21.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d53dd05f7c9ab8b3de3d764ad875b62576b17f249dd413d3d2012aff8d0aa770"},
-    {file = "river-0.21.0-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:0b78ae5437f514a312e18188d3a1fa51ae0d4da6d5d135fe0b2c8eb63498c5e7"},
-    {file = "river-0.21.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:215613b90db4117e7a18b15950d955e1ad8aa03930e4182fce95a68c4356ccf1"},
-    {file = "river-0.21.0-cp39-cp39-win32.whl", hash = "sha256:5c8c16933a15a9c0cf5f1528b51a66b507e626370e5f004cabc7ed5a13f3e334"},
-    {file = "river-0.21.0-cp39-cp39-win_amd64.whl", hash = "sha256:700a6b16e36dfcd061727b52bb5f8311ae31f2777e3a6f26b37cab696a4b6948"},
-    {file = "river-0.21.0.tar.gz", hash = "sha256:692923bb8e35005cdbb422b490e2f6bac95cf4cf2fb7d00e1924a697c6a2b506"},
+    {file = "river-0.15.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:50235ab795d26aebae610a34a7aade94368b70d46bc88fb9594b0a0bdf8eb9a7"},
+    {file = "river-0.15.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:8a24f1f16638fabe3e62124a2df881e92e9b4f41112b4aaf7797f1cfc5c69af1"},
+    {file = "river-0.15.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:28909dd0d8ca4951837a5795d6eca17902393a808c0469ad0108419e52093636"},
+    {file = "river-0.15.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:828b07c13c4bd166e7e68e5ad389f3e28e9c5dd77af7ed46436eddbbad0376ce"},
+    {file = "river-0.15.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6a00e6ce854388835ecc744e9afaaa83ac661a538c92b014d6579e48c6562c2c"},
+    {file = "river-0.15.0-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:ff483d9e7a638e7587b06208cd50d9234133a869e09011b2739d5f476cf3ca23"},
+    {file = "river-0.15.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:b4f5ae850e4c3c897f616c6872daef431a50238abf72705245c0c8c1ea3e9fa5"},
+    {file = "river-0.15.0-cp310-cp310-win32.whl", hash = "sha256:faf70a56cfd1415aa5ff00dcd43994a78dd2f02e41f2d81fd5c64162d1d398e9"},
+    {file = "river-0.15.0-cp310-cp310-win_amd64.whl", hash = "sha256:6c501abf45353c6228f714801d5d1168929577bcab8d50384b1e9aa1483ac154"},
+    {file = "river-0.15.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:c490c8e82dd558d230f0dca08b0dd65f39931968e5237d1402238a9a6e61a114"},
+    {file = "river-0.15.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:94b7d20b2ca7e2bf6149f1453c19e682c753681b38e311607444ca7aefddf335"},
+    {file = "river-0.15.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3fe82ae5f0fa90c11a24b5c87a91574c71506ee8f7b61ce8dc388dc5fc928130"},
+    {file = "river-0.15.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7931aa853be07c1893d637e72dd6c22919fea3460bcb8279701da56c576d4ab2"},
+    {file = "river-0.15.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:616ee3195fa45e550658ecbb913b1580ab9a354945ff825ae671bb340198d1d4"},
+    {file = "river-0.15.0-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:61ed53e51f6fdc19ca27e97eea9720c526072eaa233fb0f9460c758dc4a46c62"},
+    {file = "river-0.15.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:df293ee427645e7a3afe52f6da2d4c7ffc04f232ffd73ed95a0997d66d795787"},
+    {file = "river-0.15.0-cp38-cp38-win32.whl", hash = "sha256:7718a6c1135321e4bb697a669bb8536dae2a67653a5001df9636f13b39fd764b"},
+    {file = "river-0.15.0-cp38-cp38-win_amd64.whl", hash = "sha256:af12c7b65d4620f643a5f9d0672b2f5066959c8a1ea068c6fd8105f5b7fdd885"},
+    {file = "river-0.15.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3c785762f642dcbccffdf4efba382b7bb966c4250d575af2f5b4ee51264e0b34"},
+    {file = "river-0.15.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:c95f1b3ff10cb1b3a9e1c30aa2428ebdb521102f8302bb405533a710391898dc"},
+    {file = "river-0.15.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:38183221cf8056164c03fd6aea8a841bd5699bb0785801a914a1012cfe44fb61"},
+    {file = "river-0.15.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7eeaed85920d45427299a9e9c1a778f1198c81a5a2118e39886c4b0f71f05276"},
+    {file = "river-0.15.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ba2ca9959535d70d983e5e3e56948aa25a0bf9b1eeff7ec03d6772857115f30a"},
+    {file = "river-0.15.0-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:4528cb69158355081874bafabe0041fdf71714a407202bacd3dce48d7d4026b0"},
+    {file = "river-0.15.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:d0fd727b1e5f77add4e07cc6e7f9b40e1d008735f2869b44d9ecbf52a1df27e4"},
+    {file = "river-0.15.0-cp39-cp39-win32.whl", hash = "sha256:c1a783719938ed5a8dc0fd9aee3e62943ee07437ccb9e580d7898a3d1150ab86"},
+    {file = "river-0.15.0-cp39-cp39-win_amd64.whl", hash = "sha256:01339893bb5dd5dd0c619cf15f8da4b21ae1d96b996a62c30707fecc6a2fb763"},
+    {file = "river-0.15.0.tar.gz", hash = "sha256:29e85a10c161ffd825943485d8c6d2aec0b215ee510d378853ca262645205b28"},
 ]
 
 [package.dependencies]
-numpy = ">=1.23.0,<2.0.0"
-pandas = ">=2.1,<3.0"
-scipy = ">=1.8.1,<2.0.0"
+numpy = ">=1.24.1"
+pandas = ">=1.3"
+scipy = ">=1.5"
+
+[package.extras]
+benchmark = ["dominate (==2.7.0)", "numpy (>=1.24.1)", "pandas (>=1.3)", "river-torch (==0.1.2)", "scikit-learn (==1.1.2)", "scipy (==1.9.3)", "scipy (>=1.5)", "slugify (==0.0.1)", "torch (==1.13.0)", "vowpalwabbit (==9.6.0)", "watermark (==2.3.1)"]
+compat = ["numpy (>=1.24.1)", "pandas (>=1.3)", "scikit-learn", "scipy (>=1.5)", "sqlalchemy (>=2.0.0)", "vaex"]
+deep = ["deep-river"]
+dev = ["black (>=22.1.0)", "graphviz (>=0.10.1)", "gym (>=0.26.1)", "isort (>=5.9.3)", "matplotlib (>=3.0.2)", "mypy (>=0.980)", "numpy (>=1.24.1)", "pandas (>=1.3)", "pre-commit (>=2.9.2)", "pytest (>=4.5.0)", "pyupgrade (>=3.2.0)", "ruff (>=0.0.213)", "scikit-learn (>=1.0.1)", "scipy (>=1.5)", "sqlalchemy (>=2.0.0)", "sympy (>=1.10.1)"]
+docs = ["dominate", "flask", "ipykernel", "jupyter-client", "mike", "mkdocs", "mkdocs-awesome-pages-plugin", "mkdocs-charts-plugin", "mkdocs-material", "nbconvert", "numpy (>=1.24.1)", "pandas (>=1.3)", "python-slugify", "scipy (>=1.5)", "spacy", "watermark"]
+extra = ["river-extra"]
+torch = ["river-torch"]
 
 [[package]]
 name = "rpds-py"
@@ -2120,4 +2100,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<3.13"
-content-hash = "c04f447b5e13ee48e722fffd8ff6959d9440592af5dcd4e2d07ec17c8d31bfe8"
+content-hash = "35c92c55cd3c4651703fb839ae03c3467f17c7e99598a8f4e9d50187c756a6c9"
