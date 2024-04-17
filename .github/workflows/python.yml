@@ -6,6 +6,7 @@ jobs:
   path-filter:
     outputs:
       pytorch: ${{steps.changes.outputs.pytorch}}
+      ray: ${{steps.changes.outputs.ray}}
     runs-on: ubuntu-latest
     permissions:
       contents: read
