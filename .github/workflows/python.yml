@@ -1,4 +1,4 @@
-name: pytorch
+name: python
 on:
   pull_request:
     paths:
@@ -7,7 +7,7 @@ on:
       - 'pytorch/**'
       - '!pytorch/README.md'
       - '!pytorch/**/README.md'
-      - .github/workflows/pytorch.yml
+      - .github/workflows/python.yml
 
 jobs:
   path-filter:
@@ -28,7 +28,7 @@ jobs:
               - 'pytorch/**'
               - '!pytorch/README.md'
               - '!pytorch/**/README.md'
-              - .github/workflows/pytorch.yml
+              - .github/workflows/python.yml
 
   status-check:
     # This job is used for the branch's branch protection rule's status check.
