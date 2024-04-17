@@ -7,6 +7,7 @@ jobs:
     outputs:
       pytorch: ${{steps.changes.outputs.pytorch}}
       ray: ${{steps.changes.outputs.ray}}
+      river: ${{steps.changes.outputs.river}}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,6 +31,13 @@ jobs:
               - '!ray/README.md'
               - '!ray/**/README.md'
               - .github/workflows/ray.yml
+            river:
+              - poetry.lock
+              - pyproject.toml
+              - 'river/**'
+              - '!river/README.md'
+              - '!river/**/README.md'
+              - .github/workflows/river.yml
 
   status-check:
     # This job is used for the branch's branch protection rule's status check.
@@ -69,16 +77,13 @@ jobs:
         uses: ./.github/actions/setup-poetry
 
       - name: 02-task-pattern
-        working-directory: ray
-        run: poetry run python 02-task-pattern/task_pattern_map_and_reduce.py
+        run: poetry run python ray/02-task-pattern/task_pattern_map_and_reduce.py
 
       - name: 05-train simple with torch
-        working-directory: ray
-        run: poetry run python 05-train/simple_example.py -b torch
+        run: poetry run python ray/05-train/simple_example.py -b torch
 
       - name: 05-train simple with tensorflow
-        working-directory: ray
-        run: poetry run python 05-train/simple_example.py -b tensorflow
+        run: poetry run python ray/05-train/simple_example.py -b tensorflow
 
       # == Status ==
       # Current time: 2023-09-23 10:32:09 (running for 00:07:35.39)
@@ -96,3 +101,19 @@ jobs:
       # - name: 05-train tensorflow example
       #   run: python 05-train/tensorflow_example.py --smoke-test
       # TODO: https://github.com/nakamasato/ml-training/issues/298
+
+  river:
+    if: needs.path-filter.outputs.river == 'true'
+    needs: path-filter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python & Poetry
+        uses: ./.github/actions/setup-poetry
+
+      - name: run river/quickstart/main.py
+        run: poetry run python river/quickstart/main.py
+
+      - name: run river/examples/fm-for-datalens/main.py
+        run: poetry run python river/examples/fm-for-datalens/main.py --native-prediction --linear-regression --funk-mf --biased-mf --mimic-biased-mf --mf-with-improved-feature
