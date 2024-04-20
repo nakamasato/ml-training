@@ -1,8 +1,4 @@
-from river import datasets
-from river import compose
-from river import linear_model
-from river import metrics
-from river import preprocessing
+from river import compose, datasets, linear_model, metrics, preprocessing
 
 
 def check_datasets(dataset):
@@ -13,22 +9,20 @@ def check_datasets(dataset):
 
 
 def model_example(dataset):
-    """Use LR to predict phishing
-    """
+    """Use LR to predict phishing"""
 
     model = compose.Pipeline(
-        preprocessing.StandardScaler(),
-        linear_model.LogisticRegression()
+        preprocessing.StandardScaler(), linear_model.LogisticRegression()
     )
 
-    roc_auc = metrics.ROCAUC()
+    metric = metrics.ROCAUC()
 
     for i, (x, y) in enumerate(dataset):
-        y_pred = model.predict_proba_one(x)      # make a prediction
-        roc_auc = roc_auc.update(y, y_pred)
-        model = model.learn_one(x, y)      # make the model learn
+        y_pred = model.predict_proba_one(x)  # make a prediction
+        model.learn_one(x, y)  # make the model learn
+        metric.update(y, y_pred)
         if i % 100 == 0:
-            print(i, y_pred, roc_auc)
+            print(i, y_pred, metric)
 
 
 def main():
@@ -40,5 +34,5 @@ def main():
     model_example(dataset)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
