@@ -15,15 +15,11 @@ python = ">=3.12,<3.13"
 ruff = "^0.4.0"
 
 
-[tool.poetry.group.pytorch.dependencies]
-torch = "1.13.1"
-torchvision = "0.14.1"
-
 
 [tool.poetry.group.ray.dependencies]
 pyarrow = "15.0.2"
 pandas = "2.2.2"
-ray = {extras = ["train"], version = "^2.10.0"}
+ray = {extras = ["train"], version = "^2.11.0"}
 
 
 [tool.poetry.group.river.dependencies]
