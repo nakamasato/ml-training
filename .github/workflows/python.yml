@@ -90,7 +90,7 @@ jobs:
           install-dependencies: false
 
       - name: Install dependencies
-        run: poetry install --only ray --no-root
+        run: poetry install --only ray,tensorflow --no-root
 
       - name: 02-task-pattern
         run: poetry run python ray/02-task-pattern/task_pattern_map_and_reduce.py
