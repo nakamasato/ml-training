@@ -1,7 +1,9 @@
 name: python
 on:
   pull_request:
-
+  push:
+    branches:
+      - main
 jobs:
   path-filter:
     outputs:
@@ -47,7 +49,7 @@ jobs:
               - '!tensorflow/**/README.md'
               - .github/workflows/python.yml
 
-  status-check:
+  status-check-python:
     # This job is used for the branch's branch protection rule's status check.
     # If all dependent jobs succeed or are skipped this job succeeds.
     runs-on: ubuntu-latest
