@@ -7,6 +7,7 @@ on:
 jobs:
   path-filter:
     outputs:
+      common: ${{steps.changes.outputs.common}}
       pytorch: ${{steps.changes.outputs.pytorch}}
       ray: ${{steps.changes.outputs.ray}}
       river: ${{steps.changes.outputs.river}}
@@ -16,38 +17,33 @@ jobs:
       contents: read
       pull-requests: read
     steps:
+      - uses: actions/checkout@v4
       - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
         id: changes
         with:
           filters: |
-            pytorch:
+            common:
+              - .python-version
+              - .tool-versions
               - poetry.lock
               - pyproject.toml
+              - .github/workflows/python.yml
+            pytorch:
               - 'pytorch/**'
               - '!pytorch/README.md'
               - '!pytorch/**/README.md'
-              - .github/workflows/python.yml
             ray:
-              - poetry.lock
-              - pyproject.toml
               - 'ray/**'
               - '!ray/README.md'
               - '!ray/**/README.md'
-              - .github/workflows/python.yml
             river:
-              - poetry.lock
-              - pyproject.toml
               - 'river/**'
               - '!river/README.md'
               - '!river/**/README.md'
-              - .github/workflows/python.yml
             tensorflow:
-              - poetry.lock
-              - pyproject.toml
               - 'tensorflow/**'
               - '!tensorflow/README.md'
               - '!tensorflow/**/README.md'
-              - .github/workflows/python.yml
 
   status-check-python:
     # This job is used for the branch's branch protection rule's status check.
@@ -64,7 +60,7 @@ jobs:
       - run: exit 1
 
   pytorch:
-    if: needs.path-filter.outputs.pytorch == 'true'
+    if: needs.path-filter.outputs.common == 'true' || needs.path-filter.outputs.pytorch == 'true'
     needs: path-filter
     runs-on: ubuntu-latest
     steps:
@@ -79,7 +75,7 @@ jobs:
           poetry run python distributed_example.py
 
   ray:
-    if: needs.path-filter.outputs.ray == 'true'
+    if: needs.path-filter.outputs.common == 'true' || needs.path-filter.outputs.ray == 'true'
     needs: path-filter
     runs-on: ubuntu-latest
     steps:
@@ -115,7 +111,7 @@ jobs:
       # TODO: https://github.com/nakamasato/ml-training/issues/298
 
   river:
-    if: needs.path-filter.outputs.river == 'true'
+    if: needs.path-filter.outputs.common == 'true' || needs.path-filter.outputs.river == 'true'
     needs: path-filter
     runs-on: ubuntu-latest
     steps:
@@ -131,7 +127,7 @@ jobs:
         run: poetry run python river/examples/fm-for-datalens/main.py --native-prediction --linear-regression --funk-mf --biased-mf --mimic-biased-mf --mf-with-improved-feature
 
   tensorflow:
-    if: needs.path-filter.outputs.tensorflow == 'true'
+    if: needs.path-filter.outputs.common == 'true' || needs.path-filter.outputs.tensorflow == 'true'
     needs: path-filter
     runs-on: ubuntu-latest
     steps:
