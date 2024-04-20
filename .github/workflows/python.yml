@@ -68,10 +68,13 @@ jobs:
 
       - name: Set up Python & Poetry
         uses: ./.github/actions/setup-poetry
+        with:
+          install-dependencies: false
 
       - name: run
         working-directory: pytorch
         run: |
+          poetry install --only pytorch --no-root
           poetry run python distributed_example.py
 
   ray:
@@ -83,6 +86,11 @@ jobs:
 
       - name: Set up Python & Poetry
         uses: ./.github/actions/setup-poetry
+        with:
+          install-dependencies: false
+
+      - name: Install dependencies
+        run: poetry install --only ray --no-root
 
       - name: 02-task-pattern
         run: poetry run python ray/02-task-pattern/task_pattern_map_and_reduce.py
@@ -119,6 +127,11 @@ jobs:
 
       - name: Set up Python & Poetry
         uses: ./.github/actions/setup-poetry
+        with:
+          install-dependencies: false
+
+      - name: Install dependencies
+        run: poetry install --only river --no-root
 
       - name: run river/quickstart/main.py
         run: poetry run python river/quickstart/main.py
@@ -135,6 +148,11 @@ jobs:
 
       - name: Set up Python & Poetry
         uses: ./.github/actions/setup-poetry
+        with:
+          install-dependencies: false
+
+      - name: Install dependencies
+        run: poetry install --only tensorflow --no-root
 
       - name: run
         run: poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py
