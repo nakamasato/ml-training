@@ -49,7 +49,7 @@ jobs:
               - '!tensorflow/**/README.md'
               - .github/workflows/python.yml
 
-  status-check-test:
+  status-check-python:
     # This job is used for the branch's branch protection rule's status check.
     # If all dependent jobs succeed or are skipped this job succeeds.
     runs-on: ubuntu-latest
