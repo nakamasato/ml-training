@@ -7,17 +7,12 @@ readme = "README.md"
 packages = []
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.13"
+python = ">=3.11,<3.13"
 
 
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.0"
-
-
-[tool.poetry.group.pytorch.dependencies]
-torch = "1.13.1"
-torchvision = "0.14.1"
 
 
 [tool.poetry.group.ray.dependencies]
@@ -27,13 +22,18 @@ ray = {extras = ["train"], version = "^2.10.0"}
 
 
 [tool.poetry.group.river.dependencies]
-river = "0.15.0"
+river = "0.21.0"
 flask = "2.2.5"
 
 
 [tool.poetry.group.tensorflow.dependencies]
 portpicker = "1.6.0"
 tensorflow = "2.16.1"
+
+
+[tool.poetry.group.pytorch.dependencies]
+torchvision = "^0.17.2"
+torch = "^2.2.2"
 
 [build-system]
 requires = ["poetry-core"]
