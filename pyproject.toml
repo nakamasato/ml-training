@@ -22,7 +22,7 @@ ray = {extras = ["train"], version = "^2.10.0"}
 
 
 [tool.poetry.group.river.dependencies]
-river = "0.21.0"
+river = "0.21.1"
 flask = "2.3.3"
 
 
