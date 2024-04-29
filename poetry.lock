@@ -61,13 +61,13 @@ tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "p
 
 [[package]]
 name = "blinker"
-version = "1.7.0"
+version = "1.8.1"
 description = "Fast, simple object-to-object and broadcast signaling"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "blinker-1.7.0-py3-none-any.whl", hash = "sha256:c3f865d4d54db7abc53758a01601cf343fe55b84c1de4e3fa910e420b438d5b9"},
-    {file = "blinker-1.7.0.tar.gz", hash = "sha256:e6820ff6fa4e4d1d8e2747c2283749c3f547e4fee112b98555cdcdae32996182"},
+    {file = "blinker-1.8.1-py3-none-any.whl", hash = "sha256:5f1cdeff423b77c31b89de0565cd03e5275a03028f44b2b15f912632a58cced6"},
+    {file = "blinker-1.8.1.tar.gz", hash = "sha256:da44ec748222dcd0105ef975eed946da197d5bdf8bafb6aa92f5bc89da63fa25"},
 ]
 
 [[package]]
@@ -590,13 +590,13 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "keras"
-version = "3.2.1"
+version = "3.3.3"
 description = "Multi-backend Keras."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "keras-3.2.1-py3-none-any.whl", hash = "sha256:0be1e89b041e697be562d8422ecb958ee5481acfc089913200926c561d258a03"},
-    {file = "keras-3.2.1.tar.gz", hash = "sha256:966abbf0dfc1f9725f6293fb2a04ec83f56cd2a800990b38d1a03041255214a7"},
+    {file = "keras-3.3.3-py3-none-any.whl", hash = "sha256:260df9ef71c6b89eb6816ce1c60f139c38ccdddd16f24e7005d2be127cdef8e4"},
+    {file = "keras-3.3.3.tar.gz", hash = "sha256:f2fdffc8434fd77045cf8fb21816dbaa2308d5f76974ca924b2f60b40433b1a0"},
 ]
 
 [package.dependencies]
@@ -1345,17 +1345,17 @@ xmp = ["defusedxml"]
 
 [[package]]
 name = "polars"
-version = "0.20.22"
+version = "0.20.23"
 description = "Blazingly fast DataFrame library"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "polars-0.20.22-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:d211aed6ae34845e1a9766e3b487f73ee9d5044927cc748f7498a72a5a0c8805"},
-    {file = "polars-0.20.22-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:15d8807828f9c3ddbab60b4aa17ea1dea7743a3dddebfd1c6186826257a687ca"},
-    {file = "polars-0.20.22-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2f7b08e1725d1a7c522aa316304e8ddb835c69b579577249764c7fa4eeb97305"},
-    {file = "polars-0.20.22-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:08ee57946f34e2de3ebfc7853d21a14eb92e3993e71d788a6aaaa0757e7bd3e2"},
-    {file = "polars-0.20.22-cp38-abi3-win_amd64.whl", hash = "sha256:abc5da1f6f7e2ee15bdab74cd19939948a0910799b27ee3eb0768bb95f0e9aff"},
-    {file = "polars-0.20.22.tar.gz", hash = "sha256:ceeb767bb944605539db63c528fe074708f0e23ece2f78f3dfc5132ac2e84d64"},
+    {file = "polars-0.20.23-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:9b1001a29e785126f0e189786223c45bf9c7696ed3d221a61dd629ff5e8229d3"},
+    {file = "polars-0.20.23-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:7de724f9b7f94c76008023b1ef9319e7dccada97e98d48d548be487be8dc2ea6"},
+    {file = "polars-0.20.23-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f109512a456f9f8bdc20e5b19e5794471d4a1a507f99daf1afe1b41eb3227c41"},
+    {file = "polars-0.20.23-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:bfd10ffabafecba3bb836f9e267405abc8259da5fb8d5e74096d46eea802a295"},
+    {file = "polars-0.20.23-cp38-abi3-win_amd64.whl", hash = "sha256:de69adcfe4a92821f28c0223b801e56a36682a7aac32df8e860e6df7678f4c8a"},
+    {file = "polars-0.20.23.tar.gz", hash = "sha256:4503c446c7771d5b52d5bff4f2dbf2e999a87a1cc3c89931db255cff43218436"},
 ]
 
 [package.extras]
@@ -1364,7 +1364,7 @@ all = ["polars[adbc,async,cloudpickle,connectorx,deltalake,fastexcel,fsspec,geve
 async = ["nest-asyncio"]
 cloudpickle = ["cloudpickle"]
 connectorx = ["connectorx (>=0.3.2)"]
-deltalake = ["deltalake (>=0.14.0)"]
+deltalake = ["deltalake (>=0.15.0)"]
 fastexcel = ["fastexcel (>=0.9)"]
 fsspec = ["fsspec"]
 gevent = ["gevent"]
@@ -1642,13 +1642,13 @@ tune = ["fsspec", "pandas", "pyarrow (>=6.0.1)", "requests", "tensorboardX (>=1.
 
 [[package]]
 name = "referencing"
-version = "0.34.0"
+version = "0.35.0"
 description = "JSON Referencing + Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "referencing-0.34.0-py3-none-any.whl", hash = "sha256:d53ae300ceddd3169f1ffa9caf2cb7b769e92657e4fafb23d34b93679116dfd4"},
-    {file = "referencing-0.34.0.tar.gz", hash = "sha256:5773bd84ef41799a5a8ca72dc34590c041eb01bf9aa02632b4a973fb0181a844"},
+    {file = "referencing-0.35.0-py3-none-any.whl", hash = "sha256:8080727b30e364e5783152903672df9b6b091c926a146a759080b62ca3126cd6"},
+    {file = "referencing-0.35.0.tar.gz", hash = "sha256:191e936b0c696d0af17ad7430a3dc68e88bc11be6514f4757dc890f04ab05889"},
 ]
 
 [package.dependencies]
