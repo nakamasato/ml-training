@@ -6,3 +6,4 @@
 1. [Ray](ray)
 1. [Kubeflow](kubeflow)
 1. mlflow
+1. [monolith](https://github.com/nakamasato/monolith)
