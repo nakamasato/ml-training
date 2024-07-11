@@ -28,7 +28,7 @@ flask = "2.3.3"
 
 [tool.poetry.group.tensorflow.dependencies]
 portpicker = "1.6.0"
-tensorflow = "2.16.2"
+tensorflow = "2.17.0"
 
 
 [tool.poetry.group.pytorch.dependencies]
