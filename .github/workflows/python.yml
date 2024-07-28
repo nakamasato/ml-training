@@ -154,5 +154,11 @@ jobs:
       - name: Install dependencies
         run: poetry install --only tensorflow --no-root
 
-      - name: run
+      - name: parameter-server-training
         run: poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py
+
+      - name: movielens
+        env:
+          TF_USE_LEGACY_KERAS: 1
+        run: |
+          poetry run python tensorflow/examples/movielens/basic.py
