@@ -1,5 +1,16 @@
 # [Datalens](https://www.tensorflow.org/recommenders/examples/basic_retrieval)
 
+## Version
+
+- tensorflow: 2.17.0
+- keras: 2.17.0 (`poetry add tf_keras --group tensorflow`)
+
+## Run
+
+```
+TF_USE_LEGACY_KERAS=1 poetry run python tensorflow/examples/movielens/basic.py
+```
+
 ## Data
 
 ### ratings
@@ -55,3 +66,7 @@
 ```py
 user_model(tf.constant("uid2")) # embeddingを取得できる
 ```
+
+## Ref
+
+1. [ValueError: Cannot convert '('c', 'o', 'u', 'n', 't', 'e', 'r')' to a shape. Found invalid entry 'c' of type '<class 'str'>' tfrs.metrics.FactorizedTopK](https://github.com/tensorflow/recommenders/issues/712): to be resolved by https://github.com/tensorflow/recommenders/pull/717 or `TF_USE_LEGACY_KERAS=1` with `poetry add tf_keras --group tensorflow`
