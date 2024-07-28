@@ -161,5 +161,5 @@ jobs:
         env:
           TF_USE_LEGACY_KERAS: 1
         run: |
-          poetry install tensorflow-recommenders
+          poetry install tensorflow-recommenders # install here because we can't install it without tensorflow-macos
           poetry run python tensorflow/examples/movielens/basic.py
