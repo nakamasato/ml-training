@@ -2,7 +2,6 @@
 # https://www.tensorflow.org/recommenders/examples/basic_retrieval
 import tensorflow_recommenders as tfrs
 
-
 from typing import Dict, Text
 
 import numpy as np
