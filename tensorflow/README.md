@@ -2,11 +2,15 @@
 
 ## Version
 
-tensorflow: [2.13.0](https://github.com/tensorflow/tensorflow/releases/tag/v2.13.0)
+- tensorflow: [2.17.0](https://github.com/tensorflow/tensorflow/releases/tag/v2.17.0)
+- recommender [0.7.2](https://github.com/tensorflow/gstrecommenders/releases/tag/v0.7.2) https://github.com/tensorflow/recommenders/issues/713
+
 ## Contents
 1. [Parameter Server Training](parameter-server-training)
 1. [Multi Worker Mirrored Strategy](multi-worker-mirrored-strategy)
 1. [Keras](keras)
+1. Examples
+    1. [Movielens](examples/movielens)
 
 ## Install
 
