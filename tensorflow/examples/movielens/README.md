@@ -10,7 +10,7 @@
 `TF_USE_LEGACY_KERAS=1` is set in `.env` (This is necessary because https://github.com/tensorflow/recommenders/issues/712)
 
 ```
-poetry run python tensorflow/examples/movielens/run.py
+poetry run python tensorflow/examples/movielens/retrieve.py
 ```
 
 ## Data

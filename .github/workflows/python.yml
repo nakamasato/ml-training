@@ -147,7 +147,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python & Poetry
-        uses: ./.github/actions/setup-poetry
+        uses: nakamasato/github-actions/setup-poetry@1.0.0
         with:
           install-dependencies: false
 
@@ -161,4 +161,4 @@ jobs:
         env:
           TF_USE_LEGACY_KERAS: 1
         run: |
-          poetry run python tensorflow/examples/movielens/run.py
+          poetry run python tensorflow/examples/movielens/retrieve.py
