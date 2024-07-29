@@ -1,7 +1,7 @@
 # https://www.tensorflow.org/recommenders/examples/quickstart
 # https://www.tensorflow.org/recommenders/examples/basic_retrieval
 import tensorflow_recommenders as tfrs
-
+import keras
 
 from typing import Dict, Text
 
