@@ -157,8 +157,14 @@ jobs:
       - name: parameter-server-training
         run: poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py
 
-      - name: movielens
+      - name: movielens - retrieve
         env:
           TF_USE_LEGACY_KERAS: 1
         run: |
           poetry run python tensorflow/examples/movielens/retrieve.py
+
+      - name: movielens - rank
+        env:
+          WRAPT_DISABLE_EXTENSIONS: 1
+        run: |
+          poetry run python tensorflow/examples/movielens/rank.py
