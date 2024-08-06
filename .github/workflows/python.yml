@@ -157,6 +157,9 @@ jobs:
       - name: parameter-server-training
         run: poetry run python tensorflow/parameter-server-training/train_in_process_cluster.py
 
+      - name: dataset
+        run: poetry run python tensorflow/dataset/practice.py
+
       - name: movielens - retrieve
         env:
           TF_USE_LEGACY_KERAS: 1
