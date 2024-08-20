@@ -18,9 +18,9 @@ ratings = ratings.map(lambda x: {
     "movie_title": x["movie_title"],
     "user_id": x["user_id"]
 })
-movies = movies.map(lambda x: x["movie_title"])
+movies = movies.map(lambda x: x["movie_title"]) # MapDataset で各ElementはTensor
 
-user_ids_vocabulary = tf.keras.layers.StringLookup(mask_token=None)
+user_ids_vocabulary = tf.keras.layers.StringLookup(mask_token=None) # mapping for known user_ids
 user_ids_vocabulary.adapt(ratings.map(lambda x: x["user_id"]))
 
 movie_titles_vocabulary = tf.keras.layers.StringLookup(mask_token=None)
@@ -55,8 +55,8 @@ class MovieLensModel(tfrs.Model):
 
 # Define user (user_id) and movie (movie_title) models.
 user_model = tf.keras.Sequential([
-    user_ids_vocabulary,
-    tf.keras.layers.Embedding(user_ids_vocabulary.vocabulary_size(), 64)
+    user_ids_vocabulary, # user_id -> integer に変換
+    tf.keras.layers.Embedding(user_ids_vocabulary.vocabulary_size(), 64) # integer -> embedding vector に変換
 ])
 movie_model = tf.keras.Sequential([
     movie_titles_vocabulary,
