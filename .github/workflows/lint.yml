@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python & Poetry
-        uses: nakamasato/github-actions/setup-poetry@1.0.0
+        uses: nakamasato/github-actions/setup-poetry@1.4.0
         with:
           install-dependencies: false
 
