@@ -79,6 +79,61 @@ WRAPT_DISABLE_EXTENSIONS=1 poetry run python tensorflow/examples/movielens/rank.
 user_model(tf.constant("uid2")) # embeddingを取得できる
 ```
 
+## Build (GCP AR)
+
+Custom Container:
+- https://cloud.google.com/vertex-ai/docs/training/containers-overview
+- https://cloud.google.com/vertex-ai/docs/training/code-requirements
+
+Build with buildpacks
+
+```
+REGION=asia-northeast1
+PROJECT=
+REPOSITORY=ml-training
+IMAGE=movielens-retrieve
+IMAGE_TAG=0.0.1
+```
+
+```
+poetry export -f requirements.txt --output tensorflow/examples/movielens/requirements.txt --only=tensorflow
+```
+
+build locally
+
+```
+pack build --builder heroku/builder:22 $IMAGE --path tensorflow/examples/movielens
+```
+
+run locally
+
+```
+docker run --rm $IMAGE python retrieve.py
+```
+
+build and publish
+
+```
+gcloud auth login
+gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+pack build "$REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/$IMAGE:$IMAGE_TAG" \
+    --env "GOOGLE_ENTRYPOINT='python retrieve.py'" \
+    --tag "$REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/$IMAGE:latest" \
+    --path tensorflow/examples/movielens \
+    --builder heroku/builder:22 \
+    --publish
+```
+
+Local Run (not successfully run yet)
+
+```
+gcloud ai custom-jobs local-run --executor-image-uri="$REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/$IMAGE:$IMAGE_TAG" --project $PROJECT
+```
+
+## Run on VertexAI
+
+-
+
 ## Errors
 
 1. [ValueError: Cannot convert '('c', 'o', 'u', 'n', 't', 'e', 'r')' to a shape. Found invalid entry 'c' of type '<class 'str'>' tfrs.metrics.FactorizedTopK](https://github.com/tensorflow/recommenders/issues/712): to be resolved by https://github.com/tensorflow/recommenders/pull/717 or `TF_USE_LEGACY_KERAS=1` with `poetry add tf_keras --group tensorflow`
@@ -113,3 +168,8 @@ user_model(tf.constant("uid2")) # embeddingを取得できる
 1. `TypeError: this __dict__ descriptor does not support '_DictWrapper' objects` in `tf.saved_model.save(model, "export")`
     This is Python 3.12 specific issue and workaround is `WRAPT_DISABLE_EXTENSIONS=1 poetry run python tensorflow/examples/movielens/rank.py`
     https://github.com/tensorflow/tensorflow/issues/63548
+
+## Ref
+
+1. [How to Install Google Scalable Nearest Neighbors (ScaNN) on Mac](https://eugeneyan.com/writing/how-to-install-scann-on-mac/)
+1. [Efficient serving](https://www.tensorflow.org/recommenders/examples/efficient_serving)

@@ -3,11 +3,16 @@
 import tensorflow_recommenders as tfrs
 
 from typing import Dict, Text
-
+import tempfile
+import os
 import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
+# Env Var: https://cloud.google.com/vertex-ai/docs/training/code-requirements#environment-variables
+MODEL_DIR = os.getenv("AIP_MODEL_DIR", tempfile.mkdtemp()) # you can write /gcs/<bucket>/<path> if you want to save the model to GCS
+CHECKPOINT_DIR = os.path.join("AIP_CHECKPOINT_DIR", tempfile.mkdtemp())
+TENSORBOARD_LOG_DIR = os.path.join("AIP_TENSORBOARD_LOG_DIR", tempfile.mkdtemp())
 
 # Read data
 ratings = tfds.load("movielens/100k-ratings", split="train")
@@ -77,12 +82,25 @@ model.compile(optimizer=tf.keras.optimizers.Adagrad(0.5))
 model.fit(ratings.batch(4096), epochs=3)
 
 
-# Use brute-force search to set up retrieval using the trained representations.
-index = tfrs.layers.factorized_top_k.BruteForce(model.user_model)
-index.index_from_dataset(
+# !pip install -q scann
+is_scann = False
+try:
+  index = tfrs.layers.factorized_top_k.ScaNN(model.user_model)
+  index.index_from_dataset(
+    tf.data.Dataset.zip((movies.batch(100), movies.batch(100).map(model.movie_model)))
+  )
+  is_scann = True
+except:
+  # Use brute-force search to set up retrieval using the trained representations.
+  index = tfrs.layers.factorized_top_k.BruteForce(model.user_model)
+  index.index_from_dataset(
     movies.batch(100).map(lambda title: (title, model.movie_model(title))))
 
 
 # Get recommendations.
 _, titles = index(np.array(["42"]))
 print(f"Top 3 recommendations for user 42: {titles[0, :3]}")
+
+
+index.save(MODEL_DIR, options=tf.saved_model.SaveOptions(namespace_whitelist=["Scann"]) if is_scann else None)
+print(f"Model saved to {MODEL_DIR}")
