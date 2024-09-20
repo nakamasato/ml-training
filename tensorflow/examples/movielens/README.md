@@ -86,7 +86,7 @@ Custom Container:
 - https://cloud.google.com/vertex-ai/docs/training/code-requirements
 
 ```
-export PROJECT=
+export PROJECT=<your project>
 ```
 
 ```
@@ -235,7 +235,7 @@ MODEL_ID             DISPLAY_NAME
 
 ### [Deploy model to endpoint](https://cloud.google.com/vertex-ai/docs/general/deployment)
 
-Here, we deploy the model to a dedicated endpoint: ❌️
+Here, we deploy the model to a dedicated endpoint
 
 ```
 curl -X POST \
@@ -366,6 +366,12 @@ gcloud ai endpoints undeploy-model $ENDPOINT \
     --project=$PROJECT \
     --region=$REGION \
     --deployed-model-id=$DEPLOYED_MODEL_ID
+```
+
+```
+gcloud ai endpoints delete $ENDPOINT \
+    --project=$PROJECT \
+    --region=$REGION
 ```
 
 
