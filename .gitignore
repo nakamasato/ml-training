@@ -10,3 +10,4 @@ data
 .ruff_cache
 .mypy_cache
 export
+tensorflow/examples/movielens/vertexaiconfig.yaml

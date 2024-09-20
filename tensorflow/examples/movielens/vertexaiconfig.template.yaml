@@ -1,0 +1,9 @@
+# https://cloud.google.com/vertex-ai/docs/reference/rest/v1/CustomJobSpec
+workerPoolSpecs:
+  machineSpec:
+    machineType: n2-standard-4
+  replicaCount: 1
+  containerSpec:
+    imageUri: $REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/$IMAGE:$IMAGE_TAG
+baseOutputDirectory:
+  outputUriPrefix: gs://${PROJECT}-ml-training/movielens/vertexai/model-output/
