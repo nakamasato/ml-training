@@ -99,7 +99,7 @@ try:
     tf.data.Dataset.zip((movies.batch(100), movies.batch(100).map(model.movie_model)))
   )
   is_scann = True
-except:
+except: # noqa E722
   # Use brute-force search to set up retrieval using the trained representations.
   index = tfrs.layers.factorized_top_k.BruteForce(model.user_model)
   index.index_from_dataset(
