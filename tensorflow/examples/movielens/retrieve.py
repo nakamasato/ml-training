@@ -3,20 +3,11 @@
 import tensorflow_recommenders as tfrs
 
 from typing import Dict, Text
-import google.cloud.logging
 import tempfile
-import logging
 import os
 import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
-
-IS_PRODUCTION = os.getenv("ENV", "dev") in ["prod", "production"]
-if IS_PRODUCTION:
-    client = google.cloud.logging.Client()
-    client.setup_logging()
-else:
-    logging.basicConfig(level=logging.INFO)
 
 # Env Var: https://cloud.google.com/vertex-ai/docs/training/code-requirements#environment-variables
 MODEL_DIR = os.getenv("AIP_MODEL_DIR", tempfile.mkdtemp()) # you can write /gcs/<bucket>/<path> if you want to save the model to GCS
