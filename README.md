@@ -7,3 +7,4 @@
 1. [Kubeflow](kubeflow)
 1. mlflow
 1. [monolith](https://github.com/nakamasato/monolith)
+1. [merlin](https://developer.nvidia.com/merlin)
