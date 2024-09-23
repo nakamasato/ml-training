@@ -1,0 +1,21 @@
+steps:
+  # build image for x86_64（amd64）platform
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - buildx
+      - build
+      - --platform
+      - linux/amd64
+      - -t
+      - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
+      - .
+    env:
+      - 'DOCKER_CLI_EXPERIMENTAL=enabled'
+  # push image to GAR
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
+
+images:
+  - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
