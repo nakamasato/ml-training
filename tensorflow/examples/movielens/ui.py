@@ -1,10 +1,8 @@
 import os
-from typing import Dict, List, Union
+from typing import List
 
 import streamlit as st
 from google.cloud import aiplatform
-from google.protobuf import json_format
-from google.protobuf.struct_pb2 import Value
 
 # https://cloud.google.com/python/docs/reference/aiplatform/latest/index.html
 # https://github.com/googleapis/python-aiplatform/blob/main/samples/snippets/prediction_service/predict_custom_trained_model_sample.py
