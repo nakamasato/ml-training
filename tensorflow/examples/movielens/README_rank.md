@@ -100,21 +100,21 @@ Check endpoint
 
 ```
 gcloud ai endpoints list --region=$REGION --project $PROJECT
-ENDPOINT_ID          DISPLAY_NAME
+RANK_ENDPOINT_ID          DISPLAY_NAME
 8479684362059644928  movielens-rank
 ```
 
 Deploy the latest model
 
 ```
-ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name')
-MODEL_ID=$(gcloud ai models list --filter=display_name=movielens-rank --region $REGION --project $PROJECT --sort-by=~versionUpdateTime --format 'json(name)' | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
+RANK_ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name')
+RANK_MODEL_ID=$(gcloud ai models list --filter=display_name=movielens-rank --region $REGION --project $PROJECT --sort-by=~versionUpdateTime --format 'json(name)' | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
 ```
 
 ```
-gcloud ai endpoints deploy-model $ENDPOINT \
+gcloud ai endpoints deploy-model $RANK_ENDPOINT \
   --region=$REGION \
-  --model=$MODEL_ID \
+  --model=$RANK_MODEL_ID \
   --display-name=movielens-rank \
   --machine-type=n2-standard-2 \
   --min-replica-count=1 \
@@ -150,7 +150,7 @@ prepare `input_data_file_rank.json`:
 ```
 
 ```
-ENDPOINT_ID=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
+export RANK_ENDPOINT_ID=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
 INPUT_DATA_FILE=tensorflow/examples/movielens/input_data_file_rank.json
 ```
 
@@ -159,7 +159,7 @@ curl \
 -X POST \
 -H "Authorization: Bearer $(gcloud auth print-access-token)" \
 -H "Content-Type: application/json" \
-"https://$REGION-aiplatform.googleapis.com/v1/projects/$PROJECT/locations/$REGION/endpoints/$ENDPOINT_ID:predict" \
+"https://$REGION-aiplatform.googleapis.com/v1/projects/$PROJECT/locations/$REGION/endpoints/$RANK_ENDPOINT_ID:predict" \
 -d "@${INPUT_DATA_FILE}"
 ```
 
@@ -186,16 +186,16 @@ curl \
 ### Undeploy
 
 ```
-ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name')
-DEPLOYED_MODEL_ID=$(gcloud ai models describe $MODEL_ID  --region $REGION --project $PROJECT --format 'json('deployedModels')' | jq -r '.deployedModels[0].deployedModelId')
-gcloud ai endpoints undeploy-model $ENDPOINT \
+RANK_ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name')
+DEPLOYED_RANK_MODEL_ID=$(gcloud ai models describe $RANK_MODEL_ID  --region $REGION --project $PROJECT --format 'json('deployedModels')' | jq -r '.deployedModels[0].deployedModelId')
+gcloud ai endpoints undeploy-model $RANK_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION \
-    --deployed-model-id=$DEPLOYED_MODEL_ID
+    --deployed-model-id=$DEPLOYED_RANK_MODEL_ID
 ```
 
 ```
-gcloud ai endpoints delete $ENDPOINT \
+gcloud ai endpoints delete $RANK_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION
 ```

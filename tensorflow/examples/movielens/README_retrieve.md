@@ -151,7 +151,7 @@ gcloud ai models upload \
 
 ```
 gcloud ai models list --project $PROJECT --region $REGION
-MODEL_ID             DISPLAY_NAME
+RETRIEVE_MODEL_ID             DISPLAY_NAME
 2548324905556901888  movielens-retrieve
 ```
 
@@ -197,14 +197,14 @@ ENDPOINT_ID          DISPLAY_NAME
 Deploy the latest model
 
 ```
-ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-retrieve --project $PROJECT --format="json(name)" | jq -r '.[0].name')
-MODEL_ID=$(gcloud ai models list --filter=display_name=movielens-retrieve --region $REGION --project $PROJECT --sort-by=~versionUpdateTime --format 'json(name)' | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
+RETRIEVE_ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-retrieve --project $PROJECT --format="json(name)" | jq -r '.[0].name')
+RETRIEVE_MODEL_ID=$(gcloud ai models list --filter=display_name=movielens-retrieve --region $REGION --project $PROJECT --sort-by=~versionUpdateTime --format 'json(name)' | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
 ```
 
 ```
-gcloud ai endpoints deploy-model $ENDPOINT \
+gcloud ai endpoints deploy-model $RETRIEVE_ENDPOINT \
   --region=$REGION \
-  --model=$MODEL_ID \
+  --model=$RETRIEVE_MODEL_ID \
   --display-name=movielens-retrieve \
   --machine-type=n2-standard-2 \
   --min-replica-count=1 \
@@ -219,7 +219,7 @@ gcloud ai endpoints deploy-model $ENDPOINT \
 Check your endpoint
 
 ```
-gcloud ai endpoints describe $ENDPOINT \
+gcloud ai endpoints describe $RETRIEVE_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION
 ```
@@ -238,7 +238,7 @@ prepare `input_data_file_retrieve.json`:
 ```
 
 ```
-ENDPOINT_ID=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-retrieve --project $PROJECT --format="json(name)" | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
+export RETRIEVE_ENDPOINT_ID=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-retrieve --project $PROJECT --format="json(name)" | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
 INPUT_DATA_FILE=tensorflow/examples/movielens/input_data_file_retrieve.json
 ```
 
@@ -247,7 +247,7 @@ curl \
 -X POST \
 -H "Authorization: Bearer $(gcloud auth print-access-token)" \
 -H "Content-Type: application/json" \
-"https://$REGION-aiplatform.googleapis.com/v1/projects/$PROJECT/locations/$REGION/endpoints/$ENDPOINT_ID:predict" \
+"https://$REGION-aiplatform.googleapis.com/v1/projects/$PROJECT/locations/$REGION/endpoints/$RETRIEVE_ENDPOINT_ID:predict" \
 -d "@${INPUT_DATA_FILE}"
 ```
 
@@ -265,7 +265,7 @@ curl \
 > ```
 > you can use the following command:
 > ```
-> DEDICATED_DNS=$(gcloud ai endpoints describe $ENDPOINT \
+> DEDICATED_DNS=$(gcloud ai endpoints describe $RETRIEVE_ENDPOINT \
 >    --project=$PROJECT \
 >    --region=$REGION --format json | jq -r '.dedicatedEndpointDns')
 > ```
@@ -315,16 +315,16 @@ Result:
 ### Undeploy
 
 ```
-ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-retrieve --project $PROJECT --format="json(name)" | jq -r '.[0].name')
-DEPLOYED_MODEL_ID=$(gcloud ai models describe $MODEL_ID  --region $REGION --project $PROJECT --format 'json('deployedModels')' | jq -r '.deployedModels[].deployedModelId')
-gcloud ai endpoints undeploy-model $ENDPOINT \
+RETRIEVE_ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-retrieve --project $PROJECT --format="json(name)" | jq -r '.[0].name')
+DEPLOYED_RETRIEVE_MODEL_ID=$(gcloud ai models describe $RETRIEVE_MODEL_ID  --region $REGION --project $PROJECT --format 'json('deployedModels')' | jq -r '.deployedModels[].deployedModelId')
+gcloud ai endpoints undeploy-model $RETRIEVE_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION \
-    --deployed-model-id=$DEPLOYED_MODEL_ID
+    --deployed-model-id=$DEPLOYED_RETRIEVE_MODEL_ID
 ```
 
 ```
-gcloud ai endpoints delete $ENDPOINT \
+gcloud ai endpoints delete $RETRIEVE_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION
 ```
