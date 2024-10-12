@@ -1,0 +1,16 @@
+{
+    "instances": [
+        {
+            "user_id": "42",
+            "movie_title": "M*A*S*H (1970)"
+        },
+        {
+            "user_id": "42",
+            "movie_title": "Dances with Wolves (1990)"
+        },
+        {
+            "user_id": "42",
+            "movie_title": "Speed (1994)"
+        }
+    ]
+}

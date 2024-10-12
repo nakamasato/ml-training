@@ -16,6 +16,6 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY retrieve.py .
+COPY retrieve.py rank.py ./
 
-CMD ["python", "retrieve.py"]
+CMD ["python"]

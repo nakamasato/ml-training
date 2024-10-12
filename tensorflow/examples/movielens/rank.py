@@ -1,4 +1,5 @@
 import os
+import tempfile
 from typing import Dict, Text
 
 import numpy as np
@@ -6,6 +7,12 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 import tensorflow_recommenders as tfrs
 
+# Env Var: https://cloud.google.com/vertex-ai/docs/training/code-requirements#environment-variables
+MODEL_DIR = os.getenv("AIP_MODEL_DIR", tempfile.mkdtemp()) # you can write /gcs/<bucket>/<path> if you want to save the model to GCS
+CHECKPOINT_DIR = os.path.join("AIP_CHECKPOINT_DIR", tempfile.mkdtemp())
+TENSORBOARD_LOG_DIR = os.path.join("AIP_TENSORBOARD_LOG_DIR", tempfile.mkdtemp())
+
+# Read data.
 ratings = tfds.load("movielens/100k-ratings", split="train")
 
 ratings = ratings.map(lambda x: {
@@ -117,4 +124,5 @@ for title, score in sorted(test_ratings.items(), key=lambda x: x[1], reverse=Tru
   print(f"{title}: {score}")
 
 
-tf.saved_model.save(model, os.path.join(os.path.dirname(__file__),"export"))
+tf.saved_model.save(model, MODEL_DIR)
+print(f"Model saved to {MODEL_DIR}")
