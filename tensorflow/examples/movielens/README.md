@@ -27,6 +27,26 @@ WRAPT_DISABLE_EXTENSIONS=1 poetry run python tensorflow/examples/movielens/rank.
 
 Deploy to Vertex AI: [rank](README_rank.md)
 
+## UI
+
+After deploying retrieve and rank models to Vertex AI, following [retrieve](README_retrieve.md) and [rank](README_rank.md).
+
+```mermaid
+graph TD;
+  UI --uid--> retrieve["retrieve model"]
+  retrieve -- candidates --> UI
+  UI -- candidates --> rank["rank model"]
+  rank --candidates sorted by the score --> UI
+```
+
+Run Streamlit UI app with the following command.
+
+```
+poetry run streamlit run tensorflow/examples/movielens/ui.py
+```
+
+![](ui.png)
+
 ## Data
 
 ### ratings
