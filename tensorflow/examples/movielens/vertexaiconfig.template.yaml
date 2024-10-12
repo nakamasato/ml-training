@@ -5,5 +5,7 @@ workerPoolSpecs:
   replicaCount: 1
   containerSpec:
     imageUri: $REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/$IMAGE:$IMAGE_TAG
+    command: ["python"]
+    args: ["${APP}.py"]
 baseOutputDirectory:
-  outputUriPrefix: gs://${PROJECT}-ml-training/movielens/vertexai/model-output/
+  outputUriPrefix: gs://${PROJECT}-ml-training/movielens/vertexai/${APP}/model-output/
