@@ -42,6 +42,7 @@ torch = "^2.2.2"
 [tool.poetry.group.streamlit.dependencies]
 streamlit = "^1.39.0"
 google-cloud-aiplatform = "^1.70.0"
+google-auth = "^2.35.0"
 
 [build-system]
 requires = ["poetry-core"]

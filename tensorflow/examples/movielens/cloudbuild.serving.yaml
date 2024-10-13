@@ -1,0 +1,31 @@
+steps:
+  # Copy the model output from the training job to the current directory
+  # The current directory will have a new directory called model-output
+  - name: 'gcr.io/cloud-builders/gcloud'
+    env:
+      - "EXPORT_BUCKET=${_EXPORT_BUCKET}"
+    script: |
+      #!/bin/bash
+      set -e
+      mkdir -p models
+      gcloud storage cp -r "$EXPORT_BUCKET" models/
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - buildx
+      - build
+      - -f
+      - Dockerfile.serving
+      - -t
+      - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
+      - .
+    env:
+      - 'DOCKER_CLI_EXPERIMENTAL=enabled'
+  # push image to GAR
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
+images:
+  - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
+substitutions:
+  _EXPORT_BUCKET: gs://${_PROJECT}-ml-training/movielens/cloudrun/${_APP}/

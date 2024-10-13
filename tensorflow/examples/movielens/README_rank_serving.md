@@ -1,78 +1,14 @@
-# Movielens - Rank
+# Movielens - Serving Rank Model
 
-![](vertexai.drawio.svg)
+## Prerequisite
 
-You can also check
-
-- [Vertex AI でレコメンデーションモデルを使う (Custom Training + Deploy to endpoint + Prediction)](https://qiita.com/nakamasato/items/ddf778aef32f3a8421c3)
-- [Step-by-Step: Develop a Recommendation System Using Vertex AI (From Custom Training to Deployment with MovieLens dataset)](https://nakamasato.medium.com/step-by-step-develop-a-recommendation-system-using-vertex-ai-from-custom-training-to-deployment-54a4bd31b285)
-## Build and push to GCP AR
-
-Custom Container:
-- https://cloud.google.com/vertex-ai/docs/training/containers-overview
-- https://cloud.google.com/vertex-ai/docs/training/code-requirements
-
+Model is already saved in GCS ([Train a Rank Model](README_rank_train.md))
 
 ```
-export PROJECT=<your project>
+gcloud storage ls --project $PROJECT gs://${PROJECT}-ml-training/movielens/cloudrun/rank/model-output/
 ```
 
-```
-export REGION=asia-northeast1
-export REPOSITORY=ml-training
-export IMAGE=movielens
-export IMAGE_TAG=0.0.1
-export APP=rank
-```
-
-
-```
-poetry export -f requirements.txt --output tensorflow/examples/movielens/requirements.txt --only=tensorflow --without-hashes
-```
-
-```
-cd tensorflow/examples/movielens/
-gcloud builds submit \
-    --config "cloudbuild.yaml" \
-    --project "${PROJECT}" \
-    --substitutions="_IMAGE_TAG=${IMAGE_TAG},_IMAGE_NAME=${IMAGE},_REPOSITORY=${REPOSITORY},_REGION=${REGION},_PROJECT=${PROJECT}" \
-    --gcs-source-staging-dir="gs://${PROJECT}-cloudbuild/source"
-```
-
-## Train Model
-
-### Option1: Run on Cloud Run ✅️
-
-```
-gcloud run jobs deploy ml-training-movielens-rank --command=python --args=rank.py --memory 4Gi --cpu 2 --image "$REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/$IMAGE:$IMAGE_TAG" --set-env-vars=AIP_MODEL_DIR=gs://${PROJECT}-ml-training/movielens/cloudrun/rank/model-output --set-env-vars=TF_USE_LEGACY_KERAS=1 --max-retries 0 --region $REGION --project $PROJECT
-```
-
-```
-gcloud run jobs execute ml-training-movielens-rank --region $REGION --project $PROJECT
-```
-
-
-
-### Option2: Run on Vertex AI ✅️
-
-Submit Custom Job without autopacking
-
-- [Create Custom Job with gcloud](https://cloud.google.com/vertex-ai/docs/training/create-custom-job#create_custom_job-gcloud)
-- [Envvar for special GCS dir](https://cloud.google.com/vertex-ai/docs/training/code-requirements#environment-variables)
-
-Prepare config file
-
-```
-APP=rank envsubst < tensorflow/examples/movielens/vertexaiconfig.template.yaml > tensorflow/examples/movielens/vertexaiconfig.rank.yaml
-```
-
-Submit job
-
-```
-gcloud ai custom-jobs create --region=$REGION --display-name="movielens-rank" --config=tensorflow/examples/movielens/vertexaiconfig.rank.yaml --project $PROJECT
-```
-
-## Deploy serving
+## Option1: Deploy to Vertex AI Endpoint
 
 ### [Import model from GCS](https://cloud.google.com/vertex-ai/docs/model-registry/import-model#custom-container)
 
@@ -192,7 +128,8 @@ curl \
 
 ```
 RANK_ENDPOINT=$(gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name')
-DEPLOYED_RANK_MODEL_ID=$(gcloud ai models describe $RANK_MODEL_ID  --region $REGION --project $PROJECT --format 'json('deployedModels')' | jq -r '.deployedModels[0].deployedModelId')
+RANK_MODEL_ID=$(gcloud ai models list --filter=display_name=movielens-rank --region $REGION --project $PROJECT --sort-by=~versionUpdateTime --format 'json(name)' | jq -r '.[0].name' | sed 's/.*\/\(\d*\)/\1/')
+DEPLOYED_RANK_MODEL_ID=$(gcloud ai models describe $RANK_MODEL_ID --region $REGION --project $PROJECT --format 'json('deployedModels')' | jq -r '.deployedModels[0].deployedModelId')
 gcloud ai endpoints undeploy-model $RANK_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION \
@@ -204,3 +141,63 @@ gcloud ai endpoints delete $RANK_ENDPOINT \
     --project=$PROJECT \
     --region=$REGION
 ```
+
+## Option2: Deploy to Cloud Run with TFX Serving
+
+- https://www.tensorflow.org/tfx/serving/serving_basic
+- https://keras.io/examples/keras_recipes/tf_serving/
+
+Build serving container (copy the model from gcs to docker image)
+
+```
+cd tensorflow/examples/movielens/
+gcloud builds submit \
+    --config "cloudbuild.serving.yaml" \
+    --project "${PROJECT}" \
+    --substitutions="_IMAGE_TAG=${IMAGE_TAG},_IMAGE_NAME=movielens-rank,_REPOSITORY=${REPOSITORY},_REGION=${REGION},_PROJECT=${PROJECT},_EXPORT_BUCKET=gs://$PROJECT-ml-training/movielens/cloudrun/rank/" \
+    --gcs-source-staging-dir="gs://${PROJECT}-cloudbuild/source"
+```
+
+This copis model from `gs://$PROJECT-ml-training/movielens/cloudrun/rank/` to `models/` dir and then, the image contains the model files under `/models/` (e.g. `/models/rank/1/`)
+
+
+```
+gcloud run deploy movielens-rank \
+    --image=$REGION-docker.pkg.dev/$PROJECT/$REPOSITORY/movielens-rank:$IMAGE_TAG \
+    --port=8501 \
+    --region=$REGION \
+    --execution-environment=gen2 \
+    --no-allow-unauthenticated \
+    --project=$PROJECT \
+    --set-env-vars=MODEL_NAME="rank" \
+    --set-env-vars=MODEL_BASE_PATH=/models/
+```
+
+```
+RANK_URL=$(gcloud run services describe movielens-rank \
+    --region=$REGION \
+    --project=$PROJECT --format json | jq -r '.status.url'); echo $RANK_URL
+```
+
+
+```
+curl \
+-X POST \
+-H "Authorization: Bearer $(gcloud auth print-identity-token)" \
+-H "Content-Type: application/json" \
+"$RANK_URL/v1/models/rank:predict" \
+-d "@tensorflow/examples/movielens/input_data_file_rank.json"
+```
+
+Result ✅️
+
+```
+{
+    "predictions": [[3.55253816], [3.61419201], [3.52277851]
+    ]
+}
+```
+
+## Ref
+
+- https://github.com/guillaumeblaquiere/cloudrun-tensorflow-prediction/tree/master

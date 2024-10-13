@@ -1,0 +1,6 @@
+FROM tensorflow/serving:2.17.0
+
+# default MODEL_BASE_PATH=models
+# default MODEL_NAME=model
+ENV MODEL_BASE_PATH=/models
+COPY $MODEL_BASE_PATH /models

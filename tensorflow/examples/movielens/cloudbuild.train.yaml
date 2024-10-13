@@ -4,6 +4,8 @@ steps:
     args:
       - buildx
       - build
+      - -f
+      - Dockerfile.train
       - --platform
       - linux/amd64
       - -t
@@ -16,6 +18,5 @@ steps:
     args:
       - push
       - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
-
 images:
   - ${_REGION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}

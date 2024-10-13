@@ -5,17 +5,93 @@
 - tensorflow: 2.17.0
 - keras: 2.17.0 (`poetry add tf_keras --group tensorflow`)
 
-## Run
+## Train and deploy a model
 
 ### retrieve
 
 `TF_USE_LEGACY_KERAS=1` is set in `.env` (This is necessary because https://github.com/tensorflow/recommenders/issues/712)
 
+Local
+
+train
+
 ```
-poetry run python tensorflow/examples/movielens/retrieve.py
+AIP_MODEL_DIR=models/retrieve poetry run python tensorflow/examples/movielens/retrieve.py
 ```
 
-Deploy to Vertex AI: [retrieve](README_retrieve.md)
+The model is saved under `models/retrieve`
+
+```
+ls models/retrieve
+assets            fingerprint.pb    keras_metadata.pb saved_model.pb    variables
+```
+
+Check the saved model
+
+```
+poetry run saved_model_cli show --dir models/retrieve --tag_set serve  --signature_def serving_default
+The given SavedModel SignatureDef contains the following input(s):
+  inputs['input_1'] tensor_info:
+      dtype: DT_STRING
+      shape: (-1)
+      name: serving_default_input_1:0
+The given SavedModel SignatureDef contains the following output(s):
+  outputs['output_1'] tensor_info:
+      dtype: DT_FLOAT
+      shape: (-1, 10)
+      name: StatefulPartitionedCall:0
+  outputs['output_2'] tensor_info:
+      dtype: DT_STRING
+      shape: (-1, 10)
+      name: StatefulPartitionedCall:1
+Method name is: tensorflow/serving/predict
+```
+
+
+```
+docker run --rm -p 8500:8500 \
+  --mount type=bind,source=./models/retrieve/,target=/models/retrieve \
+  -e MODEL_NAME=retrieve -t tensorflow/serving
+```
+
+
+> [!NOTE]
+> serving (Apple silicon needs to use [bitnami/tensorflow-serving](https://hub.docker.com/r/bitnami/tensorflow-serving) image https://github.com/tensorflow/serving/issues/1948)
+
+M1 Mac
+
+```
+docker run --rm -p 8501:8501 \
+  --mount type=bind,source=./models/retrieve/,target=/bitnami/model-data/1/ \
+  -e TENSORFLOW_SERVING_MODEL_NAME=retrieve --platform="linux/amd64" -t bitnami/tensorflow-serving:2.8.0
+```
+
+```
+INPUT_DATA_FILE=tensorflow/examples/movielens/input_data_file_retrieve.json
+curl \
+-X POST \
+-H "Content-Type: application/json" \
+"http://localhost:8501/v1/models/retrieve:predict" \
+-d "@${INPUT_DATA_FILE}"
+```
+
+Result:
+
+```
+{
+    "predictions": [
+        {
+            "output_1": [3.83519721, 3.72181058, 2.94880295, 2.65641713, 2.65517139, 2.61823225, 2.58621407, 2.52965593, 2.49846315, 2.49338675],
+            "output_2": ["Far From Home: The Adventures of Yellow Dog (1995)", "Rent-a-Kid (1995)", "Mirage (1995)", "Just Cause (1995)", "Two if by Sea (1996)", "Jack (1996)", "Rudy (1993)", "Age of Innocence, The (1993)", "Conan the Barbarian (1981)", "Michael (1996)"]
+        }
+    ]
+}
+```
+
+GCP:
+
+- [Train a retrieve model on GCP](README_retrieve_train.md)
+- [Retrieve model serving on GCP](README_retrieve_serving.md)
 
 ### rank
 
@@ -25,9 +101,10 @@ train Rank model and save the model
 WRAPT_DISABLE_EXTENSIONS=1 poetry run python tensorflow/examples/movielens/rank.py
 ```
 
-Deploy to Vertex AI: [rank](README_rank.md)
+- [Train a rank model on GCP](README_rank_train.md)
+- [Rank model serving on GCP](README_rank_serving.md)
 
-## UI
+## Inference UI
 
 After deploying retrieve and rank models to Vertex AI, following [retrieve](README_retrieve.md) and [rank](README_rank.md).
 
@@ -142,3 +219,9 @@ user_model(tf.constant("uid2")) # embeddingを取得できる
 
 1. [How to Install Google Scalable Nearest Neighbors (ScaNN) on Mac](https://eugeneyan.com/writing/how-to-install-scann-on-mac/)
 1. [Efficient serving](https://www.tensorflow.org/recommenders/examples/efficient_serving)
+1. Serving
+    1. https://www.tensorflow.org/tfx/tutorials/serving/rest_simple
+    1. https://www.tensorflow.org/tfx/serving/serving_basic
+    1. https://keras.io/examples/keras_recipes/tf_serving <- versioning model
+    1. https://github.com/tensorflow/serving/issues/621
+    1. https://medium.com/google-cloud/portable-prediction-with-tensorflow-and-cloud-run-669c1c73ebd1
