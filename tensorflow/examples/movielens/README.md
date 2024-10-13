@@ -116,6 +116,23 @@ graph TD;
   rank --candidates sorted by the score --> UI
 ```
 
+Create Service Account to generate ID token to invoke the cloud run services (ref: [Generate an ID token by impersonating a service account](https://cloud.google.com/docs/authentication/get-id-token#impersonation))
+https://cloud.google.com/run/docs/authenticating/service-to-service#run-service-to-service-example-python
+
+```
+gcloud iam service-accounts create movielens-ui --project $PROJECT
+gcloud run services add-iam-policy-binding movielens-retrieve \
+  --region $REGION \
+  --member="serviceAccount:movielens-ui@$PROJECT.iam.gserviceaccount.com" \
+  --role="roles/run.invoker" \
+  --project $PROJECT
+gcloud run services add-iam-policy-binding movielens-rank \
+  --region $REGION \
+  --member="serviceAccount:movielens-ui@$PROJECT.iam.gserviceaccount.com" \
+  --role="roles/run.invoker" \
+  --project $PROJECT
+```
+
 Run Streamlit UI app with the following command.
 
 ```
