@@ -1,6 +1,11 @@
 # Movielens - Retrieve
 
-You can also check [Vertex AI でレコメンデーションモデルを使う (Custom Training + Deploy to endpoint + Prediction)](https://qiita.com/nakamasato/items/ddf778aef32f3a8421c3)
+![](vertexai.drawio.svg)
+
+You can also check
+
+- [Vertex AI でレコメンデーションモデルを使う (Custom Training + Deploy to endpoint + Prediction)](https://qiita.com/nakamasato/items/ddf778aef32f3a8421c3)
+- [Step-by-Step: Develop a Recommendation System Using Vertex AI (From Custom Training to Deployment with MovieLens dataset)](https://nakamasato.medium.com/step-by-step-develop-a-recommendation-system-using-vertex-ai-from-custom-training-to-deployment-54a4bd31b285)
 
 ## Build and push to GCP AR
 
