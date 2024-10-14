@@ -761,6 +761,24 @@ proto-plus = ">=1.22.3,<2.0.0dev"
 protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<6.0.0dev"
 
 [[package]]
+name = "google-cloud-run"
+version = "0.10.9"
+description = "Google Cloud Run API client library"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "google_cloud_run-0.10.9-py2.py3-none-any.whl", hash = "sha256:5eed2fa7bbf59cceb9b7065880b2fb3ade1dbdf3720d1eb5adbe3fddad579c17"},
+    {file = "google_cloud_run-0.10.9.tar.gz", hash = "sha256:a9766b981e77a795de2b31c660fb2d3899fbb41e28d0a3c81ad08bd2e122ca13"},
+]
+
+[package.dependencies]
+google-api-core = {version = ">=1.34.1,<2.0.dev0 || >=2.11.dev0,<3.0.0dev", extras = ["grpc"]}
+google-auth = ">=2.14.1,<2.24.0 || >2.24.0,<2.25.0 || >2.25.0,<3.0.0dev"
+grpc-google-iam-v1 = ">=0.12.4,<1.0.0dev"
+proto-plus = ">=1.22.3,<2.0.0dev"
+protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<6.0.0dev"
+
+[[package]]
 name = "google-cloud-storage"
 version = "2.18.2"
 description = "Google Cloud Storage API client library"
@@ -3459,4 +3477,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "c454b671a9acb998a42c1cd43c4c94a3cdaf94a0406e84449acd87331ac934b0"
+content-hash = "1769285a8a1b212d854ca9f8bdced1b907bddf4ab05c46a0c4caf071ac400900"

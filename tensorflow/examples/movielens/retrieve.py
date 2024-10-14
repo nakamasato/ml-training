@@ -11,6 +11,9 @@ import tensorflow_datasets as tfds
 
 # Env Var: https://cloud.google.com/vertex-ai/docs/training/code-requirements#environment-variables
 MODEL_DIR = os.getenv("AIP_MODEL_DIR", tempfile.mkdtemp()) # you can write /gcs/<bucket>/<path> if you want to save the model to GCS
+MODEL_VERSION = os.getenv("MODEL_VERSION", "1")
+# if MODEL_DIR.startswith("gs://"):
+#     MODEL_DIR = os.path.join(MODEL_DIR, MODEL_VERSION)
 CHECKPOINT_DIR = os.path.join("AIP_CHECKPOINT_DIR", tempfile.mkdtemp())
 TENSORBOARD_LOG_DIR = os.path.join("AIP_TENSORBOARD_LOG_DIR", tempfile.mkdtemp())
 
