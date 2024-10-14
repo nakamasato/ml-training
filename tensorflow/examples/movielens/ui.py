@@ -1,15 +1,13 @@
 import os
-import google.oauth2.id_token
 from typing import List
 
 import google.auth
+import google.oauth2.id_token
 import requests
 import streamlit as st
 from google.auth import impersonated_credentials
 from google.auth.transport.requests import Request
-from google.cloud import run_v2
-from google.cloud import aiplatform
-
+from google.cloud import aiplatform, run_v2
 
 # https://cloud.google.com/python/docs/reference/aiplatform/latest/index.html
 # https://github.com/googleapis/python-aiplatform/blob/main/samples/snippets/prediction_service/predict_custom_trained_model_sample.py
@@ -17,6 +15,7 @@ from google.cloud import aiplatform
 st.title('MovieLens 100K')
 
 PROJECT=os.environ["PROJECT"]
+REGION = os.getenv("REGION","asia-northeast1")
 SERVICE_ACCOUNT=f"movielens-ui@{PROJECT}.iam.gserviceaccount.com"
 user_id = st.sidebar.selectbox("user_id", ["1", "2", "42"])
 endpoint_type = st.sidebar.selectbox("endpoint_type", ["Vertex AI endpoint", "Cloud Run"], index=1)
@@ -84,18 +83,35 @@ def predict_with_vertex_ai_endpoint(project: str, location: str, endpoint_id: st
 
     return predictions
 
+
+def get_vertex_ai_endpoint(endpoint_name: str, order_by: str = "~updateTime"):
+    """Get the Vertex AI endpoint by the endpoint Name.
+    gcloud ai endpoints list --region=$REGION --filter=display_name=movielens-rank --project $PROJECT --format="json(name)" | jq -r '.[0].name'
+    """
+    # AI Platformの初期化
+    aiplatform.init(project=PROJECT, location=REGION)
+
+    # エンドポイントの取得
+    endpoint = aiplatform.Endpoint.list(filter=f"display_name={endpoint_name}")[0]
+
+    return endpoint
+
 st.subheader('Retrieve')
 
 if endpoint_type == "Vertex AI endpoint":
-    predictions = predict_with_vertex_ai_endpoint(
-        project=os.environ["PROJECT"],
-        endpoint_id=os.environ["RETRIEVE_ENDPOINT_ID"],
-        location=os.getenv("REGION","asia-northeast1"),
-        instances=[str(user_id)],
-    )
-    print(predictions)
+    retrieve_endpoint_name = st.sidebar.text_input("Vertex AI Endpoint for Retrieve", "movielens-retrieve")
+    if retrieve_endpoint_name:
+        retrieve_endpoint = get_vertex_ai_endpoint(retrieve_endpoint_name)
+        st.write(retrieve_endpoint.name)
+        predictions = predict_with_vertex_ai_endpoint(
+            project=PROJECT,
+            endpoint_id=retrieve_endpoint.name,
+            location=REGION,
+            instances=[str(user_id)],
+        )
+        print(predictions)
 
-    st.sidebar.markdown(f"""
+        st.sidebar.markdown(f"""
 ## Retrieve:
 
 - model_id: {predictions.deployed_model_id}
@@ -104,7 +120,7 @@ if endpoint_type == "Vertex AI endpoint":
 - model_resource_name: {predictions.model_resource_name}
 """)
 
-    items = retrieved_items(predictions.predictions[0]["output_2"], predictions.predictions[0]["output_1"])
+        items = retrieved_items(predictions.predictions[0]["output_2"], predictions.predictions[0]["output_1"])
 
 
 else:
@@ -138,22 +154,25 @@ st.json(predictions, expanded=False)
 st.subheader('Rank')
 
 candidate_titles = [title for title in (predictions.predictions[0]["output_2"] if endpoint_type == "Vertex AI endpoint" else predictions['predictions'][0]["output_2"])] if predictions else []
-
-if endpoint_type == "Vertex AI endpoint":
-    predictions = predict_with_vertex_ai_endpoint(
-        project=os.environ["PROJECT"],
-        endpoint_id=os.environ["RANK_ENDPOINT_ID"],
-        location=os.getenv("REGION","asia-northeast1"),
-        instances=[{
+instances = [{
             "user_id": str(user_id),
             "movie_title": title,
-        } for title in candidate_titles],
-    )
+        } for title in candidate_titles]
+if endpoint_type == "Vertex AI endpoint":
+    rank_endpoint_name = st.sidebar.text_input("Cloud Run Rank service", "movielens-rank")
+    if rank_endpoint_name:
+        rank_endpoint = get_vertex_ai_endpoint(rank_endpoint_name)
+        st.write(rank_endpoint.name)
+        predictions = predict_with_vertex_ai_endpoint(
+            project=PROJECT,
+            endpoint_id=rank_endpoint.name,
+            location=REGION,
+            instances=instances,
+        )
+        print(predictions.predictions[0])
 
-    print(predictions.predictions[0])
 
-
-    st.sidebar.markdown(f"""
+        st.sidebar.markdown(f"""
 ## Rank:
 
 - model_id: {predictions.deployed_model_id}
@@ -161,7 +180,7 @@ if endpoint_type == "Vertex AI endpoint":
 - metadata: {predictions.metadata}
 - model_resource_name: {predictions.model_resource_name}
 """)
-    items = ranked_items(candidate_titles, predictions.predictions)
+        items = ranked_items(candidate_titles, predictions.predictions)
 
 else:
     rank_cloud_run_name = st.sidebar.text_input("Cloud Run Rank service", "movielens-rank")
@@ -175,7 +194,7 @@ else:
             'Authorization': f"Bearer {id_token}"
         }
         response = requests.post(
-            url, headers=headers, json={"instances": [{"user_id": str(user_id), "movie_title": title} for title in candidate_titles]}
+            url, headers=headers, json={"instances": instances}
         )
         predictions = response.json()
         items = ranked_items(candidate_titles, predictions['predictions'])
