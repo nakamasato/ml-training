@@ -1,13 +1,8 @@
 import os
 from typing import List
 
-import google.auth
-import google.oauth2.id_token
-import requests
 import streamlit as st
-from google.auth import impersonated_credentials
-from google.auth.transport.requests import Request
-from google.cloud import aiplatform, run_v2
+from google.cloud import aiplatform
 
 # https://cloud.google.com/python/docs/reference/aiplatform/latest/index.html
 # https://github.com/googleapis/python-aiplatform/blob/main/samples/snippets/prediction_service/predict_custom_trained_model_sample.py
