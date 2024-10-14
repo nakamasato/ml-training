@@ -116,6 +116,8 @@ graph TD;
   rank --candidates sorted by the score --> UI
 ```
 
+<details><summary>service account used for ui cloudrun</summary>
+
 Create Service Account to generate ID token to invoke the cloud run services (ref: [Generate an ID token by impersonating a service account](https://cloud.google.com/docs/authentication/get-id-token#impersonation))
 https://cloud.google.com/run/docs/authenticating/service-to-service#run-service-to-service-example-python
 
@@ -133,10 +135,13 @@ gcloud run services add-iam-policy-binding movielens-rank \
   --project $PROJECT
 ```
 
+</details>
+
 Run Streamlit UI app with the following command.
 
 ```
-poetry run streamlit run tensorflow/examples/movielens/ui.py
+poetry run streamlit run tensorflow/examples/movielens/ui_cloudrun.py
+poetry run streamlit run tensorflow/examples/movielens/ui_vertexai.py
 ```
 
 ![](ui.png)
