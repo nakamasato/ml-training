@@ -2961,13 +2961,13 @@ and-cuda = ["nvidia-cublas-cu12 (==12.3.4.1)", "nvidia-cuda-cupti-cu12 (==12.3.1
 
 [[package]]
 name = "tensorflow-datasets"
-version = "4.9.6"
+version = "4.9.7"
 description = "tensorflow/datasets is a library of datasets ready to use with TensorFlow."
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "tensorflow_datasets-4.9.6-py3-none-any.whl", hash = "sha256:b14698a575e4a1e30f8e2ad6614e8e5f97036cc415b0d21eea6bc9f4d82b24ed"},
-    {file = "tensorflow_datasets-4.9.6.tar.gz", hash = "sha256:f0ee91edbd6711cf758949574baa917aa187cb70364f1a5c14ef6e1b8f2b74a6"},
+    {file = "tensorflow_datasets-4.9.7-py3-none-any.whl", hash = "sha256:f6fdfe745b5df2a37bde8bb2ef149188ebbca4af546226b461f3bad26bc42875"},
+    {file = "tensorflow_datasets-4.9.7.tar.gz", hash = "sha256:948d7a68ee693d9709cbfe955f97344b98647e5512e0e42dd2a61f3e7925d68b"},
 ]
 
 [package.dependencies]
@@ -2975,7 +2975,7 @@ absl-py = "*"
 array-record = {version = ">=0.5.0", markers = "platform_system == \"Linux\""}
 click = "*"
 dm-tree = "*"
-etils = {version = ">=1.9.1", extras = ["enp", "epath", "epy", "etree"], markers = "python_version >= \"3.11\""}
+etils = {version = ">=1.9.1", extras = ["edc", "enp", "epath", "epy", "etree"], markers = "python_version >= \"3.11\""}
 immutabledict = "*"
 numpy = "*"
 promise = "*"
@@ -2994,17 +2994,17 @@ wrapt = "*"
 aflw2k3d = ["scipy"]
 beir = ["apache-beam"]
 ble-wind-field = ["gcsfs", "zarr"]
-c4 = ["apache-beam", "gcld3", "langdetect", "nltk", "tldextract"]
+c4 = ["apache-beam", "gcld3", "langdetect", "nltk (==3.8.1)", "tldextract"]
 c4-wsrs = ["apache-beam"]
 cats-vs-dogs = ["matplotlib"]
 colorectal-histology = ["Pillow"]
 common-voice = ["pydub"]
-dev = ["apache-beam", "conllu", "dill", "jax[cpu]", "jupyter", "pandas", "pydub", "pylint (>=2.6.0)", "pytest", "pytest-shard", "pytest-xdist", "pyyaml", "tensorflow-io[tensorflow]", "yapf"]
+dev = ["apache-beam", "conllu", "dill", "jax[cpu] (==0.4.28)", "jupyter", "mlcroissant (>=1.0.9)", "pandas", "pydub", "pylint (>=2.6.0)", "pytest", "pytest-shard", "pytest-xdist", "pyyaml", "tensorflow-io[tensorflow]", "yapf"]
 duke-ultrasound = ["scipy"]
 eurosat = ["imagecodecs", "scikit-image", "tifffile"]
 groove = ["pretty-midi", "pydub"]
 gtzan = ["pydub"]
-huggingface = ["Pillow", "bs4", "conllu", "datasets", "dill", "envlogger", "gcld3", "gcsfs", "h5py", "imagecodecs", "jax[cpu]", "jupyter", "langdetect", "lxml", "matplotlib", "mwparserfromhell", "mwxml", "networkx", "nltk", "opencv-python", "pandas", "pretty-midi", "pycocotools", "pydub", "pytest", "pytest-shard", "pytest-xdist", "pyyaml", "scikit-image", "scipy", "tensorflow-io[tensorflow]", "tifffile", "tldextract", "zarr"]
+huggingface = ["Pillow", "bs4", "conllu", "datasets", "dill", "envlogger", "gcld3", "gcsfs", "h5py", "imagecodecs", "jax[cpu] (==0.4.28)", "jupyter", "langdetect", "lxml", "matplotlib", "mlcroissant (>=1.0.9)", "mwparserfromhell", "mwxml", "networkx", "nltk (==3.8.1)", "opencv-python", "pandas", "pretty-midi", "pycocotools", "pydub", "pytest", "pytest-shard", "pytest-xdist", "pyyaml", "scikit-image", "scipy", "tensorflow-io[tensorflow]", "tifffile", "tldextract", "zarr"]
 imagenet2012-corrupted = ["opencv-python", "scikit-image", "scipy"]
 librispeech = ["pydub"]
 locomotion = ["envlogger"]
@@ -3020,9 +3020,10 @@ smartwatch-gestures = ["pandas"]
 svhn = ["scipy"]
 tensorflow = ["tensorflow (>=2.1)"]
 tensorflow-data-validation = ["tensorflow-data-validation"]
-tests-all = ["Pillow", "apache-beam", "bs4", "conllu", "dill", "envlogger", "gcld3", "gcsfs", "h5py", "imagecodecs", "jax[cpu]", "jupyter", "langdetect", "lxml", "matplotlib", "mwparserfromhell", "mwxml", "networkx", "nltk", "opencv-python", "pandas", "pretty-midi", "pycocotools", "pydub", "pytest", "pytest-shard", "pytest-xdist", "pyyaml", "scikit-image", "scipy", "tensorflow-io[tensorflow]", "tifffile", "tldextract", "zarr"]
+tests-all = ["Pillow", "apache-beam", "bs4", "conllu", "dill", "envlogger", "gcld3", "gcsfs", "h5py", "imagecodecs", "jax[cpu] (==0.4.28)", "jupyter", "langdetect", "lxml", "matplotlib", "mlcroissant (>=1.0.9)", "mwparserfromhell", "mwxml", "networkx", "nltk (==3.8.1)", "opencv-python", "pandas", "pretty-midi", "pycocotools", "pydub", "pytest", "pytest-shard", "pytest-xdist", "pyyaml", "scikit-image", "scipy", "tensorflow-io[tensorflow]", "tifffile", "tldextract", "zarr"]
 tf-nightly = ["tf-nightly"]
 the300w-lp = ["scipy"]
+wake-vision = ["pandas"]
 wider-face = ["Pillow"]
 wiki-dialog = ["apache-beam"]
 wikipedia = ["apache-beam", "mwparserfromhell", "mwxml"]
