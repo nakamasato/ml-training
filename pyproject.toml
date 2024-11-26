@@ -16,7 +16,7 @@ ruff = "^0.8.0"
 
 
 [tool.poetry.group.ray.dependencies]
-pyarrow = "18.0.0"
+pyarrow = "18.1.0"
 pandas = "2.2.3"
 ray = {extras = ["train"], version = "^2.10.0"}
 
