@@ -35,7 +35,7 @@ tensorflow-recommenders = "0.7.2"
 
 
 [tool.poetry.group.pytorch.dependencies]
-torchvision = "^0.20.0"
+torchvision = "^0.21.0"
 torch = "^2.2.2"
 
 
