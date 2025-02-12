@@ -772,13 +772,13 @@ protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4
 
 [[package]]
 name = "google-cloud-run"
-version = "0.10.14"
+version = "0.10.15"
 description = "Google Cloud Run API client library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_cloud_run-0.10.14-py2.py3-none-any.whl", hash = "sha256:2be501a9bdab39f1bf8c42c370861eb97a57f854c556ffb9d01f475599a06522"},
-    {file = "google_cloud_run-0.10.14.tar.gz", hash = "sha256:65a045798c787b0518208a4b2a509f1504743eadefa4ce15657b418a89b51a22"},
+    {file = "google_cloud_run-0.10.15-py2.py3-none-any.whl", hash = "sha256:b67398711e5c374349b8f0e828e08d53de3797f9834501c09225eca7777eeb3c"},
+    {file = "google_cloud_run-0.10.15.tar.gz", hash = "sha256:31722acd12678bc7fc36e705b09aad650eb20f0e88b519abb063ed00d6779fde"},
 ]
 
 [package.dependencies]
