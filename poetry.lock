@@ -657,13 +657,13 @@ requests = ["requests (>=2.20.0,<3.0.0.dev0)"]
 
 [[package]]
 name = "google-cloud-aiplatform"
-version = "1.81.0"
+version = "1.82.0"
 description = "Vertex AI API client library"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "google_cloud_aiplatform-1.81.0-py2.py3-none-any.whl", hash = "sha256:e4b6745dfd1f6215d690e9589239d2e7ae2553e39bf9c24c7b7581af0f2f6a68"},
-    {file = "google_cloud_aiplatform-1.81.0.tar.gz", hash = "sha256:1398be33bfc2725dde47555e559b89e8cb3b2d676a47a9802d9f33a89f1630bf"},
+    {file = "google_cloud_aiplatform-1.82.0-py2.py3-none-any.whl", hash = "sha256:13368a961b2bfa8f46ccd10371bb19bd5f946d8f29c411726061ed1a140ce890"},
+    {file = "google_cloud_aiplatform-1.82.0.tar.gz", hash = "sha256:b7ea7379249cc1821aa46300a16e4b15aa64aa22665e2536b2bcb7e473d7438e"},
 ]
 
 [package.dependencies]
@@ -681,6 +681,9 @@ shapely = "<3.0.0dev"
 typing-extensions = "*"
 
 [package.extras]
+ag2 = ["ag2[gemini]"]
+ag2-testing = ["absl-py", "ag2[gemini]", "cloudpickle (>=3.0,<4.0)", "google-cloud-trace (<2)", "opentelemetry-exporter-gcp-trace (<2)", "opentelemetry-sdk (<2)", "pydantic (>=2.6.3,<3)", "pytest-xdist", "typing-extensions"]
+agent-engines = ["cloudpickle (>=3.0,<4.0)", "google-cloud-logging (<4)", "google-cloud-trace (<2)", "packaging (>=24.0)", "pydantic (>=2.10,<3)", "typing-extensions"]
 autologging = ["mlflow (>=1.27.0,<=2.16.0)"]
 cloud-profiler = ["tensorboard-plugin-profile (>=2.4.0,<2.18.0)", "tensorflow (>=2.4.0,<3.0.0dev)", "werkzeug (>=2.0.0,<2.1.0dev)"]
 datasets = ["pyarrow (>=10.0.1)", "pyarrow (>=14.0.0)", "pyarrow (>=3.0.0,<8.0dev)"]
