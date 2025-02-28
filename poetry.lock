@@ -41,7 +41,6 @@ jinja2 = "*"
 jsonschema = ">=3.0"
 narwhals = ">=1.5.2"
 packaging = "*"
-typing-extensions = {version = ">=4.10.0", markers = "python_version < \"3.13\""}
 
 [package.extras]
 all = ["altair-tiles (>=0.3.0)", "anywidget (>=0.9.0)", "numpy", "pandas (>=0.25.3)", "pyarrow (>=11)", "vega-datasets (>=0.9.0)", "vegafusion[embed] (>=1.6.6)", "vl-convert-python (>=1.6.0)"]
@@ -788,7 +787,7 @@ files = [
 google-api-core = {version = ">=1.34.1,<2.0.dev0 || >=2.11.dev0,<3.0.0dev", extras = ["grpc"]}
 google-auth = ">=2.14.1,<2.24.0 || >2.24.0,<2.25.0 || >2.25.0,<3.0.0dev"
 grpc-google-iam-v1 = ">=0.14.0,<1.0.0dev"
-proto-plus = ">=1.22.3,<2.0.0dev"
+proto-plus = {version = ">=1.25.0,<2.0.0dev", markers = "python_version >= \"3.13\""}
 protobuf = ">=3.20.2,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<6.0.0dev"
 
 [[package]]
@@ -1313,10 +1312,7 @@ files = [
 ]
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.23.3", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1.26.0", markers = "python_version >= \"3.12\""}
 
 [package.extras]
 dev = ["absl-py", "pyink", "pylint (>=2.6.0)", "pytest", "pytest-xdist"]
@@ -1804,10 +1800,7 @@ files = [
 ]
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1.26.0", markers = "python_version >= \"3.12\""}
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -1955,13 +1948,13 @@ test = ["coveralls", "futures", "mock", "pytest (>=2.7.3)", "pytest-benchmark", 
 
 [[package]]
 name = "proto-plus"
-version = "1.24.0"
-description = "Beautiful, Pythonic protocol buffers."
+version = "1.26.0"
+description = "Beautiful, Pythonic protocol buffers"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "proto-plus-1.24.0.tar.gz", hash = "sha256:30b72a5ecafe4406b0d339db35b56c4059064e69227b8c3bda7462397f966445"},
-    {file = "proto_plus-1.24.0-py3-none-any.whl", hash = "sha256:402576830425e5f6ce4c2a6702400ac79897dab0b4343821aa5188b0fab81a12"},
+    {file = "proto_plus-1.26.0-py3-none-any.whl", hash = "sha256:bf2dfaa3da281fc3187d12d224c707cb57214fb2c22ba854eb0c105a3fb2d4d7"},
+    {file = "proto_plus-1.26.0.tar.gz", hash = "sha256:6e93d5f5ca267b54300880fff156b6a3386b3fa3f43b1da62e680fc0c586ef22"},
 ]
 
 [package.dependencies]
@@ -2112,7 +2105,7 @@ files = [
 [package.dependencies]
 annotated-types = ">=0.6.0"
 pydantic-core = "2.23.4"
-typing-extensions = {version = ">=4.6.1", markers = "python_version < \"3.13\""}
+typing-extensions = {version = ">=4.12.2", markers = "python_version >= \"3.13\""}
 
 [package.extras]
 email = ["email-validator (>=2.0.0)"]
@@ -3043,7 +3036,6 @@ requests = ">=2.21.0,<3"
 setuptools = "*"
 six = ">=1.12.0"
 tensorboard = ">=2.18,<2.19"
-tensorflow-io-gcs-filesystem = {version = ">=0.23.1", markers = "python_version < \"3.12\""}
 termcolor = ">=1.1.0"
 typing-extensions = ">=3.6.6"
 wrapt = ">=1.11.0"
@@ -3121,38 +3113,6 @@ wiki-dialog = ["apache-beam"]
 wikipedia = ["apache-beam", "mwparserfromhell", "mwxml"]
 wsc273 = ["bs4", "lxml"]
 youtube-vis = ["pycocotools"]
-
-[[package]]
-name = "tensorflow-io-gcs-filesystem"
-version = "0.37.0"
-description = "TensorFlow IO"
-optional = false
-python-versions = "<3.12,>=3.7"
-files = [
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:82cc4d8e26fb143fc814ac8ab95fede83363a315f5b62f8ae68312f1aca1cc6e"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:677d6d7c84a94a3b27ea5d16633ea09adadef09c2630480e8e94209558828b02"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8e5d1ac4d2010e8cdf259918ba1500c942b51b7ed2e549f55b404c1fb52f695d"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0e2901bc4a91158fa0a10d37594c8a5efb1445dd5a041b1b5b90f782a5d1b15e"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp311-cp311-macosx_10_14_x86_64.whl", hash = "sha256:eab6e4c1daf7ddbfef608cd8e2102861021678dfb3f6a7fb3f613db9d6992919"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:4ec3c0d0a9d3676a2e74198e3dff66d74c7c34f974257f2176236d0703b31a0e"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:af0f79400656bb88bf326d2b8e63aef49c07a0ce8c14c3e2589a62e765d8c21f"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:13bc337f2c2db63a39c81c8fd0ececc0c3d5fcf4ce229dfed0b0085a23dd60e9"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp312-cp312-macosx_10_14_x86_64.whl", hash = "sha256:57e7af9c81e79bf8fb552985dc8972ac90437d34bd4c1c9019a92a07eb12bc98"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:48a8e7aec651bea8db410f6426c6446a56d16a5ab32201a70d8d684c113137b7"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:71ccf64a137efcb2be2627225b4e48110cbf34da39b23c5cc688fe803f2510f1"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:03d5598b8007551f4e1391bf85a83a1865e3fa0789beef15a200efaa06a23fb5"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:8d3ad5f30b6dbe09baefdb80e9aa7ff3869c772928b865f8ffc8402be7675a43"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:95bb229e968fca943806c6ac04e81dc4966fc4a36ab83efaa061a4ecb3ea5e85"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8385f4fe447812bd8e2e11ef523cf02765319100e5d9e4a9b5a876d4440c900c"},
-    {file = "tensorflow_io_gcs_filesystem-0.37.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:500ec871a8d59cf78992b7fd4750d86ea3d35e231fb0bea7a7eabcf73abfceeb"},
-]
-
-[package.extras]
-tensorflow = ["tensorflow (>=2.16.0,<2.17.0)"]
-tensorflow-aarch64 = ["tensorflow-aarch64 (>=2.16.0,<2.17.0)"]
-tensorflow-cpu = ["tensorflow-cpu (>=2.16.0,<2.17.0)"]
-tensorflow-gpu = ["tensorflow-gpu (>=2.16.0,<2.17.0)"]
-tensorflow-rocm = ["tensorflow-rocm (>=2.16.0,<2.17.0)"]
 
 [[package]]
 name = "tensorflow-metadata"
@@ -3587,5 +3547,5 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.11,<3.13"
-content-hash = "c7ba7bd9c402d13151dbf2d4d925a413c9de561dbf752b4e590be080ef25a8cc"
+python-versions = ">=3.13,<3.14"
+content-hash = "7176ef95b541072a56c9f1f9e45a98938293a085be40d32df1d83bbcac2938cd"
