@@ -28,7 +28,7 @@ flask = "2.3.3"
 
 [tool.poetry.group.tensorflow.dependencies]
 portpicker = "1.6.0"
-tensorflow = "2.18.0"
+tensorflow = "2.19.0"
 tf-keras = "^2.17.0"
 tensorflow-datasets = "^4.9.6"
 tensorflow-recommenders = "0.7.3"
